@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Microcurso Día 6 — Netbilling: Fundamentos y Atención</title>
+<style>
+/* Base styles */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;font-size:15px}
+.mc-wrap{max-width:820px;margin:0 auto;padding:16px 16px 80px}
+
+/* Header */
+.mc-header{background:#1B3A6B;border-radius:12px;padding:18px 22px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.header-left{display:flex;align-items:center;gap:14px}
+.header-icon{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;flex-shrink:0}
+.mc-header h1{color:#fff;font-size:16px;font-weight:700;line-height:1.3;margin-bottom:3px}
+.mc-header p{color:#B5D4F4;font-size:11px}
+.score-display{background:rgba(255,255,255,.15);color:#E1F5EE;font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px}
+
+/* Progress */
+.progress-wrap{background:#E2E8F0;border-radius:20px;height:6px;margin-bottom:8px;overflow:hidden}
+.progress-bar{height:6px;background:#185FA5;border-radius:20px;transition:width .4s ease}
+.scene-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.scene-info span{font-size:11px;color:#64748B}
+.bloom-badge{background:#1B3A6B;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px}
+
+/* Slides */
+
+
+.slide{background:#fff;border-radius:12px;border:0.5px solid #E2E8F0;overflow:hidden;margin-bottom:14px}
+.slide-hdr{padding:14px 18px;border-bottom:0.5px solid #E2E8F0}
+.hdr-blue{background:#E6F1FB}
+.hdr-teal{background:#E1F5EE}
+.hdr-amber{background:#FAEEDA}
+.hdr-purp{background:#EEEDFE}
+.hdr-red{background:#FCEBEB}
+.slide-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;padding:2px 8px;border-radius:20px}
+.hdr-blue .slide-tag{background:#B5D4F4;color:#042C53}
+.hdr-teal .slide-tag{background:#9FE1CB;color:#04342C}
+.hdr-amber .slide-tag{background:#FAC775;color:#412402}
+.hdr-purp .slide-tag{background:#CECBF6;color:#26215C}
+.hdr-red .slide-tag{background:#F7C1C1;color:#501313}
+.slide-hdr h2{font-size:15px;font-weight:700;color:#1E293B;line-height:1.3}
+.slide-body{padding:16px 18px}
+
+/* Cards */
+.card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+.mini-card{border-radius:10px;padding:14px 12px;text-align:center}
+.mini-card.blue{background:#E6F1FB}
+.mini-card.teal{background:#E1F5EE}
+.mini-card.amber{background:#FAEEDA}
+.mini-card h4{font-size:12px;font-weight:700;margin-bottom:3px}
+.mini-card.blue h4{color:#0C447C}
+.mini-card.teal h4{color:#085041}
+.mini-card.amber h4{color:#633806}
+.mini-card p{font-size:10px}
+.mini-card.blue p{color:#185FA5}
+.mini-card.teal p{color:#0F6E56}
+.mini-card.amber p{color:#854F0B}
+.mc-icon{font-size:22px;margin-bottom:7px}
+
+/* Tariff grid */
+.tariff-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.tariff-card{border-radius:10px;padding:12px 14px;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.tariff-card:hover{transform:translateY(-2px)}
+.tariff-card.blue{background:#E6F1FB}
+.tariff-card.teal{background:#E1F5EE}
+.tariff-card.purp{background:#EEEDFE}
+.tariff-card.amber{background:#FAEEDA}
+.tariff-card.red{background:#FCEBEB}
+.tariff-card.gray{background:#F1EFE8}
+.tariff-card h4{font-size:13px;font-weight:700;margin-bottom:4px}
+.tariff-card.blue h4{color:#0C447C}
+.tariff-card.teal h4{color:#085041}
+.tariff-card.purp h4{color:#26215C}
+.tariff-card.amber h4{color:#412402}
+.tariff-card.red h4{color:#501313}
+.tariff-card.gray h4{color:#2C2C2A}
+.tariff-desc{font-size:11px;line-height:1.5;display:none;margin:5px 0}
+.tariff-card.blue .tariff-desc{color:#185FA5}
+.tariff-card.teal .tariff-desc{color:#0F6E56}
+.tariff-card.purp .tariff-desc{color:#534AB7}
+.tariff-card.amber .tariff-desc{color:#854F0B}
+.tariff-card.red .tariff-desc{color:#A32D2D}
+.tariff-card.gray .tariff-desc{color:#5F5E5A}
+.tariff-card.revealed .tariff-desc{display:block}
+.tariff-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:5px}
+.tariff-card.blue .tariff-badge{background:#B5D4F4;color:#042C53}
+.tariff-card.teal .tariff-badge{background:#9FE1CB;color:#04342C}
+.tariff-card.purp .tariff-badge{background:#CECBF6;color:#26215C}
+.tariff-card.amber .tariff-badge{background:#FAC775;color:#412402}
+.tariff-card.red .tariff-badge{background:#F7C1C1;color:#501313}
+.tariff-card.gray .tariff-badge{background:#D3D1C7;color:#2C2C2A}
+
+/* Case boxes */
+.case-box{border-radius:10px;padding:14px 16px;margin-bottom:12px;border:0.5px solid transparent}
+.case-box.amber{background:#FAEEDA;border-color:#FAC775}
+.case-box.red{background:#FCEBEB;border-color:#F7C1C1}
+.case-box.teal{background:#E1F5EE;border-color:#9FE1CB}
+.case-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.case-box.amber .case-label{color:#854F0B}
+.case-box.red .case-label{color:#A32D2D}
+.case-box.teal .case-label{color:#0F6E56}
+.case-box p{font-size:13px;line-height:1.6;color:#1E293B}
+
+/* Options */
+.opts{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.opt{border-radius:9px;padding:11px 14px;cursor:pointer;border:1.5px solid #CBD5E1;background:#fff;font-size:13px;text-align:left;color:#1E293B;transition:all .15s;line-height:1.5}
+.opt:hover{border-color:#185FA5;background:#E6F1FB}
+.opt.correct{border-color:#3B6D11;background:#EAF3DE;color:#27500A;pointer-events:none;font-weight:700}
+.opt.wrong{border-color:#A32D2D;background:#FCEBEB;color:#791F1F;pointer-events:none}
+.opt.disabled{opacity:.45;pointer-events:none}
+
+/* Feedback */
+.feedback{border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;display:none;margin-top:8px}
+.feedback.show{display:block}
+.feedback.ok{background:#EAF3DE;color:#27500A;border:0.5px solid #97C459}
+.feedback.ko{background:#FCEBEB;color:#791F1F;border:0.5px solid #F09595}
+
+/* SAP Simulation */
+.sap-steps{display:flex;gap:8px;margin-bottom:12px}
+.sap-step{flex:1;border-radius:8px;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;border:1.5px solid #D3D1C7;background:#F1EFE8;color:#888780;transition:all .3s}
+.sap-step.active{background:#E6F1FB;color:#0C447C;border-color:#185FA5}
+.sap-step.done{background:#EAF3DE;color:#27500A;border-color:#97C459}
+.sap-terminal{border-radius:10px;border:0.5px solid #E2E8F0;overflow:hidden;margin-bottom:12px}
+.sap-bar{background:#1B3A6B;padding:8px 14px;display:flex;align-items:center;gap:10px}
+.sap-sys{color:#B5D4F4;font-size:11px;font-weight:600}
+.sap-cmd{background:rgba(255,255,255,.15);border-radius:4px;padding:2px 10px;color:#fff;font-size:11px;font-family:monospace}
+.sap-desc{color:#9FE1CB;font-size:10px;margin-left:auto}
+.sap-content{background:#F8FAFC;padding:14px}
+.sap-field{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sap-lbl{font-size:12px;color:#64748B;min-width:140px}
+.sap-input{flex:1;border:1px solid #CBD5E1;border-radius:4px;padding:7px 10px;font-size:13px;font-family:monospace;background:#fff;color:#1E293B}
+.sap-input:focus{outline:none;border-color:#185FA5;box-shadow:0 0 0 2px #B5D4F4}
+.sap-btn{background:#1B3A6B;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;margin-top:6px}
+.sap-btn:hover{background:#185FA5}
+.sap-result{border-radius:6px;padding:10px 12px;margin-top:10px;font-size:12px;line-height:1.6;display:none}
+.sap-result.ok{display:block;background:#EAF3DE;color:#27500A}
+.sap-result.err{display:block;background:#FCEBEB;color:#791F1F}
+
+/* Formula box */
+.formula-box{background:#E6F1FB;border-radius:10px;padding:14px 16px;border:0.5px solid #B5D4F4;margin-bottom:14px}
+.formula-title{font-size:12px;font-weight:700;color:#185FA5;margin-bottom:8px}
+.formula{font-size:14px;font-weight:700;color:#0C447C;text-align:center;padding:10px;background:rgba(255,255,255,.65);border-radius:6px;margin:6px 0;font-family:monospace}
+.formula-examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.fex{border-radius:8px;padding:10px 12px}
+.fex.blue{background:rgba(255,255,255,.7);border:0.5px solid #B5D4F4}
+.fex.teal{background:rgba(255,255,255,.7);border:0.5px solid #9FE1CB}
+.fex-title{font-size:10px;font-weight:700;margin-bottom:6px}
+.fex.blue .fex-title{color:#185FA5}
+.fex.teal .fex-title{color:#0F6E56}
+.fex-row{display:flex;justify-content:space-between;font-size:11px;color:#64748B;margin-bottom:4px}
+.fex-total{font-size:12px;font-weight:700;color:#fff;border-radius:5px;padding:5px 8px;text-align:center;margin-top:6px}
+.fex.blue .fex-total{background:#185FA5}
+.fex.teal .fex-total{background:#0F6E56}
+
+/* Info/tip boxes */
+.info-box{border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#444441;border:0.5px solid #D3D1C7;background:#F1EFE8}
+.info-box.green{background:#EAF3DE;color:#27500A;border-color:#97C459}
+.tip-box{background:#FAEEDA;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#633806;border:0.5px solid #FAC775}
+
+/* Quiz */
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+
+/* Result */
+.result-card{background:#1B3A6B;border-radius:14px;padding:24px;text-align:center;color:#fff;margin-bottom:16px}
+.result-title{font-size:13px;color:#B5D4F4;margin-bottom:8px}
+.result-score{font-size:54px;font-weight:700;line-height:1;margin-bottom:8px}
+.result-pct{font-size:14px;color:#B5D4F4;margin-bottom:16px}
+.result-bar-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;overflow:hidden;margin-bottom:16px}
+.result-bar{height:10px;background:#9FE1CB;border-radius:20px;transition:width 1s ease}
+.result-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border-radius:20px;padding:7px 16px;font-size:12px;color:#E1F5EE}
+.result-actions{text-align:center;margin-top:16px;display:flex;gap:10px;justify-content:center}
+
+/* Review box */
+.review-box{background:#fff;border-radius:12px;border:0.5px solid #E2E8F0;padding:14px 16px;margin-bottom:12px}
+.review-title{font-size:12px;font-weight:700;color:#1E293B;margin-bottom:8px}
+.review-list{font-size:12px;color:#64748B;line-height:1.8;padding-left:16px}
+
+/* Navigation */
+
+.nav-dots{display:flex;gap:5px}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:#CBD5E1;transition:all .3s}
+.nav-dot.done{background:#9FE1CB}
+.nav-dot.active{background:#185FA5;width:20px;border-radius:4px}
+
+/* Buttons */
+
+.btn-primary:hover{background:#185FA5}
+.btn-primary:disabled{opacity:.35;cursor:default}
+
+.btn-secondary:hover{background:#E2E8F0}
+.btn-secondary:disabled{opacity:.35;cursor:default}
+
+/* Helpers */
+.intro-text{font-size:13px;line-height:1.7;color:#1E293B;margin-bottom:14px}
+.hint-text{font-size:12px;color:#64748B;margin-bottom:6px}
+.counter-text{font-size:11px;color:#64748B;text-align:center;margin-top:10px}
+
+@media(max-width:600px){
+  .card-grid-3{grid-template-columns:1fr}
+  .tariff-grid{grid-template-columns:1fr}
+  .formula-examples{grid-template-columns:1fr}
+}
+
+/* Fixed overrides for iframe compatibility */
+
+/* ═══ IFRAME COMPATIBILITY FIXES ═══ */
+html, body {
+  height: 100%;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #F0F4F8;
+  color: #1E293B;
+  font-size: 15px;
+  line-height: 1.6;
+  cursor: default;
+}
+/* Scene visibility - definitive rules */
+.scene { display: none !important; visibility: hidden !important; }
+.scene.active { display: block !important; visibility: visible !important; }
+
+/* Navigation bar - fixed at bottom, always visible, high z-index */
+.mc-nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 9999 !important;
+  background: rgba(255,255,255,0.97) !important;
+  backdrop-filter: blur(8px);
+  border-top: 1px solid #E2E8F0 !important;
+  padding: 10px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.08) !important;
+}
+/* Buttons - ensure clickable */
+.btn-primary, .btn-secondary, .opt, .rev-card, .tariff-card,
+button, input[type=button], input[type=submit] {
+  cursor: pointer !important;
+  pointer-events: all !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+  touch-action: manipulation !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+.btn-primary {
+  background: #1B3A6B !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 11px 22px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  min-width: 120px !important;
+  box-shadow: 0 2px 6px rgba(27,58,107,0.25) !important;
+}
+.btn-primary:hover { background: #185FA5 !important; }
+.btn-primary:active { transform: scale(0.97) !important; }
+.btn-secondary {
+  background: #F1F5F9 !important;
+  color: #1E293B !important;
+  border: 0.5px solid #CBD5E1 !important;
+  border-radius: 8px !important;
+  padding: 11px 22px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  min-width: 120px !important;
+}
+.btn-secondary:disabled { opacity: 0.35 !important; cursor: not-allowed !important; }
+
+/* Content area - leave room for fixed nav */
+.mc-wrap { 
+  max-width: 820px !important; 
+  margin: 0 auto !important; 
+  padding: 16px 16px 90px !important;
+}
+/* Progress bar */
+.progress-wrap { 
+  background: #E2E8F0; border-radius: 20px; height: 6px; 
+  margin-bottom: 8px; overflow: hidden;
+}
+.progress-bar { 
+  height: 6px; background: #185FA5; border-radius: 20px; 
+  transition: width 0.4s ease;
+}
+/* Result banner */
+#resultBanner {
+  display: none;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 12px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+/* Swipe hint */
+#swipeHint {
+  position: fixed;
+  bottom: 65px;
+  right: 16px;
+  background: rgba(27,58,107,0.85);
+  color: #fff;
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  z-index: 9998;
+  opacity: 1;
+  transition: opacity 1s;
+  pointer-events: none;
+}
+
+</style>
+</head>
+<body>
+<div id="resultBanner"></div>
+<div id="swipeHint">&#8592; Desliza o usa las flechas del teclado &#8594;</div>
+<div class="mc-wrap">
+<header class="mc-header"><div class="header-left">
+  <div class="header-icon">&#9728;</div>
+  <div><h1>Netbilling: fundamentos y atención al prosumidor</h1><p>Microcurso · Día 6 · Semana 2 · Bloom: Comprender → Aplicar · 6–7 min</p></div>
+</div><div class="header-right"><div class="score-display" id="scoreDisplay">Puntuación: 0%</div></div></header>
+<div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+<div class="scene-info"><span id="sceneLabel">Módulo 1 de 9</span><span id="bloomLabel" class="bloom-badge">Bloom: Comprender</span></div>
+<section class="scene active" id="sc0">
+<div class="slide"><div class="slide-hdr hdr-teal"><span class="slide-tag">Bienvenida · Semana 2</span><h2>¿Qué vas a aprender hoy?</h2></div>
+<div class="slide-body">
+<p class="intro-text">Hoy dominarás el sistema Netbilling: qué es, cómo funciona, cómo calcular el crédito de excedentes y cómo atender los <strong>3 errores de consulta más frecuentes</strong> de clientes prosumidores.</p>
+<div class="card-grid-3">
+  <div class="mini-card teal"><div class="mc-icon">&#9728;</div><h4>Fundamentos Netbilling</h4><p>Marco legal y conceptos</p></div>
+  <div class="mini-card blue"><div class="mc-icon">&#128200;</div><h4>Cálculo de crédito</h4><p>Fórmula y precio de excedentes</p></div>
+  <div class="mini-card amber"><div class="mc-icon">&#128104;&#8205;&#128188;</div><h4>Atención al prosumidor</h4><p>3 errores frecuentes</p></div>
+</div>
+<div class="info-box">&#9200; <strong>Duración: 6–7 min</strong> — 6 conceptos clave, calculadora de crédito, 3 casos de decisión y quiz de 4 preguntas.</div>
+</div></div></section>
+<section class="scene" id="sc1">
+<div class="slide"><div class="slide-hdr hdr-teal"><span class="slide-tag">Módulo 1 de 4 — Conceptos clave</span><h2>Fundamentos del sistema Netbilling — toca cada tarjeta</h2></div>
+<div class="slide-body">
+<div class="concept-summary">Netbilling convierte al cliente en <strong>prosumidor</strong>: inyecta excedentes a la red y recibe un crédito en la boleta. El crédito usa un precio de valorización <strong>menor al precio de consumo</strong>.</div>
+<p class="hint-text">Haz clic en cada tarjeta para ver la definición completa, el marco legal y la implicancia práctica para el especialista.</p>
+<div class="reveal-grid" id="cardGrid"></div>
+<div class="concept-counter" id="cardCnt">0 de 6 conceptos explorados</div>
+</div></div></section>
+<section class="scene" id="sc2">
+<div class="slide"><div class="slide-hdr hdr-blue"><span class="slide-tag">Módulo 2 de 4 — Calculadora Netbilling</span><h2>Calcula el crédito por excedentes en tiempo real</h2></div>
+<div class="slide-body">
+<div class="concept-summary">El crédito se descuenta del cargo por consumo en la boleta del mes siguiente. Si el crédito supera el monto de la boleta, el excedente se acumula — <strong>no se paga en dinero</strong>.</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0">
+  <div><label class="sap-lbl">Consumo del mes (kWh)</label><input type="number" id="consumoNB" value="280" min="0" class="sap-input" oninput="calcNB()"></div>
+  <div><label class="sap-lbl">Precio energía consumo ($/kWh)</label><input type="number" id="precioConsumo" value="87.5" min="0" step="0.1" class="sap-input" oninput="calcNB()"></div>
+  <div><label class="sap-lbl">Excedentes inyectados (kWh)</label><input type="number" id="excedentes" value="120" min="0" class="sap-input" oninput="calcNB()"></div>
+  <div><label class="sap-lbl">Precio valorización excedentes ($/kWh)</label><input type="number" id="precioExc" value="62" min="0" step="0.1" class="sap-input" oninput="calcNB()"></div>
+  <div><label class="sap-lbl">Cargo fijo mensual ($)</label><input type="number" id="cfNB" value="3200" min="0" class="sap-input" oninput="calcNB()"></div>
+</div>
+<div class="formula-box">
+  <div class="formula-title">Resultado Netbilling</div>
+  <div id="calcNBsteps"></div>
+  <div class="calc-total" id="calcNBtotal" style="margin-top:8px"></div>
+</div>
+<div class="tip-box">&#9888; Si el crédito supera el cargo total, el excedente se acumula para el siguiente mes — no se abona en dinero.</div>
+</div></div></section>
+<section class="scene" id="sc3">
+<div class="slide"><div class="slide-hdr hdr-amber"><span class="slide-tag">Caso 1 de 3 — Decisión</span><h2>3 meses con paneles sin recibir créditos</h2></div>
+<div class="slide-body">
+<div class="case-box amber"><div class="case-label">Situación real</div>
+<p>Cliente con paneles solares llama furioso: "Tengo paneles desde hace 3 meses y nunca me han abonado nada". Revisas ES32 pestaña Medición: medidor tipo <strong>U (unidireccional)</strong>. El contrato Netbilling fue firmado hace 3 meses.</p>
+</div>
+<p class="hint-text">¿Cuál es el diagnóstico correcto?</p>
+<div class="opts" id="d1">
+  <button class="opt" onclick="decidir(1,'A')">A) Decirle que los excedentes aparecerán en la próxima boleta — el sistema tiene un atraso.</button>
+  <button class="opt" onclick="decidir(1,'B')">B) El medidor en ES32 es unidireccional — el cambio a bidireccional no fue realizado o no fue registrado en SAP. Sin este medidor, Netbilling no puede estar activo. Escalar a técnica.</button>
+  <button class="opt" onclick="decidir(1,'C')">C) Emitir un crédito manual estimado por los 3 meses para compensar al cliente.</button>
+</div>
+<div class="feedback" id="fb1"></div>
+</div></div></section>
+<section class="scene" id="sc4">
+<div class="slide"><div class="slide-hdr hdr-red"><span class="slide-tag">Módulo 3 de 4 — Errores frecuentes en Netbilling</span><h2>Los 3 reclamos Netbilling más frecuentes y cómo resolverlos</h2></div>
+<div class="slide-body">
+<div class="concept-summary">La mayoría de los reclamos Netbilling se originan en <strong>expectativas incorrectas</strong> del cliente, no en errores reales del sistema. El especialista debe verificar en SAP antes de diagnosticar.</div>
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+  <div style="background:#E1F5EE;border-radius:8px;padding:12px 14px;border:0.5px solid #9FE1CB">
+    <div style="font-size:12px;font-weight:700;color:#085041;margin-bottom:5px">🔍 Reclamo 1: "Mis excedentes no aparecen en la boleta"</div>
+    <p style="font-size:11px;color:#0F6E56;line-height:1.6"><strong>Verificar:</strong> ES32 pestaña Medición (¿medidor bidireccional?) y FPL9 (¿hubo ciclo de facturación desde que inyectó?).<br><strong>Causa frecuente:</strong> Los excedentes de este período aparecen en la SIGUIENTE boleta — no en la actual.</p>
+  </div>
+  <div style="background:#FAEEDA;border-radius:8px;padding:12px 14px;border:0.5px solid #FAC775">
+    <div style="font-size:12px;font-weight:700;color:#633806;margin-bottom:5px">🔍 Reclamo 2: "Mi crédito es menos de lo que esperaba"</div>
+    <p style="font-size:11px;color:#854F0B;line-height:1.6"><strong>Explicar:</strong> El precio de valorización de excedentes siempre es MENOR al precio de consumo. Ejemplo: "Usted compra energía a $87,5/kWh y la valorizamos a $62/kWh — es el diseño del sistema."</p>
+  </div>
+  <div style="background:#FCEBEB;border-radius:8px;padding:12px 14px;border:0.5px solid #F7C1C1">
+    <div style="font-size:12px;font-weight:700;color:#791F1F;margin-bottom:5px">🔍 Reclamo 3: "¿Cuándo van a activar mi Netbilling?"</div>
+    <p style="font-size:11px;color:#A32D2D;line-height:1.6"><strong>Informar:</strong> El proceso tiene 7 etapas. Verificar en qué etapa está el cliente e informar el próximo paso concreto — sin comprometerse con plazos que dependen de SEC o área técnica.</p>
+  </div>
+</div>
+</div></div></section>
+<section class="scene" id="sc5">
+<div class="slide"><div class="slide-hdr hdr-teal"><span class="slide-tag">Caso 2 de 3 — Decisión</span><h2>Crédito menor al esperado</h2></div>
+<div class="slide-body">
+<div class="case-box teal"><div class="case-label">Situación real</div>
+<p>Prosumidor llama: "Inyecté 200 kWh este mes pero mi crédito es solo $12.400, pensé que sería de $17.500". Precio energía BT1: <strong>$87,5/kWh</strong>. Precio valorización excedentes: <strong>$62/kWh</strong>.</p>
+</div>
+<p class="hint-text">¿Qué le explicas?</p>
+<div class="opts" id="d2">
+  <button class="opt" onclick="decidir(2,'A')">A) El crédito es correcto: 200 × $62 = $12.400. El precio de valorización ($62) es menor al de consumo ($87,5). Netbilling no es un mecanismo de venta de energía sino de reducción de la boleta.</button>
+  <button class="opt" onclick="decidir(2,'B')">B) Hay un error — el crédito debería calcularse al precio normal de consumo ($87,5/kWh).</button>
+  <button class="opt" onclick="decidir(2,'C')">C) Derivar a facturación para que revisen el cálculo — puede haber un error en el sistema.</button>
+</div>
+<div class="feedback" id="fb2"></div>
+</div></div></section>
+<section class="scene" id="sc6">
+<div class="slide"><div class="slide-hdr hdr-blue"><span class="slide-tag">Caso 3 de 3 — Decisión</span><h2>¿Cuándo se activa el Netbilling?</h2></div>
+<div class="slide-body">
+<div class="case-box blue"><div class="case-label">Situación real</div>
+<p>Una clienta llama preguntando cuándo podrá tener Netbilling activo. Firmó el contrato hace 2 semanas. Los paneles están instalados pero la SEC aún no ha inspeccionado. No hay medidor bidireccional instalado aún.</p>
+</div>
+<p class="hint-text">¿Qué le informas?</p>
+<div class="opts" id="d3">
+  <button class="opt" onclick="decidir(3,'A')">A) Decirle que ya puede inyectar excedentes porque tiene el contrato firmado y los paneles instalados.</button>
+  <button class="opt" onclick="decidir(3,'B')">B) El contrato es solo la etapa inicial. Faltan la inspección SEC y el cambio del medidor a bidireccional — sin esas etapas, Netbilling NO está activo. Informar el estado real y el próximo paso.</button>
+  <button class="opt" onclick="decidir(3,'C')">C) Decirle que el proceso tarda exactamente 30 días desde la firma del contrato.</button>
+</div>
+<div class="feedback" id="fb3"></div>
+</div></div></section>
+<section class="scene" id="sc7">
+<div class="slide"><div class="slide-hdr hdr-amber"><span class="slide-tag">Quiz de cierre — 4 preguntas</span><h2>Demuestra lo que aprendiste</h2></div>
+<div class="slide-body">
+  <div id="qText"></div><div id="qOpts" class="opts"></div><div id="qFb" class="feedback"></div>
+  <div class="quiz-nav"><span id="qCounter" class="hint-text">Pregunta 1 de 4</span>
+  <button class="btn-primary" id="qNext" onclick="nextQ()" style="display:none">Siguiente &rarr;</button></div>
+</div></div></section>
+<section class="scene" id="sc8">
+<div class="result-card"><div class="result-title">Microcurso completado</div>
+<div class="result-score" id="resultScore">0/4</div><div class="result-pct" id="resultPct">0%</div>
+<div class="result-bar-wrap"><div class="result-bar" id="resultBar" style="width:0%"></div></div>
+<div class="result-badge" id="resultBadge">Cargando...</div></div>
+<div id="reviewBox"></div>
+<div class="result-actions"><button class="btn-secondary" onclick="restart()">&#8635; Reiniciar</button></div>
+</section>
+<nav class="mc-nav">
+  <button class="btn-secondary" id="btnPrev" onclick="goScene(-1)" disabled>&larr; Anterior</button>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="btn-primary" id="btnNext" onclick="goScene(1)">Siguiente &rarr;</button>
+</nav>
+</div>
+<script>
+/* SCORM 2004 API */
+
+var SCORM=(function(){
+  var api=null,init=false;
+  function find(w){var t=0;while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}return w.API_1484_11||null;}
+  function go(){api=find(window);if(!api&&window.opener)api=find(window.opener);if(api){var r=api.Initialize('');init=(r==='true'||r===true);}return init;}
+  function set(k,v){try{if(api&&init)api.SetValue(k,v);}catch(e){}}
+  function commit(){try{if(api&&init)api.Commit('');}catch(e){}}
+  function finish(){try{if(api&&init){api.Commit('');api.Terminate('');}}catch(e){}}
+  function setComplete(pct){
+    try{
+      set('cmi.score.raw',pct);set('cmi.score.min',0);set('cmi.score.max',100);
+      set('cmi.score.scaled',(pct/100).toFixed(4));
+      set('cmi.completion_status','completed');
+      set('cmi.success_status',pct>=75?'passed':'failed');
+      set('cmi.session_time','PT7M0S');
+      commit();finish();
+    }catch(e){}
+    var b=document.getElementById('resultBanner');
+    if(b){
+      b.style.display='block';
+      b.style.background=pct>=75?'#EAF3DE':'#FEE2E2';
+      b.style.color=pct>=75?'#166534':'#991B1B';
+      b.style.border='1px solid '+(pct>=75?'#86EFAC':'#FCA5A5');
+      b.innerHTML=(pct>=75?'&#10003; Aprobado: ':'&#9888; No aprobado: ')+pct+'%'+(pct>=75?' &mdash; M&oacute;dulo completado':' &mdash; Umbral m&iacute;nimo 75%. Intenta nuevamente');
+    }
+  }
+  go();
+  return{set:set,get:function(k){try{if(api&&init)return api.GetValue(k);}catch(e){}return'';},commit:commit,finish:finish,setComplete:setComplete,initialized:init};
+})();
+
+/* Course logic */
+var state={cur:0,total:9,cardRevealed:0,totalCards:6,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+var BLOOM=['Comprender','Comprender','Aplicar','Aplicar','Aplicar','Aplicar','Aplicar','Evaluar','Evaluar'];
+var CARDS=[{name:'¿Qué es Netbilling?',desc:'Sistema regulado por la Ley 20.936 que permite a clientes con generación renovable (principalmente paneles solares) inyectar excedentes a la red y recibir un crédito en su próxima boleta. El cliente pasa a ser \'prosumidor\'.',badge:'Ley 20.936 · Decreto 244',color:'teal'},
+{name:'Prosumidor',desc:'Cliente que PRODUCE y CONSUME energía eléctrica. En períodos de alta generación (día soleado) puede inyectar más de lo que consume. En períodos de baja generación (noche, días nublados) consume de la red normalmente.',badge:'Produce + Consume · Bidireccional',color:'blue'},
+{name:'Medidor bidireccional',desc:'Medidor que registra AMBOS flujos: el consumo desde la red (normal) y la inyección hacia la red (excedentes). Es condición indispensable para que Netbilling funcione. Lo instala y gestiona la distribuidora.',badge:'Obligatorio · Lo gestiona la distribuidora',color:'purp'},
+{name:'Precio de valorización',desc:'Precio al que se valorizan los kWh inyectados a la red. Siempre es MENOR al precio de consumo — el sistema busca incentivar el autoconsumo, no crear un negocio de venta de energía.',badge:'&lt; Precio de consumo · En el pliego',color:'amber'},
+{name:'Excedentes acumulados',desc:'Si el crédito supera el monto de la boleta, el excedente se acumula para el mes siguiente. Los excedentes acumulados caducan a los 12 meses si no son compensados. No se pagan en dinero.',badge:'Acumulan hasta 12 meses · Luego caducan',color:'red'},
+{name:'Proceso de conexión',desc:'7 etapas: 1)Solicitud 2)Revisión técnica 3)Instalación paneles 4)Inspección SEC 5)Cambio de medidor 6)Firma contrato 7)Inicio facturación Netbilling. Sin medidor bidireccional instalado, el sistema NO está activo.',badge:'7 etapas · Meses de tramitación',color:'green'}];
+var SYNTH=['Crédito Netbilling = kWh inyectados × precio de valorización (pliego). Siempre menor al precio de consumo.','Excedentes del mes actual → aparecen en la SIGUIENTE boleta. No es un error — es el ciclo de facturación.','Sin medidor bidireccional confirmado en ES32, Netbilling NO puede estar activo aunque el contrato esté firmado.','Excedentes acumulados caducan a los 12 meses si no son compensados — informar proactivamente al cliente.','Protocolo de atención: verificar ES32 (medidor) → FPL9 (créditos) → diagnosticar → resolver o escalar.'];
+var ERRORS=['Decir que \'le van a pagar en dinero\' por los excedentes — es crédito en boleta, no pago en efectivo.','Confirmar que Netbilling está activo sin verificar el tipo de medidor en ES32 pestaña Medición.','Decir que los excedentes de este mes aparecerán en la boleta actual — aparecen en la SIGUIENTE.','Prometer un plazo específico de activación sin conocer el estado de la inspección SEC y el cambio de medidor.','No mencionar la caducidad de excedentes acumulados a un cliente que lleva meses acumulando crédito.'];
+var DEC={
+  1:{correct:'B',A:{ok:false,msg:'Incorrecto. Si ES32 muestra medidor unidireccional (tipo U), el medidor bidireccional no fue instalado o no fue actualizado en SAP. Sin este medidor, Netbilling no puede estar activo aunque el contrato esté firmado.'},B:{ok:true,msg:'Correcto. El medidor en ES32 sigue apareciendo como unidireccional. Esto significa que el medidor bidireccional no fue instalado físicamente o no fue actualizado en el sistema. Escalar a área técnica para verificar el cambio físico y actualizar ES32.'},C:{ok:false,msg:'Incorrecto. Emitir un crédito estimado sin respaldo de medición real es imposible de documentar y contablemente incorrecto. Primero hay que resolver el problema del medidor.'}},
+  2:{correct:'A',A:{ok:true,msg:'Correcto. 200 kWh × $62 = $12.400. El precio de valorización de excedentes ($62) es deliberadamente menor al precio de consumo ($87,5). No es un error — es el diseño del sistema Netbilling.'},B:{ok:false,msg:'Incorrecto. El precio de valorización de excedentes está definido en el pliego Netbilling y siempre es menor al precio de consumo. Calcular al mismo precio sería incorrecto.'},C:{ok:false,msg:'Incorrecto. El cálculo es correcto y el especialista puede confirmarlo directamente. Derivar sin diagnosticar genera demoras innecesarias.'}},
+  3:{correct:'B',A:{ok:false,msg:'Incorrecto. El contrato firmado no activa Netbilling. Se requiere inspección SEC aprobada y medidor bidireccional instalado. Decirle lo contrario genera una falsa expectativa y un reclamo posterior.'},B:{ok:true,msg:'Correcto. El proceso tiene 7 etapas. El contrato (etapa 1-2) es solo el inicio. Sin inspección SEC (etapa 4) y sin medidor bidireccional instalado (etapa 5), Netbilling NO está activo. Informar el estado real previene reclamos futuros.'},C:{ok:false,msg:'Incorrecto. El proceso no tiene un plazo fijo — depende de la SEC, la empresa instaladora y el área técnica de la distribuidora. Comprometerse con \'30 días\' sin certeza genera un reclamo cuando no se cumple.'}},
+};
+var QUIZ=[{q:'¿Cuál es la fórmula correcta para calcular el crédito Netbilling en la boleta?',opts:['kWh consumidos × precio energía BT1','kWh inyectados × precio de valorización de excedentes (pliego Netbilling)','kWh inyectados × precio energía normal','Diferencia entre consumo e inyección × IVA'],ans:1,exp:'Crédito = kWh inyectados × precio de valorización (pliego Netbilling). Este precio es MENOR al precio de consumo — el sistema incentiva el autoconsumo, no el negocio de venta de energía.'},
+{q:'Un cliente dice que \'sus excedentes de este mes no aparecen en la boleta\'. ¿Cuál es la causa más probable?',opts:['El sistema LMS tiene un error','Los excedentes del período actual aparecen en la SIGUIENTE boleta — no en la actual','El medidor bidireccional falló','El contrato Netbilling fue cancelado'],ans:1,exp:'Los excedentes del período actual se reflejan en la boleta del SIGUIENTE período. Esta es la causa más frecuente de consultas y reclamos de clientes Netbilling. No es un error — es el funcionamiento normal del ciclo de facturación.'},
+{q:'¿Qué ocurre con los excedentes acumulados no compensados después de 12 meses?',opts:['Se pagan en dinero al cliente','Caducan — el cliente pierde esos excedentes no utilizados','Se trasladan automáticamente al año siguiente sin límite','Se descuentan de la próxima factura al doble'],ans:1,exp:'Los excedentes acumulados tienen un plazo máximo de compensación (12 meses). Si no fueron compensados en ese plazo, caducan. El especialista debe informar esto proactivamente cuando el cliente acumula excedentes por varios meses.'},
+{q:'¿Cómo verificas en SAP si el sistema Netbilling está activo para un cliente?',opts:['En FPL9, revisando el historial de facturas del año','En ES32 pestaña Medición, verificando que el medidor sea de tipo bidireccional','Llamando al área técnica directamente','Revisando el contrato físico firmado'],ans:1,exp:'ES32 pestaña Medición muestra el tipo de medidor. Si es bidireccional, el hardware está instalado. Además, verificar en FPL9 si han aparecido créditos de excedentes en períodos anteriores confirma que el sistema está activo y registrando.'}];
+
+document.addEventListener('DOMContentLoaded',function(){
+  buildDots();updateUI();buildCards();buildSynth();buildErrors();
+  if(window.SCORM&&SCORM.set){SCORM.set('cmi.core.lesson_status','incomplete');SCORM.commit();}
+});
+
+function buildCards(){
+  var g=document.getElementById('cardGrid');if(!g)return;
+  CARDS.forEach(function(c){
+    var d=document.createElement('div');
+    d.className='rev-card '+c.color;
+    d.innerHTML='<h4>'+c.name+'</h4><div class="rev-desc"></div><span class="rev-hint">Toca para ver</span>';
+    d.onclick=function(){revealCard(this,c.desc,c.badge);};
+    g.appendChild(d);
+  });
+}
+function buildSynth(){
+  var b=document.getElementById('synthBody');if(!b)return;
+  b.innerHTML=SYNTH.map(function(s){return buildRevCard(s,false);}).join('');
+}
+function buildErrors(){
+  var b=document.getElementById('errorBody');if(!b)return;
+  b.innerHTML=ERRORS.map(function(e){return buildRevCard(e,true);}).join('');
+}
+function buildReview(){
+  var b=document.getElementById('reviewBox');if(!b)return;
+  b.innerHTML='<div class="review-box"><div class="review-title">Puntos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+}
+function restart(){
+  state={cur:0,total:9,cardRevealed:0,totalCards:6,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+  document.querySelectorAll('.scene').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('sc0').classList.add('active');
+  document.querySelectorAll('.opt').forEach(function(b){b.className='opt';});
+  document.querySelectorAll('.feedback').forEach(function(f){f.className='feedback';f.innerHTML='';});
+  document.querySelectorAll('.rev-card').forEach(function(c){c.classList.remove('revealed');if(c.querySelector('.rev-desc'))c.querySelector('.rev-desc').textContent='';if(c.querySelector('.rev-hint'))c.querySelector('.rev-hint').textContent='Toca para ver';});
+  var cnt=document.getElementById('cardCnt');if(cnt)cnt.textContent='0 de 6 conceptos explorados';
+  document.getElementById('reviewBox').innerHTML='';
+  document.getElementById('resultBar').style.width='0%';
+  if(document.getElementById('scoreDisplay'))document.getElementById('scoreDisplay').textContent='Puntuación: 0%';
+  buildSynth();buildErrors();updateUI();
+}
+
+function calcNB(){
+  var c=parseFloat(document.getElementById('consumoNB').value)||0;
+  var pc=parseFloat(document.getElementById('precioConsumo').value)||0;
+  var e=parseFloat(document.getElementById('excedentes').value)||0;
+  var pe=parseFloat(document.getElementById('precioExc').value)||0;
+  var cf=parseFloat(document.getElementById('cfNB').value)||0;
+  var cargoC=c*pc;var credito=e*pe;var neto=cargoC+cf-credito;if(neto<0)neto=0;var total=neto*1.19;
+  var steps=document.getElementById('calcNBsteps');if(!steps)return;
+  steps.innerHTML='<div class="fex-row"><span>Cargo energía: '+c+' kWh × $'+pc+'</span><span>$'+Math.round(cargoC).toLocaleString('es-CL')+'</span></div>'+
+    '<div class="fex-row"><span>Cargo fijo</span><span>$'+Math.round(cf).toLocaleString('es-CL')+'</span></div>'+
+    '<div class="fex-row" style="color:#0F6E56;font-weight:700"><span>Crédito excedentes: '+e+' kWh × $'+pe+'</span><span>−$'+Math.round(credito).toLocaleString('es-CL')+'</span></div>'+
+    '<div class="fex-row"><span>Base IVA (cargo − crédito)</span><span>$'+Math.round(neto).toLocaleString('es-CL')+'</span></div>';
+  document.getElementById('calcNBtotal').textContent='Total con IVA: $'+Math.round(neto*1.19).toLocaleString('es-CL');
+}
+document.addEventListener('DOMContentLoaded', function(){ if(document.getElementById('consumoNB')) calcNB(); });
+
+
+function goScene(dir){var n=state.cur+dir;if(n<0||n>=state.total)return;setScene(n);}
+function setScene(idx){
+  document.getElementById('sc'+state.cur).classList.remove('active');
+  state.cur=idx;document.getElementById('sc'+state.cur).classList.add('active');
+  updateUI();
+  if(idx===state.total-2&&!state.qInitDone)renderQuiz();
+  if(idx===state.total-1)showResults();
+  if(window.SCORM&&SCORM.set)SCORM.set('cmi.core.lesson_location',idx);
+  if(window.SCORM&&SCORM.commit)SCORM.commit();
+}
+function updateUI(){
+  var pct=Math.round(state.cur/(state.total-1)*100);
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('sceneLabel').textContent='Módulo '+(state.cur+1)+' de '+state.total;
+  document.getElementById('bloomLabel').textContent='Bloom: '+(BLOOM[state.cur]||'');
+  document.getElementById('btnPrev').disabled=state.cur===0;
+  document.getElementById('btnNext').disabled=state.cur===state.total-1;
+  updateDots();
+}
+function buildDots(){var w=document.getElementById('navDots');if(!w)return;w.innerHTML='';for(var i=0;i<state.total;i++){var d=document.createElement('div');d.className='nav-dot';w.appendChild(d);}}
+function updateDots(){document.querySelectorAll('.nav-dot').forEach(function(d,i){d.className='nav-dot'+(i<state.cur?' done':i===state.cur?' active':'');});}
+function decidir(n,opt){
+  if(state.decisions[n])return;state.decisions[n]=opt;
+  var dec=DEC[n];var btns=document.querySelectorAll('#d'+n+' .opt');var letters=['A','B','C'];
+  btns.forEach(function(b,i){if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');});
+  var res=dec[opt];var fb=document.getElementById('fb'+n);
+  fb.className='feedback show '+(res.ok?'ok':'ko');
+  fb.innerHTML=(res.ok?'&#10003; ':'&#10007; ')+res.msg;
+}
+function renderQuiz(){
+  state.qInitDone=true;showQuestion();
+}
+function showQuestion(){
+  var q=QUIZ[state.quizCurrent];
+  document.getElementById('qCounter').textContent='Pregunta '+(state.quizCurrent+1)+' de '+QUIZ.length;
+  document.getElementById('qFb').className='feedback';document.getElementById('qNext').style.display='none';state.quizAnswered=false;
+  document.getElementById('qText').innerHTML='<p style="font-size:13px;line-height:1.6;margin-bottom:12px;font-weight:500">'+q.q+'</p>';
+  var opts=document.getElementById('qOpts');opts.innerHTML='';
+  q.opts.forEach(function(o,i){var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){return function(){answerQ(idx);};})(i);opts.appendChild(b);});
+}
+function answerQ(idx){
+  if(state.quizAnswered)return;state.quizAnswered=true;
+  var q=QUIZ[state.quizCurrent];
+  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');});
+  var ok=idx===q.ans;if(ok)state.quizScore++;
+  var fb=document.getElementById('qFb');fb.className='feedback show '+(ok?'ok':'ko');fb.innerHTML=(ok?'&#10003; Correcto. ':'&#10007; Incorrecto. ')+q.exp;
+  document.getElementById('qNext').style.display='inline-block';
+  if(window.SCORM&&SCORM.set){SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');SCORM.commit();}
+}
+function nextQ(){state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else goScene(1);}
+function showResults(){
+  var pct=Math.round(state.quizScore/QUIZ.length*100);
+  document.getElementById('resultScore').textContent=state.quizScore+'/'+QUIZ.length;
+  document.getElementById('resultPct').textContent=pct+'% correcto';
+  if(document.getElementById('scoreDisplay'))document.getElementById('scoreDisplay').textContent='Puntuación: '+pct+'%';
+  setTimeout(function(){document.getElementById('resultBar').style.width=pct+'%';},200);
+  var b=pct===100?'&#9733; Dominio total — puntaje perfecto':pct>=75?'&#128077; Buen desempeño — aprobado':' &#8635; Bajo el umbral — revisa los módulos';
+  document.getElementById('resultBadge').innerHTML=b;
+  if(pct<100&&document.getElementById('reviewBox'))buildReview();
+  if(window.SCORM&&SCORM.setComplete)SCORM.setComplete(pct);
+}
+function buildRevCard(txt,isErr){
+  return '<div style="display:flex;gap:8px;align-items:flex-start;padding:9px 12px;background:'+(isErr?'#FCEBEB':'#EAF3DE')+';border-radius:7px;margin-bottom:7px"><span style="color:'+(isErr?'#DC2626':'#3B6D11')+';font-size:15px;flex-shrink:0">'+(isErr?'&#10007;':'&#10004;')+'</span><span style="font-size:12px;line-height:1.55;color:'+(isErr?'#791F1F':'#27500A')+'">'+txt+'</span></div>';
+}
+function revealCard(el,desc,badge){
+  if(el.classList.contains('revealed'))return;
+  el.classList.add('revealed');
+  el.querySelector('.rev-desc').textContent=desc;
+  el.querySelector('.rev-hint').textContent=badge;
+  state.cardRevealed++;
+  var cnt=document.getElementById('cardCnt');
+  if(cnt)cnt.textContent=state.cardRevealed+' de '+state.totalCards+' conceptos explorados';
+}
+
+
+/* Touch + keyboard navigation */
+
+// ═══ TOUCH / SWIPE NAVIGATION ═══
+(function(){
+  var startX = 0, startY = 0;
+  document.addEventListener('touchstart', function(e){
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, {passive: true});
+  document.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50){
+      if(dx < 0) goScene(1);   // swipe left = next
+      else goScene(-1);          // swipe right = prev
+    }
+  }, {passive: true});
+})();
+
+// ═══ KEYBOARD NAVIGATION ═══
+document.addEventListener('keydown', function(e){
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') goScene(1);
+  if(e.key === 'ArrowLeft'  || e.key === 'ArrowUp')  goScene(-1);
+});
+
+// ═══ HIDE SWIPE HINT AFTER 4s ═══
+setTimeout(function(){
+  var h = document.getElementById('swipeHint');
+  if(h){ h.style.opacity = '0'; setTimeout(function(){ h.style.display='none'; }, 1000); }
+}, 4000);
+
+</script>
+</body>
+</html>

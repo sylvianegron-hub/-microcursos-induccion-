@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Microcurso Día 4 — Aplicación de Tarifas BT1 a BT3</title>
+<style>
+/* Base styles */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;font-size:15px}
+.mc-wrap{max-width:820px;margin:0 auto;padding:16px 16px 80px}
+
+/* Header */
+.mc-header{background:#1B3A6B;border-radius:12px;padding:18px 22px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.header-left{display:flex;align-items:center;gap:14px}
+.header-icon{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;flex-shrink:0}
+.mc-header h1{color:#fff;font-size:16px;font-weight:700;line-height:1.3;margin-bottom:3px}
+.mc-header p{color:#B5D4F4;font-size:11px}
+.score-display{background:rgba(255,255,255,.15);color:#E1F5EE;font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px}
+
+/* Progress */
+.progress-wrap{background:#E2E8F0;border-radius:20px;height:6px;margin-bottom:8px;overflow:hidden}
+.progress-bar{height:6px;background:#185FA5;border-radius:20px;transition:width .4s ease}
+.scene-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.scene-info span{font-size:11px;color:#64748B}
+.bloom-badge{background:#1B3A6B;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px}
+
+/* Slides */
+
+
+.slide{background:#fff;border-radius:12px;border:0.5px solid #E2E8F0;overflow:hidden;margin-bottom:14px}
+.slide-hdr{padding:14px 18px;border-bottom:0.5px solid #E2E8F0}
+.hdr-blue{background:#E6F1FB}
+.hdr-teal{background:#E1F5EE}
+.hdr-amber{background:#FAEEDA}
+.hdr-purp{background:#EEEDFE}
+.hdr-red{background:#FCEBEB}
+.slide-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;padding:2px 8px;border-radius:20px}
+.hdr-blue .slide-tag{background:#B5D4F4;color:#042C53}
+.hdr-teal .slide-tag{background:#9FE1CB;color:#04342C}
+.hdr-amber .slide-tag{background:#FAC775;color:#412402}
+.hdr-purp .slide-tag{background:#CECBF6;color:#26215C}
+.hdr-red .slide-tag{background:#F7C1C1;color:#501313}
+.slide-hdr h2{font-size:15px;font-weight:700;color:#1E293B;line-height:1.3}
+.slide-body{padding:16px 18px}
+
+/* Cards */
+.card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+.mini-card{border-radius:10px;padding:14px 12px;text-align:center}
+.mini-card.blue{background:#E6F1FB}
+.mini-card.teal{background:#E1F5EE}
+.mini-card.amber{background:#FAEEDA}
+.mini-card h4{font-size:12px;font-weight:700;margin-bottom:3px}
+.mini-card.blue h4{color:#0C447C}
+.mini-card.teal h4{color:#085041}
+.mini-card.amber h4{color:#633806}
+.mini-card p{font-size:10px}
+.mini-card.blue p{color:#185FA5}
+.mini-card.teal p{color:#0F6E56}
+.mini-card.amber p{color:#854F0B}
+.mc-icon{font-size:22px;margin-bottom:7px}
+
+/* Tariff grid */
+.tariff-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.tariff-card{border-radius:10px;padding:12px 14px;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.tariff-card:hover{transform:translateY(-2px)}
+.tariff-card.blue{background:#E6F1FB}
+.tariff-card.teal{background:#E1F5EE}
+.tariff-card.purp{background:#EEEDFE}
+.tariff-card.amber{background:#FAEEDA}
+.tariff-card.red{background:#FCEBEB}
+.tariff-card.gray{background:#F1EFE8}
+.tariff-card h4{font-size:13px;font-weight:700;margin-bottom:4px}
+.tariff-card.blue h4{color:#0C447C}
+.tariff-card.teal h4{color:#085041}
+.tariff-card.purp h4{color:#26215C}
+.tariff-card.amber h4{color:#412402}
+.tariff-card.red h4{color:#501313}
+.tariff-card.gray h4{color:#2C2C2A}
+.tariff-desc{font-size:11px;line-height:1.5;display:none;margin:5px 0}
+.tariff-card.blue .tariff-desc{color:#185FA5}
+.tariff-card.teal .tariff-desc{color:#0F6E56}
+.tariff-card.purp .tariff-desc{color:#534AB7}
+.tariff-card.amber .tariff-desc{color:#854F0B}
+.tariff-card.red .tariff-desc{color:#A32D2D}
+.tariff-card.gray .tariff-desc{color:#5F5E5A}
+.tariff-card.revealed .tariff-desc{display:block}
+.tariff-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:5px}
+.tariff-card.blue .tariff-badge{background:#B5D4F4;color:#042C53}
+.tariff-card.teal .tariff-badge{background:#9FE1CB;color:#04342C}
+.tariff-card.purp .tariff-badge{background:#CECBF6;color:#26215C}
+.tariff-card.amber .tariff-badge{background:#FAC775;color:#412402}
+.tariff-card.red .tariff-badge{background:#F7C1C1;color:#501313}
+.tariff-card.gray .tariff-badge{background:#D3D1C7;color:#2C2C2A}
+
+/* Case boxes */
+.case-box{border-radius:10px;padding:14px 16px;margin-bottom:12px;border:0.5px solid transparent}
+.case-box.amber{background:#FAEEDA;border-color:#FAC775}
+.case-box.red{background:#FCEBEB;border-color:#F7C1C1}
+.case-box.teal{background:#E1F5EE;border-color:#9FE1CB}
+.case-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.case-box.amber .case-label{color:#854F0B}
+.case-box.red .case-label{color:#A32D2D}
+.case-box.teal .case-label{color:#0F6E56}
+.case-box p{font-size:13px;line-height:1.6;color:#1E293B}
+
+/* Options */
+.opts{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.opt{border-radius:9px;padding:11px 14px;cursor:pointer;border:1.5px solid #CBD5E1;background:#fff;font-size:13px;text-align:left;color:#1E293B;transition:all .15s;line-height:1.5}
+.opt:hover{border-color:#185FA5;background:#E6F1FB}
+.opt.correct{border-color:#3B6D11;background:#EAF3DE;color:#27500A;pointer-events:none;font-weight:700}
+.opt.wrong{border-color:#A32D2D;background:#FCEBEB;color:#791F1F;pointer-events:none}
+.opt.disabled{opacity:.45;pointer-events:none}
+
+/* Feedback */
+.feedback{border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;display:none;margin-top:8px}
+.feedback.show{display:block}
+.feedback.ok{background:#EAF3DE;color:#27500A;border:0.5px solid #97C459}
+.feedback.ko{background:#FCEBEB;color:#791F1F;border:0.5px solid #F09595}
+
+/* SAP Simulation */
+.sap-steps{display:flex;gap:8px;margin-bottom:12px}
+.sap-step{flex:1;border-radius:8px;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;border:1.5px solid #D3D1C7;background:#F1EFE8;color:#888780;transition:all .3s}
+.sap-step.active{background:#E6F1FB;color:#0C447C;border-color:#185FA5}
+.sap-step.done{background:#EAF3DE;color:#27500A;border-color:#97C459}
+.sap-terminal{border-radius:10px;border:0.5px solid #E2E8F0;overflow:hidden;margin-bottom:12px}
+.sap-bar{background:#1B3A6B;padding:8px 14px;display:flex;align-items:center;gap:10px}
+.sap-sys{color:#B5D4F4;font-size:11px;font-weight:600}
+.sap-cmd{background:rgba(255,255,255,.15);border-radius:4px;padding:2px 10px;color:#fff;font-size:11px;font-family:monospace}
+.sap-desc{color:#9FE1CB;font-size:10px;margin-left:auto}
+.sap-content{background:#F8FAFC;padding:14px}
+.sap-field{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sap-lbl{font-size:12px;color:#64748B;min-width:140px}
+.sap-input{flex:1;border:1px solid #CBD5E1;border-radius:4px;padding:7px 10px;font-size:13px;font-family:monospace;background:#fff;color:#1E293B}
+.sap-input:focus{outline:none;border-color:#185FA5;box-shadow:0 0 0 2px #B5D4F4}
+.sap-btn{background:#1B3A6B;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;margin-top:6px}
+.sap-btn:hover{background:#185FA5}
+.sap-result{border-radius:6px;padding:10px 12px;margin-top:10px;font-size:12px;line-height:1.6;display:none}
+.sap-result.ok{display:block;background:#EAF3DE;color:#27500A}
+.sap-result.err{display:block;background:#FCEBEB;color:#791F1F}
+
+/* Formula box */
+.formula-box{background:#E6F1FB;border-radius:10px;padding:14px 16px;border:0.5px solid #B5D4F4;margin-bottom:14px}
+.formula-title{font-size:12px;font-weight:700;color:#185FA5;margin-bottom:8px}
+.formula{font-size:14px;font-weight:700;color:#0C447C;text-align:center;padding:10px;background:rgba(255,255,255,.65);border-radius:6px;margin:6px 0;font-family:monospace}
+.formula-examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.fex{border-radius:8px;padding:10px 12px}
+.fex.blue{background:rgba(255,255,255,.7);border:0.5px solid #B5D4F4}
+.fex.teal{background:rgba(255,255,255,.7);border:0.5px solid #9FE1CB}
+.fex-title{font-size:10px;font-weight:700;margin-bottom:6px}
+.fex.blue .fex-title{color:#185FA5}
+.fex.teal .fex-title{color:#0F6E56}
+.fex-row{display:flex;justify-content:space-between;font-size:11px;color:#64748B;margin-bottom:4px}
+.fex-total{font-size:12px;font-weight:700;color:#fff;border-radius:5px;padding:5px 8px;text-align:center;margin-top:6px}
+.fex.blue .fex-total{background:#185FA5}
+.fex.teal .fex-total{background:#0F6E56}
+
+/* Info/tip boxes */
+.info-box{border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#444441;border:0.5px solid #D3D1C7;background:#F1EFE8}
+.info-box.green{background:#EAF3DE;color:#27500A;border-color:#97C459}
+.tip-box{background:#FAEEDA;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#633806;border:0.5px solid #FAC775}
+
+/* Quiz */
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+
+/* Result */
+.result-card{background:#1B3A6B;border-radius:14px;padding:24px;text-align:center;color:#fff;margin-bottom:16px}
+.result-title{font-size:13px;color:#B5D4F4;margin-bottom:8px}
+.result-score{font-size:54px;font-weight:700;line-height:1;margin-bottom:8px}
+.result-pct{font-size:14px;color:#B5D4F4;margin-bottom:16px}
+.result-bar-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;overflow:hidden;margin-bottom:16px}
+.result-bar{height:10px;background:#9FE1CB;border-radius:20px;transition:width 1s ease}
+.result-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border-radius:20px;padding:7px 16px;font-size:12px;color:#E1F5EE}
+.result-actions{text-align:center;margin-top:16px;display:flex;gap:10px;justify-content:center}
+
+/* Review box */
+.review-box{background:#fff;border-radius:12px;border:0.5px solid #E2E8F0;padding:14px 16px;margin-bottom:12px}
+.review-title{font-size:12px;font-weight:700;color:#1E293B;margin-bottom:8px}
+.review-list{font-size:12px;color:#64748B;line-height:1.8;padding-left:16px}
+
+/* Navigation */
+
+.nav-dots{display:flex;gap:5px}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:#CBD5E1;transition:all .3s}
+.nav-dot.done{background:#9FE1CB}
+.nav-dot.active{background:#185FA5;width:20px;border-radius:4px}
+
+/* Buttons */
+
+.btn-primary:hover{background:#185FA5}
+.btn-primary:disabled{opacity:.35;cursor:default}
+
+.btn-secondary:hover{background:#E2E8F0}
+.btn-secondary:disabled{opacity:.35;cursor:default}
+
+/* Helpers */
+.intro-text{font-size:13px;line-height:1.7;color:#1E293B;margin-bottom:14px}
+.hint-text{font-size:12px;color:#64748B;margin-bottom:6px}
+.counter-text{font-size:11px;color:#64748B;text-align:center;margin-top:10px}
+
+@media(max-width:600px){
+  .card-grid-3{grid-template-columns:1fr}
+  .tariff-grid{grid-template-columns:1fr}
+  .formula-examples{grid-template-columns:1fr}
+}
+
+/* Fixed overrides for iframe compatibility */
+
+/* ═══ IFRAME COMPATIBILITY FIXES ═══ */
+html, body {
+  height: 100%;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #F0F4F8;
+  color: #1E293B;
+  font-size: 15px;
+  line-height: 1.6;
+  cursor: default;
+}
+/* Scene visibility - definitive rules */
+.scene { display: none !important; visibility: hidden !important; }
+.scene.active { display: block !important; visibility: visible !important; }
+
+/* Navigation bar - fixed at bottom, always visible, high z-index */
+.mc-nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 9999 !important;
+  background: rgba(255,255,255,0.97) !important;
+  backdrop-filter: blur(8px);
+  border-top: 1px solid #E2E8F0 !important;
+  padding: 10px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.08) !important;
+}
+/* Buttons - ensure clickable */
+.btn-primary, .btn-secondary, .opt, .rev-card, .tariff-card,
+button, input[type=button], input[type=submit] {
+  cursor: pointer !important;
+  pointer-events: all !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+  touch-action: manipulation !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+.btn-primary {
+  background: #1B3A6B !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 11px 22px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  min-width: 120px !important;
+  box-shadow: 0 2px 6px rgba(27,58,107,0.25) !important;
+}
+.btn-primary:hover { background: #185FA5 !important; }
+.btn-primary:active { transform: scale(0.97) !important; }
+.btn-secondary {
+  background: #F1F5F9 !important;
+  color: #1E293B !important;
+  border: 0.5px solid #CBD5E1 !important;
+  border-radius: 8px !important;
+  padding: 11px 22px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  min-width: 120px !important;
+}
+.btn-secondary:disabled { opacity: 0.35 !important; cursor: not-allowed !important; }
+
+/* Content area - leave room for fixed nav */
+.mc-wrap { 
+  max-width: 820px !important; 
+  margin: 0 auto !important; 
+  padding: 16px 16px 90px !important;
+}
+/* Progress bar */
+.progress-wrap { 
+  background: #E2E8F0; border-radius: 20px; height: 6px; 
+  margin-bottom: 8px; overflow: hidden;
+}
+.progress-bar { 
+  height: 6px; background: #185FA5; border-radius: 20px; 
+  transition: width 0.4s ease;
+}
+/* Result banner */
+#resultBanner {
+  display: none;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 12px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+/* Swipe hint */
+#swipeHint {
+  position: fixed;
+  bottom: 65px;
+  right: 16px;
+  background: rgba(27,58,107,0.85);
+  color: #fff;
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  z-index: 9998;
+  opacity: 1;
+  transition: opacity 1s;
+  pointer-events: none;
+}
+
+</style>
+</head>
+<body>
+<div id="resultBanner"></div>
+<div id="swipeHint">&#8592; Desliza o usa las flechas del teclado &#8594;</div>
+<div class="mc-wrap">
+<header class="mc-header"><div class="header-left">
+  <div class="header-icon">&#128207;</div>
+  <div><h1>Aplicación de tarifas BT1 a BT3</h1><p>Microcurso · Día 4 · Semana 1 · Bloom: Analizar · 6–7 min</p></div>
+</div><div class="header-right"><div class="score-display" id="scoreDisplay">Puntuación: 0%</div></div></header>
+<div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+<div class="scene-info"><span id="sceneLabel">Módulo 1 de 9</span><span id="bloomLabel" class="bloom-badge">Bloom: Analizar</span></div>
+<section class="scene active" id="sc0">
+<div class="slide"><div class="slide-hdr hdr-blue"><span class="slide-tag">Bienvenida</span><h2>¿Qué vas a aprender hoy?</h2></div>
+<div class="slide-body">
+<p class="intro-text">Hoy aprenderás a <strong>identificar y aplicar correctamente las tarifas BT1, ECOSUR, BT2 y BT3</strong> usando el árbol de decisión de 3 preguntas y verificación en SAP ES32.</p>
+<div class="card-grid-3">
+  <div class="mini-card blue"><div class="mc-icon">&#128207;</div><h4>Tarifas BT1 y ECOSUR</h4><p>Criterios y árbol de decisión</p></div>
+  <div class="mini-card teal"><div class="mc-icon">&#128268;</div><h4>BT2 vs BT3</h4><p>El rol del medidor horario</p></div>
+  <div class="mini-card amber"><div class="mc-icon">&#128104;&#8205;&#128188;</div><h4>Casos reales</h4><p>Diagnóstico y comunicación</p></div>
+</div>
+<div class="info-box">&#9200; <strong>Duración: 6–7 min</strong> — 6 conceptos clave, simulación de diagnóstico, 3 casos de decisión y quiz de 4 preguntas.</div>
+</div></div></section>
+<section class="scene" id="sc1">
+<div class="slide"><div class="slide-hdr hdr-blue"><span class="slide-tag">Módulo 1 de 4 — Conceptos clave</span><h2>Tarifas BT1 a BT3 — toca cada tarjeta para explorarla</h2></div>
+<div class="slide-body">
+<div class="concept-summary">Las tarifas BT1, BT2 y BT3 se asignan según la <strong>potencia contratada y el tipo de medidor</strong>. La verificación siempre se hace en ES32 antes de responder al cliente.</div>
+<p class="hint-text">Haz clic en cada tarjeta para ver la definición completa, el criterio de asignación y cómo verificarlo en SAP.</p>
+<div class="reveal-grid" id="cardGrid"></div>
+<div class="concept-counter" id="cardCnt">0 de 6 conceptos explorados</div>
+</div></div></section>
+<section class="scene" id="sc2">
+<div class="slide"><div class="slide-hdr hdr-teal"><span class="slide-tag">Módulo 2 de 4 — Diagnóstico tarifario</span><h2>¿Cómo diagnosticar la tarifa correcta? Simulación paso a paso</h2></div>
+<div class="slide-body">
+<div class="concept-summary">El diagnóstico tarifario se realiza siempre en <strong>SAP ES32</strong>, en ese orden: potencia contratada → zona → tipo de medidor. Sin verificación en SAP, ningún diagnóstico es válido.</div>
+<p class="hint-text">Sigue los 3 pasos del árbol de decisión para determinar la tarifa correcta de cualquier cliente BT.</p>
+<div style="margin:10px 0">
+  <div class="sim-step active" id="sim1">
+    <div style="font-size:12px;font-weight:700;color:#0C447C;margin-bottom:4px">Paso 1 — Verificar potencia contratada en ES32</div>
+    <p style="font-size:12px;color:#185FA5">Ingresar a ES32 con el número de instalación → pestaña Datos generales → campo "Potencia contratada (kW)".</p>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <span style="font-size:11px;background:#B5D4F4;color:#042C53;padding:3px 9px;border-radius:20px">≤ 10 kW → BT1 o ECOSUR</span>
+      <span style="font-size:11px;background:#9FE1CB;color:#04342C;padding:3px 9px;border-radius:20px">10–50 kW → evaluar BT2 o BT3</span>
+      <span style="font-size:11px;background:#FAC775;color:#412402;padding:3px 9px;border-radius:20px">&gt; 50 kW → BT4.x</span>
+    </div>
+  </div>
+  <div style="text-align:center;font-size:18px;color:#94A3B8;padding:4px 0">&#8595;</div>
+  <div class="sim-step" id="sim2">
+    <div style="font-size:12px;font-weight:700;color:#085041;margin-bottom:4px">Paso 2 — Si ≤ 10 kW: ¿zona ECOSUR?</div>
+    <p style="font-size:12px;color:#0F6E56">Consultar el listado de zonas ECOSUR en el pliego tarifario de la distribuidora. Si la dirección del suministro está en una zona ECOSUR → tarifa ECOSUR. Si no → tarifa BT1.</p>
+    <div style="font-size:11px;background:#FAEEDA;color:#633806;padding:6px 10px;border-radius:6px;margin-top:6px;border:0.5px solid #FAC775">⚠ ECOSUR no es opcional ni una elección del cliente — la zona determina la tarifa automáticamente.</div>
+  </div>
+  <div style="text-align:center;font-size:18px;color:#94A3B8;padding:4px 0">&#8595;</div>
+  <div class="sim-step" id="sim3">
+    <div style="font-size:12px;font-weight:700;color:#26215C;margin-bottom:4px">Paso 3 — Si 10–50 kW: ¿medidor horario en ES32?</div>
+    <p style="font-size:12px;color:#534AB7">En ES32 → pestaña Medición → verificar el tipo de medidor registrado.</p>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <span style="font-size:11px;background:#CECBF6;color:#26215C;padding:3px 9px;border-radius:20px">Medidor horario → BT3</span>
+      <span style="font-size:11px;background:#D3D1C7;color:#2C2C2A;padding:3px 9px;border-radius:20px">Medidor estándar → BT2</span>
+    </div>
+  </div>
+</div>
+<button class="btn-primary" style="margin-top:8px;width:100%" onclick="activateSteps()">Activar los 3 pasos &#9654;</button>
+</div></div></section>
+<section class="scene" id="sc3">
+<div class="slide"><div class="slide-hdr hdr-amber"><span class="slide-tag">Caso 1 de 3 — Decisión</span><h2>Cliente con BT2 en la boleta — potencia de 8 kW</h2></div>
+<div class="slide-body">
+<div class="case-box amber"><div class="case-label">Situación real</div>
+<p>La Sra. Marta llama reclamando que tiene <strong>BT2</strong> en su boleta, pero su negocio es una pequeña peluquería residencial. Verificas en ES32: potencia contratada <strong>8 kW</strong>, tensión <strong>220 V</strong>, medidor estándar (sin medición horaria).</p>
+</div>
+<p class="hint-text">¿Cuál es tu diagnóstico?</p>
+<div class="opts" id="d1">
+  <button class="opt" onclick="decidir(1,'A')">A) BT2 es correcta porque es un negocio, aunque sea pequeño.</button>
+  <button class="opt" onclick="decidir(1,'B')">B) BT2 es incorrecta — 8 kW corresponde BT1. Escalar para corrección y reliquidación.</button>
+  <button class="opt" onclick="decidir(1,'C')">C) Derivar a operaciones sin diagnosticar para que ellos lo resuelvan.</button>
+</div>
+<div class="feedback" id="fb1"></div>
+</div></div></section>
+<section class="scene" id="sc4">
+<div class="slide"><div class="slide-hdr hdr-purp"><span class="slide-tag">Módulo 3 de 4 — BT3 y la Hora Punta</span><h2>¿Cuándo conviene BT3? El rol de Hora Punta y Hora Fuera de Punta</h2></div>
+<div class="slide-body">
+<div class="concept-summary">En tarifa BT3, el cliente paga <strong>precios distintos según la franja horaria</strong>: más caro en Hora Punta (HP) y más barato fuera de ella (HFP). Si gestiona bien su consumo, puede pagar menos que en BT2.</div>
+<div class="formula-box">
+  <div class="formula-title">Comparación BT2 vs BT3 — mismo cliente</div>
+  <div class="formula-examples">
+    <div class="fex blue">
+      <div class="fex-title">En BT2 (sin diferenciación horaria)</div>
+      <div class="fex-row"><span>320 kWh × $87/kWh</span><span>= $27.840</span></div>
+      <div class="fex-total">Total neto: $27.840</div>
+    </div>
+    <div class="fex amber">
+      <div class="fex-title">En BT3 (con 180 kWh en HP)</div>
+      <div class="fex-row"><span>180 kWh HP × $110</span><span>= $19.800</span></div>
+      <div class="fex-row"><span>140 kWh HFP × $72</span><span>= $10.080</span></div>
+      <div class="fex-total" style="background:#854F0B">Total neto: $29.880 — MÁS CARO</div>
+    </div>
+  </div>
+  <div style="font-size:11px;background:#FCEBEB;color:#791F1F;padding:7px 10px;border-radius:6px;margin-top:8px;border:0.5px solid #F7C1C1">&#10007; Con alto consumo en HP, BT3 puede resultar MÁS CARA que BT2. La conveniencia depende del patrón de consumo.</div>
+  <div style="font-size:11px;background:#EAF3DE;color:#27500A;padding:7px 10px;border-radius:6px;margin-top:6px;border:0.5px solid #C0DD97">&#10004; Si el cliente opera principalmente fuera del horario punta, BT3 puede resultar más económica.</div>
+</div>
+</div></div></section>
+<section class="scene" id="sc5">
+<div class="slide"><div class="slide-hdr hdr-purp"><span class="slide-tag">Caso 2 de 3 — Decisión</span><h2>Empresa con medidor nuevo — ¿cambiamos a BT3?</h2></div>
+<div class="slide-body">
+<div class="case-box purp"><div class="case-label">Situación real</div>
+<p>Una empresa mediana con <strong>28 kW</strong> tiene BT2 asignada. El jefe de mantención llama diciendo que "instalaron un medidor nuevo que registra por horas". Revisas ES32: el medidor aún aparece como estándar (no horario) en la pestaña Medición.</p>
+</div>
+<p class="hint-text">¿Cuál es la acción correcta?</p>
+<div class="opts" id="d2">
+  <button class="opt" onclick="decidir(2,'A')">A) Verificar en ES32 si el medidor fue actualizado a horario. Si no está actualizado, escalar a técnica para actualizar el registro y luego evaluar cambio a BT3.</button>
+  <button class="opt" onclick="decidir(2,'B')">B) Cambiar directamente a BT3 porque el cliente informó que ya tiene medidor horario.</button>
+  <button class="opt" onclick="decidir(2,'C')">C) Mantener BT2 y decirle al cliente que llame en otro momento.</button>
+</div>
+<div class="feedback" id="fb2"></div>
+</div></div></section>
+<section class="scene" id="sc6">
+<div class="slide"><div class="slide-hdr hdr-teal"><span class="slide-tag">Caso 3 de 3 — Decisión</span><h2>Cliente BT3 reclama que su tarifa es más cara que BT2</h2></div>
+<div class="slide-body">
+<div class="case-box teal"><div class="case-label">Situación real</div>
+<p>Un cliente BT3 llama diciendo que "BT3 es más cara que BT2". Sus datos del último período: consumo HP = <strong>180 kWh</strong> a $110/kWh; consumo HFP = <strong>140 kWh</strong> a $72/kWh. Precio referencial BT2: $87/kWh.</p>
+</div>
+<p class="hint-text">¿Qué le explicas y qué propones?</p>
+<div class="opts" id="d3">
+  <button class="opt" onclick="decidir(3,'A')">A) Darle la razón y tramitar el cambio a BT2 inmediatamente.</button>
+  <button class="opt" onclick="decidir(3,'B')">B) Calcular ambas opciones: BT3 = $29.880 neto vs BT2 = $27.840 neto. Con este patrón de consumo BT2 es más conveniente. Informar con objetividad y gestionar el cambio si es técnicamente viable.</button>
+  <button class="opt" onclick="decidir(3,'C')">C) Decirle que BT3 siempre es mejor y que no se preocupe porque va a ahorrar.</button>
+</div>
+<div class="feedback" id="fb3"></div>
+</div></div></section>
+<section class="scene" id="sc7">
+<div class="slide"><div class="slide-hdr hdr-amber"><span class="slide-tag">Quiz de cierre — 4 preguntas</span><h2>Demuestra lo que aprendiste</h2></div>
+<div class="slide-body">
+  <div id="qText"></div><div id="qOpts" class="opts"></div><div id="qFb" class="feedback"></div>
+  <div class="quiz-nav"><span id="qCounter" class="hint-text">Pregunta 1 de 4</span>
+  <button class="btn-primary" id="qNext" onclick="nextQ()" style="display:none">Siguiente &rarr;</button></div>
+</div></div></section>
+<section class="scene" id="sc8">
+<div class="result-card"><div class="result-title">Microcurso completado</div>
+<div class="result-score" id="resultScore">0/4</div><div class="result-pct" id="resultPct">0%</div>
+<div class="result-bar-wrap"><div class="result-bar" id="resultBar" style="width:0%"></div></div>
+<div class="result-badge" id="resultBadge">Cargando...</div></div>
+<div id="reviewBox"></div>
+<div class="result-actions"><button class="btn-secondary" onclick="restart()">&#8635; Reiniciar</button></div>
+</section>
+<nav class="mc-nav">
+  <button class="btn-secondary" id="btnPrev" onclick="goScene(-1)" disabled>&larr; Anterior</button>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="btn-primary" id="btnNext" onclick="goScene(1)">Siguiente &rarr;</button>
+</nav>
+</div>
+<script>
+/* SCORM 2004 API */
+
+var SCORM=(function(){
+  var api=null,init=false;
+  function find(w){var t=0;while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}return w.API_1484_11||null;}
+  function go(){api=find(window);if(!api&&window.opener)api=find(window.opener);if(api){var r=api.Initialize('');init=(r==='true'||r===true);}return init;}
+  function set(k,v){try{if(api&&init)api.SetValue(k,v);}catch(e){}}
+  function commit(){try{if(api&&init)api.Commit('');}catch(e){}}
+  function finish(){try{if(api&&init){api.Commit('');api.Terminate('');}}catch(e){}}
+  function setComplete(pct){
+    try{
+      set('cmi.score.raw',pct);set('cmi.score.min',0);set('cmi.score.max',100);
+      set('cmi.score.scaled',(pct/100).toFixed(4));
+      set('cmi.completion_status','completed');
+      set('cmi.success_status',pct>=75?'passed':'failed');
+      set('cmi.session_time','PT7M0S');
+      commit();finish();
+    }catch(e){}
+    var b=document.getElementById('resultBanner');
+    if(b){
+      b.style.display='block';
+      b.style.background=pct>=75?'#EAF3DE':'#FEE2E2';
+      b.style.color=pct>=75?'#166534':'#991B1B';
+      b.style.border='1px solid '+(pct>=75?'#86EFAC':'#FCA5A5');
+      b.innerHTML=(pct>=75?'&#10003; Aprobado: ':'&#9888; No aprobado: ')+pct+'%'+(pct>=75?' &mdash; M&oacute;dulo completado':' &mdash; Umbral m&iacute;nimo 75%. Intenta nuevamente');
+    }
+  }
+  go();
+  return{set:set,get:function(k){try{if(api&&init)return api.GetValue(k);}catch(e){}return'';},commit:commit,finish:finish,setComplete:setComplete,initialized:init};
+})();
+
+/* Course logic */
+var state={cur:0,total:9,cardRevealed:0,totalCards:6,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+var BLOOM=['Analizar','Analizar','Analizar','Analizar','Analizar','Analizar','Analizar','Evaluar','Evaluar'];
+var CARDS=[{name:'BT1 — Tarifa base',desc:'Aplica a clientes con potencia ≤ 10 kW, tensión baja (≤ 400V), sin medición de demanda y fuera de zona ECOSUR. Es la tarifa más frecuente — más del 70% de la cartera.',badge:'≤ 10 kW · Sin demanda',color:'blue'},
+{name:'ECOSUR — Tarifa zonal',desc:'Mismos criterios que BT1 pero el suministro está en zona geográfica ECOSUR. No es opcional: la zona determina la tarifa automáticamente. El precio puede ser mayor o menor al BT1 estándar.',badge:'Zona específica · No optativa',color:'teal'},
+{name:'BT2 — Comercio mediano',desc:'Aplica con potencia entre 10 y 50 kW, sin medición horaria activa. Comercios medianos, oficinas, servicios. El cargo fijo es mayor que BT1 al reflejar mayor capacidad de suministro.',badge:'10–50 kW · Sin medidor horario',color:'purp'},
+{name:'BT3 — Medición horaria',desc:'Mismo rango de potencia que BT2 (10–50 kW) pero el cliente tiene medidor horario activo. El medidor registra por separado el consumo en Hora Punta (HP) y Hora Fuera de Punta (HFP).',badge:'10–50 kW · Con medidor horario',color:'amber'},
+{name:'Hora Punta (HP)',desc:'Franja horaria de mayor demanda del sistema eléctrico, definida por la autoridad regulatoria. El precio de energía HP es significativamente mayor al HFP. El cliente BT3 puede ahorrar si desplaza consumo a HFP.',badge:'Precio mayor · Gestión de consumo',color:'red'},
+{name:'Árbol de decisión tarifario',desc:'1) ¿Potencia ≤ 10 kW? → BT1/ECOSUR. 2) ¿Potencia 10–50 kW? → evaluar BT2 o BT3. 3) ¿Tiene medidor horario activo en ES32? → SÍ: BT3 / NO: BT2. 4) ¿Potencia > 50 kW? → BT4.',badge:'3 preguntas · Verificar en ES32',color:'green'}];
+var SYNTH=['BT1: potencia ≤ 10 kW, sin demanda, fuera de zona ECOSUR. ECOSUR: misma potencia pero zona específica del pliego.','BT2: 10–50 kW sin medidor horario. BT3: 10–50 kW CON medidor horario activo confirmado en ES32 pestaña Medición.','Árbol de decisión: ¿potencia? → ¿zona ECOSUR? → ¿medidor horario en ES32? — en ese orden exacto.','NUNCA cambiar tarifa basándose solo en lo que dice el cliente: primero verificar en ES32.','BT3 puede ser más cara que BT2 si el cliente no gestiona su consumo en Hora Punta.'];
+var ERRORS=['Asumir que cliente \'pequeño\' o \'residencial\' siempre es BT1 sin verificar potencia contratada en ES32.','Decir que ECOSUR aplica \'solo en el sur del país\' sin consultar el listado oficial de zonas del pliego.','Cambiar la tarifa a BT3 sin confirmar que el medidor aparece como horario en ES32 pestaña Medición.','Decir que BT3 siempre es más económica — depende del patrón de consumo HP/HFP del cliente.','Tratar el cambio automático BT1→BT2 (por aumento de potencia) como un error del sistema.'];
+var DEC={
+  1:{correct:'B',A:{ok:false,msg:'Incorrecto. La tarifa no depende de si el negocio es \'pequeño\' — el criterio es la potencia contratada. 8 kW ≤ 10 kW, por tanto corresponde BT1. Verificar en ES32 y escalar para corrección y reliquidación de los períodos afectados.'},B:{ok:true,msg:'Correcto. 8 kW ≤ 10 kW → criterio objetivo de BT1 cumplido. La asignación de BT2 es un error del sistema. Acción: escalar para corrección en ES32 y reliquidar los períodos con la tarifa correcta.'},C:{ok:false,msg:'Incorrecto. El especialista puede diagnosticar directamente con los datos de ES32 (8 kW, sin medidor horario). Derivar sin diagnóstico es mala práctica y demora la resolución.'}},
+  2:{correct:'A',A:{ok:true,msg:'Correcto. ES32 primero. Si el medidor no aparece como horario, escalar a técnica para actualizar el registro. Solo tras confirmar el medidor en SAP se puede cambiar la tarifa a BT3. Cambiar la tarifa basándose solo en lo que dice el cliente es incorrecto.'},B:{ok:false,msg:'Incorrecto. Cambiar la tarifa sin confirmar en SAP es un error grave. El medidor debe estar registrado como horario en ES32 antes de cualquier cambio de tarifa.'},C:{ok:false,msg:'Incorrecto. Si el cliente tiene medidor horario pero está pagando BT2, puede estar pagando más de lo que corresponde. Hay que investigar y actualizar.'}},
+  3:{correct:'B',A:{ok:false,msg:'Incorrecto. Ceder sin calcular es incorrecto. El especialista debe comparar ambas opciones con los datos reales del cliente. BT3 puede o no ser más cara — depende del patrón de consumo HP/HFP.'},B:{ok:true,msg:'Correcto. BT3 total: 180×$110 + 140×$72 = $19.800+$10.080 = $29.880. BT2 equivalente: 320×$87 = $27.840. Con este patrón de consumo BT2 sería más conveniente. El especialista informa con objetividad.'},C:{ok:false,msg:'Incorrecto. BT3 NO siempre es mejor. Depende del patrón de consumo HP/HFP del cliente. Dar información incorrecta genera desconfianza y reclamos posteriores.'}},
+};
+var QUIZ=[{q:'¿Qué pestaña de SAP ES32 confirma si un cliente tiene medidor horario activo (necesario para BT3)?',opts:['Pestaña Datos generales','Pestaña Tarifa','Pestaña Medición','Pestaña Facturación'],ans:2,exp:'La pestaña Medición en ES32 muestra el tipo de medidor del cliente. Si es horario, BT3 está justificada. Si es estándar (unidireccional), corresponde BT2.'},
+{q:'Un cliente tiene potencia contratada de 35 kW y medidor estándar (sin medición horaria). ¿Qué tarifa corresponde?',opts:['BT1','BT2','BT3','BT4.1'],ans:1,exp:'BT2 aplica para 10–50 kW SIN medición horaria activa. Si tuviera medidor horario, sería BT3. La potencia de 35 kW descarta BT1 (máximo 10 kW).'},
+{q:'El paso de BT1 a BT2 cuando la potencia supera 10 kW es...',opts:['Un error del sistema que debe corregirse','Automático y correcto — refleja el criterio objetivo de potencia','Opcional — el cliente puede elegir mantenerse en BT1','Solo aplica si hay medidor horario instalado'],ans:1,exp:'El cambio de tarifa es automático al superar el umbral de potencia. No es un error — es el funcionamiento correcto del sistema tarifario. El cliente no puede elegir su tarifa si no cumple los criterios.'},
+{q:'¿Cuándo corresponde asignar la tarifa ECOSUR a un cliente?',opts:['Cuando el cliente vive al sur del Biobío','Cuando la potencia es menor a 5 kW','Cuando el punto de suministro está en una zona geográfica ECOSUR según el listado del pliego','Solo cuando el cliente lo solicita expresamente'],ans:2,exp:'ECOSUR aplica cuando el punto de suministro está en una zona definida en el listado del pliego tarifario de la distribuidora. No depende de la preferencia del cliente ni de una región general.'}];
+
+document.addEventListener('DOMContentLoaded',function(){
+  buildDots();updateUI();buildCards();buildSynth();buildErrors();
+  if(window.SCORM&&SCORM.set){SCORM.set('cmi.core.lesson_status','incomplete');SCORM.commit();}
+});
+
+function buildCards(){
+  var g=document.getElementById('cardGrid');if(!g)return;
+  CARDS.forEach(function(c){
+    var d=document.createElement('div');
+    d.className='rev-card '+c.color;
+    d.innerHTML='<h4>'+c.name+'</h4><div class="rev-desc"></div><span class="rev-hint">Toca para ver</span>';
+    d.onclick=function(){revealCard(this,c.desc,c.badge);};
+    g.appendChild(d);
+  });
+}
+function buildSynth(){
+  var b=document.getElementById('synthBody');if(!b)return;
+  b.innerHTML=SYNTH.map(function(s){return buildRevCard(s,false);}).join('');
+}
+function buildErrors(){
+  var b=document.getElementById('errorBody');if(!b)return;
+  b.innerHTML=ERRORS.map(function(e){return buildRevCard(e,true);}).join('');
+}
+function buildReview(){
+  var b=document.getElementById('reviewBox');if(!b)return;
+  b.innerHTML='<div class="review-box"><div class="review-title">Puntos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+}
+function restart(){
+  state={cur:0,total:9,cardRevealed:0,totalCards:6,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+  document.querySelectorAll('.scene').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('sc0').classList.add('active');
+  document.querySelectorAll('.opt').forEach(function(b){b.className='opt';});
+  document.querySelectorAll('.feedback').forEach(function(f){f.className='feedback';f.innerHTML='';});
+  document.querySelectorAll('.rev-card').forEach(function(c){c.classList.remove('revealed');if(c.querySelector('.rev-desc'))c.querySelector('.rev-desc').textContent='';if(c.querySelector('.rev-hint'))c.querySelector('.rev-hint').textContent='Toca para ver';});
+  var cnt=document.getElementById('cardCnt');if(cnt)cnt.textContent='0 de 6 conceptos explorados';
+  document.getElementById('reviewBox').innerHTML='';
+  document.getElementById('resultBar').style.width='0%';
+  if(document.getElementById('scoreDisplay'))document.getElementById('scoreDisplay').textContent='Puntuación: 0%';
+  buildSynth();buildErrors();updateUI();
+}
+
+function activateSteps(){
+  ['sim1','sim2','sim3'].forEach(function(id,i){
+    setTimeout(function(){
+      document.getElementById(id).classList.add('active');
+    }, i*400);
+  });
+}
+
+
+function goScene(dir){var n=state.cur+dir;if(n<0||n>=state.total)return;setScene(n);}
+function setScene(idx){
+  document.getElementById('sc'+state.cur).classList.remove('active');
+  state.cur=idx;document.getElementById('sc'+state.cur).classList.add('active');
+  updateUI();
+  if(idx===state.total-2&&!state.qInitDone)renderQuiz();
+  if(idx===state.total-1)showResults();
+  if(window.SCORM&&SCORM.set)SCORM.set('cmi.core.lesson_location',idx);
+  if(window.SCORM&&SCORM.commit)SCORM.commit();
+}
+function updateUI(){
+  var pct=Math.round(state.cur/(state.total-1)*100);
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('sceneLabel').textContent='Módulo '+(state.cur+1)+' de '+state.total;
+  document.getElementById('bloomLabel').textContent='Bloom: '+(BLOOM[state.cur]||'');
+  document.getElementById('btnPrev').disabled=state.cur===0;
+  document.getElementById('btnNext').disabled=state.cur===state.total-1;
+  updateDots();
+}
+function buildDots(){var w=document.getElementById('navDots');if(!w)return;w.innerHTML='';for(var i=0;i<state.total;i++){var d=document.createElement('div');d.className='nav-dot';w.appendChild(d);}}
+function updateDots(){document.querySelectorAll('.nav-dot').forEach(function(d,i){d.className='nav-dot'+(i<state.cur?' done':i===state.cur?' active':'');});}
+function decidir(n,opt){
+  if(state.decisions[n])return;state.decisions[n]=opt;
+  var dec=DEC[n];var btns=document.querySelectorAll('#d'+n+' .opt');var letters=['A','B','C'];
+  btns.forEach(function(b,i){if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');});
+  var res=dec[opt];var fb=document.getElementById('fb'+n);
+  fb.className='feedback show '+(res.ok?'ok':'ko');
+  fb.innerHTML=(res.ok?'&#10003; ':'&#10007; ')+res.msg;
+}
+function renderQuiz(){
+  state.qInitDone=true;showQuestion();
+}
+function showQuestion(){
+  var q=QUIZ[state.quizCurrent];
+  document.getElementById('qCounter').textContent='Pregunta '+(state.quizCurrent+1)+' de '+QUIZ.length;
+  document.getElementById('qFb').className='feedback';document.getElementById('qNext').style.display='none';state.quizAnswered=false;
+  document.getElementById('qText').innerHTML='<p style="font-size:13px;line-height:1.6;margin-bottom:12px;font-weight:500">'+q.q+'</p>';
+  var opts=document.getElementById('qOpts');opts.innerHTML='';
+  q.opts.forEach(function(o,i){var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){return function(){answerQ(idx);};})(i);opts.appendChild(b);});
+}
+function answerQ(idx){
+  if(state.quizAnswered)return;state.quizAnswered=true;
+  var q=QUIZ[state.quizCurrent];
+  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');});
+  var ok=idx===q.ans;if(ok)state.quizScore++;
+  var fb=document.getElementById('qFb');fb.className='feedback show '+(ok?'ok':'ko');fb.innerHTML=(ok?'&#10003; Correcto. ':'&#10007; Incorrecto. ')+q.exp;
+  document.getElementById('qNext').style.display='inline-block';
+  if(window.SCORM&&SCORM.set){SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');SCORM.commit();}
+}
+function nextQ(){state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else goScene(1);}
+function showResults(){
+  var pct=Math.round(state.quizScore/QUIZ.length*100);
+  document.getElementById('resultScore').textContent=state.quizScore+'/'+QUIZ.length;
+  document.getElementById('resultPct').textContent=pct+'% correcto';
+  if(document.getElementById('scoreDisplay'))document.getElementById('scoreDisplay').textContent='Puntuación: '+pct+'%';
+  setTimeout(function(){document.getElementById('resultBar').style.width=pct+'%';},200);
+  var b=pct===100?'&#9733; Dominio total — puntaje perfecto':pct>=75?'&#128077; Buen desempeño — aprobado':' &#8635; Bajo el umbral — revisa los módulos';
+  document.getElementById('resultBadge').innerHTML=b;
+  if(pct<100&&document.getElementById('reviewBox'))buildReview();
+  if(window.SCORM&&SCORM.setComplete)SCORM.setComplete(pct);
+}
+function buildRevCard(txt,isErr){
+  return '<div style="display:flex;gap:8px;align-items:flex-start;padding:9px 12px;background:'+(isErr?'#FCEBEB':'#EAF3DE')+';border-radius:7px;margin-bottom:7px"><span style="color:'+(isErr?'#DC2626':'#3B6D11')+';font-size:15px;flex-shrink:0">'+(isErr?'&#10007;':'&#10004;')+'</span><span style="font-size:12px;line-height:1.55;color:'+(isErr?'#791F1F':'#27500A')+'">'+txt+'</span></div>';
+}
+function revealCard(el,desc,badge){
+  if(el.classList.contains('revealed'))return;
+  el.classList.add('revealed');
+  el.querySelector('.rev-desc').textContent=desc;
+  el.querySelector('.rev-hint').textContent=badge;
+  state.cardRevealed++;
+  var cnt=document.getElementById('cardCnt');
+  if(cnt)cnt.textContent=state.cardRevealed+' de '+state.totalCards+' conceptos explorados';
+}
+
+
+/* Touch + keyboard navigation */
+
+// ═══ TOUCH / SWIPE NAVIGATION ═══
+(function(){
+  var startX = 0, startY = 0;
+  document.addEventListener('touchstart', function(e){
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, {passive: true});
+  document.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50){
+      if(dx < 0) goScene(1);   // swipe left = next
+      else goScene(-1);          // swipe right = prev
+    }
+  }, {passive: true});
+})();
+
+// ═══ KEYBOARD NAVIGATION ═══
+document.addEventListener('keydown', function(e){
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') goScene(1);
+  if(e.key === 'ArrowLeft'  || e.key === 'ArrowUp')  goScene(-1);
+});
+
+// ═══ HIDE SWIPE HINT AFTER 4s ═══
+setTimeout(function(){
+  var h = document.getElementById('swipeHint');
+  if(h){ h.style.opacity = '0'; setTimeout(function(){ h.style.display='none'; }, 1000); }
+}, 4000);
+
+</script>
+</body>
+</html>

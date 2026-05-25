@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Microcurso Día 9 — Clientes Empresa: Segmentos y Facturación</title>
+<style>
+/* Base styles */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;font-size:15px}
+.mc-wrap{max-width:820px;margin:0 auto;padding:16px 16px 80px}
+
+/* Header */
+.mc-header{background:#1B3A6B;border-radius:12px;padding:18px 22px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.header-left{display:flex;align-items:center;gap:14px}
+.header-icon{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;flex-shrink:0}
+.mc-header h1{color:#fff;font-size:16px;font-weight:700;line-height:1.3;margin-bottom:3px}
+.mc-header p{color:#B5D4F4;font-size:11px}
+.score-display{background:rgba(255,255,255,.15);color:#E1F5EE;font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px}
+
+/* Progress */
+.progress-wrap{background:#E2E8F0;border-radius:20px;height:6px;margin-bottom:8px;overflow:hidden}
+.progress-bar{height:6px;background:#185FA5;border-radius:20px;transition:width .4s ease}
+.scene-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.scene-info span{font-size:11px;color:#64748B}
+.bloom-badge{background:#1B3A6B;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px}
+
+/* Slides */
+
+
+.slide{background:#fff;border-radius:12px;border:0.5px solid #E2E8F0;overflow:hidden;margin-bottom:14px}
+.slide-hdr{padding:14px 18px;border-bottom:0.5px solid #E2E8F0}
+.hdr-blue{background:#E6F1FB}
+.hdr-teal{background:#E1F5EE}
+.hdr-amber{background:#FAEEDA}
+.hdr-purp{background:#EEEDFE}
+.hdr-red{background:#FCEBEB}
+.slide-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;padding:2px 8px;border-radius:20px}
+.hdr-blue .slide-tag{background:#B5D4F4;color:#042C53}
+.hdr-teal .slide-tag{background:#9FE1CB;color:#04342C}
+.hdr-amber .slide-tag{background:#FAC775;color:#412402}
+.hdr-purp .slide-tag{background:#CECBF6;color:#26215C}
+.hdr-red .slide-tag{background:#F7C1C1;color:#501313}
+.slide-hdr h2{font-size:15px;font-weight:700;color:#1E293B;line-height:1.3}
+.slide-body{padding:16px 18px}
+
+/* Cards */
+.card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+.mini-card{border-radius:10px;padding:14px 12px;text-align:center}
+.mini-card.blue{background:#E6F1FB}
+.mini-card.teal{background:#E1F5EE}
+.mini-card.amber{background:#FAEEDA}
+.mini-card h4{font-size:12px;font-weight:700;margin-bottom:3px}
+.mini-card.blue h4{color:#0C447C}
+.mini-card.teal h4{color:#085041}
+.mini-card.amber h4{color:#633806}
+.mini-card p{font-size:10px}
+.mini-card.blue p{color:#185FA5}
+.mini-card.teal p{color:#0F6E56}
+.mini-card.amber p{color:#854F0B}
+.mc-icon{font-size:22px;margin-bottom:7px}
+
+/* Tariff grid */
+.tariff-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.tariff-card{border-radius:10px;padding:12px 14px;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.tariff-card:hover{transform:translateY(-2px)}
+.tariff-card.blue{background:#E6F1FB}
+.tariff-card.teal{background:#E1F5EE}
+.tariff-card.purp{background:#EEEDFE}
+.tariff-card.amber{background:#FAEEDA}
+.tariff-card.red{background:#FCEBEB}
+.tariff-card.gray{background:#F1EFE8}
+.tariff-card h4{font-size:13px;font-weight:700;margin-bottom:4px}
+.tariff-card.blue h4{color:#0C447C}
+.tariff-card.teal h4{color:#085041}
+.tariff-card.purp h4{color:#26215C}
+.tariff-card.amber h4{color:#412402}
+.tariff-card.red h4{color:#501313}
+.tariff-card.gray h4{color:#2C2C2A}
+.tariff-desc{font-size:11px;line-height:1.5;display:none;margin:5px 0}
+.tariff-card.blue .tariff-desc{color:#185FA5}
+.tariff-card.teal .tariff-desc{color:#0F6E56}
+.tariff-card.purp .tariff-desc{color:#534AB7}
+.tariff-card.amber .tariff-desc{color:#854F0B}
+.tariff-card.red .tariff-desc{color:#A32D2D}
+.tariff-card.gray .tariff-desc{color:#5F5E5A}
+.tariff-card.revealed .tariff-desc{display:block}
+.tariff-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:5px}
+.tariff-card.blue .tariff-badge{background:#B5D4F4;color:#042C53}
+.tariff-card.teal .tariff-badge{background:#9FE1CB;color:#04342C}
+.tariff-card.purp .tariff-badge{background:#CECBF6;color:#26215C}
+.tariff-card.amber .tariff-badge{background:#FAC775;color:#412402}
+.tariff-card.red .tariff-badge{background:#F7C1C1;color:#501313}
+.tariff-card.gray .tariff-badge{background:#D3D1C7;color:#2C2C2A}
+
+/* Case boxes */
+.case-box{border-radius:10px;padding:14px 16px;margin-bottom:12px;border:0.5px solid transparent}
+.case-box.amber{background:#FAEEDA;border-color:#FAC775}
+.case-box.red{background:#FCEBEB;border-color:#F7C1C1}
+.case-box.teal{background:#E1F5EE;border-color:#9FE1CB}
+.case-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.case-box.amber .case-label{color:#854F0B}
+.case-box.red .case-label{color:#A32D2D}
+.case-box.teal .case-label{color:#0F6E56}
+.case-box p{font-size:13px;line-height:1.6;color:#1E293B}
+
+/* Options */
+.opts{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.opt{border-radius:9px;padding:11px 14px;cursor:pointer;border:1.5px solid #CBD5E1;background:#fff;font-size:13px;text-align:left;color:#1E293B;transition:all .15s;line-height:1.5}
+.opt:hover{border-color:#185FA5;background:#E6F1FB}
+.opt.correct{border-color:#3B6D11;background:#EAF3DE;color:#27500A;pointer-events:none;font-weight:700}
+.opt.wrong{border-color:#A32D2D;background:#FCEBEB;color:#791F1F;pointer-events:none}
+.opt.disabled{opacity:.45;pointer-events:none}
+
+/* Feedback */
+.feedback{border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;display:none;margin-top:8px}
+.feedback.show{display:block}
+.feedback.ok{background:#EAF3DE;color:#27500A;border:0.5px solid #97C459}
+.feedback.ko{background:#FCEBEB;color:#791F1F;border:0.5px solid #F09595}
+
+/* SAP Simulation */
+.sap-steps{display:flex;gap:8px;margin-bottom:12px}
+.sap-step{flex:1;border-radius:8px;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;border:1.5px solid #D3D1C7;background:#F1EFE8;color:#888780;transition:all .3s}
+.sap-step.active{background:#E6F1FB;color:#0C447C;border-color:#185FA5}
+.sap-step.done{background:#EAF3DE;color:#27500A;border-color:#97C459}
+.sap-terminal{border-radius:10px;border:0.5px solid #E2E8F0;overflow:hidden;margin-bottom:12px}
+.sap-bar{background:#1B3A6B;padding:8px 14px;display:flex;align-items:center;gap:10px}
+.sap-sys{color:#B5D4F4;font-size:11px;font-weight:600}
+.sap-cmd{background:rgba(255,255,255,.15);border-radius:4px;padding:2px 10px;color:#fff;font-size:11px;font-family:monospace}
+.sap-desc{color:#9FE1CB;font-size:10px;margin-left:auto}
+.sap-content{background:#F8FAFC;padding:14px}
+.sap-field{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sap-lbl{font-size:12px;color:#64748B;min-width:140px}
+.sap-input{flex:1;border:1px solid #CBD5E1;border-radius:4px;padding:7px 10px;font-size:13px;font-family:monospace;background:#fff;color:#1E293B}
+.sap-input:focus{outline:none;border-color:#185FA5;box-shadow:0 0 0 2px #B5D4F4}
+.sap-btn{background:#1B3A6B;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;margin-top:6px}
+.sap-btn:hover{background:#185FA5}
+.sap-result{border-radius:6px;padding:10px 12px;margin-top:10px;font-size:12px;line-height:1.6;display:none}
+.sap-result.ok{display:block;background:#EAF3DE;color:#27500A}
+.sap-result.err{display:block;background:#FCEBEB;color:#791F1F}
+
+/* Formula box */
+.formula-box{background:#E6F1FB;border-radius:10px;padding:14px 16px;border:0.5px solid #B5D4F4;margin-bottom:14px}
+.formula-title{font-size:12px;font-weight:700;color:#185FA5;margin-bottom:8px}
+.formula{font-size:14px;font-weight:700;color:#0C447C;text-align:center;padding:10px;background:rgba(255,255,255,.65);border-radius:6px;margin:6px 0;font-family:monospace}
+.formula-examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.fex{border-radius:8px;padding:10px 12px}
+.fex.blue{background:rgba(255,255,255,.7);border:0.5px solid #B5D4F4}
+.fex.teal{background:rgba(255,255,255,.7);border:0.5px solid #9FE1CB}
+.fex-title{font-size:10px;font-weight:700;margin-bottom:6px}
+.fex.blue .fex-title{color:#185FA5}
+.fex.teal .fex-title{color:#0F6E56}
+.fex-row{display:flex;justify-content:space-between;font-size:11px;color:#64748B;margin-bottom:4px}
+.fex-total{font-size:12px;font-weight:700;color:#fff;border-radius:5px;padding:5px 8px;text-align:center;margin-top:6px}
+.fex.blue .fex-total{background:#185FA5}
+.fex.teal .fex-total{background:#0F6E56}
+
+/* Info/tip boxes */
+.info-box{border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#444441;border:0.5px solid #D3D1C7;background:#F1EFE8}
+.info-box.green{background:#EAF3DE;color:#27500A;border-color:#97C459}
+.tip-box{background:#FAEEDA;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#633806;border:0.5px solid #FAC775}
+
+/* Quiz */
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+
+/* Result */
+.result-card{background:#1B3A6B;border-radius:14px;padding:24px;text-align:center;color:#fff;margin-bottom:16px}
+.result-title{font-size:13px;color:#B5D4F4;margin-bottom:8px}
+.result-score{font-size:54px;font-weight:700;line-height:1;margin-bottom:8px}
+.result-pct{font-size:14px;color:#B5D4F4;margin-bottom:16px}
+.result-bar-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;overflow:hidden;margin-bottom:16px}
+.result-bar{height:10px;background:#9FE1CB;border-radius:20px;transition:width 1s ease}
+.result-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border-radius:20px;padding:7px 16px;font-size:12px;color:#E1F5EE}
+.result-actions{text-align:center;margin-top:16px;display:flex;gap:10px;justify-content:center}
+
+/* Review box */
+.review-box{background:#fff;border-radius:12px;border:0.5px solid #E2E8F0;padding:14px 16px;margin-bottom:12px}
+.review-title{font-size:12px;font-weight:700;color:#1E293B;margin-bottom:8px}
+.review-list{font-size:12px;color:#64748B;line-height:1.8;padding-left:16px}
+
+/* Navigation */
+
+.nav-dots{display:flex;gap:5px}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:#CBD5E1;transition:all .3s}
+.nav-dot.done{background:#9FE1CB}
+.nav-dot.active{background:#185FA5;width:20px;border-radius:4px}
+
+/* Buttons */
+
+.btn-primary:hover{background:#185FA5}
+.btn-primary:disabled{opacity:.35;cursor:default}
+
+.btn-secondary:hover{background:#E2E8F0}
+.btn-secondary:disabled{opacity:.35;cursor:default}
+
+/* Helpers */
+.intro-text{font-size:13px;line-height:1.7;color:#1E293B;margin-bottom:14px}
+.hint-text{font-size:12px;color:#64748B;margin-bottom:6px}
+.counter-text{font-size:11px;color:#64748B;text-align:center;margin-top:10px}
+
+@media(max-width:600px){
+  .card-grid-3{grid-template-columns:1fr}
+  .tariff-grid{grid-template-columns:1fr}
+  .formula-examples{grid-template-columns:1fr}
+}
+
+/* Fixed overrides for iframe compatibility */
+
+/* ═══ IFRAME COMPATIBILITY FIXES ═══ */
+html, body {
+  height: 100%;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #F0F4F8;
+  color: #1E293B;
+  font-size: 15px;
+  line-height: 1.6;
+  cursor: default;
+}
+/* Scene visibility - definitive rules */
+.scene { display: none !important; visibility: hidden !important; }
+.scene.active { display: block !important; visibility: visible !important; }
+
+/* Navigation bar - fixed at bottom, always visible, high z-index */
+.mc-nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 9999 !important;
+  background: rgba(255,255,255,0.97) !important;
+  backdrop-filter: blur(8px);
+  border-top: 1px solid #E2E8F0 !important;
+  padding: 10px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.08) !important;
+}
+/* Buttons - ensure clickable */
+.btn-primary, .btn-secondary, .opt, .rev-card, .tariff-card,
+button, input[type=button], input[type=submit] {
+  cursor: pointer !important;
+  pointer-events: all !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+  touch-action: manipulation !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+.btn-primary {
+  background: #1B3A6B !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 11px 22px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  min-width: 120px !important;
+  box-shadow: 0 2px 6px rgba(27,58,107,0.25) !important;
+}
+.btn-primary:hover { background: #185FA5 !important; }
+.btn-primary:active { transform: scale(0.97) !important; }
+.btn-secondary {
+  background: #F1F5F9 !important;
+  color: #1E293B !important;
+  border: 0.5px solid #CBD5E1 !important;
+  border-radius: 8px !important;
+  padding: 11px 22px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  min-width: 120px !important;
+}
+.btn-secondary:disabled { opacity: 0.35 !important; cursor: not-allowed !important; }
+
+/* Content area - leave room for fixed nav */
+.mc-wrap { 
+  max-width: 820px !important; 
+  margin: 0 auto !important; 
+  padding: 16px 16px 90px !important;
+}
+/* Progress bar */
+.progress-wrap { 
+  background: #E2E8F0; border-radius: 20px; height: 6px; 
+  margin-bottom: 8px; overflow: hidden;
+}
+.progress-bar { 
+  height: 6px; background: #185FA5; border-radius: 20px; 
+  transition: width 0.4s ease;
+}
+/* Result banner */
+#resultBanner {
+  display: none;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 12px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+/* Swipe hint */
+#swipeHint {
+  position: fixed;
+  bottom: 65px;
+  right: 16px;
+  background: rgba(27,58,107,0.85);
+  color: #fff;
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  z-index: 9998;
+  opacity: 1;
+  transition: opacity 1s;
+  pointer-events: none;
+}
+
+</style>
+</head>
+<body>
+<div id="resultBanner"></div>
+<div id="swipeHint">&#8592; Desliza o usa las flechas del teclado &#8594;</div>
+<div class="mc-wrap">
+<header class="mc-header"><div class="header-left">
+  <div class="header-icon">&#127970;</div>
+  <div><h1>Clientes empresa: segmentos y facturación</h1><p>Microcurso · Día 9 · Semana 2 · Bloom: Analizar → Evaluar · 6–7 min</p></div>
+</div><div class="header-right"><div class="score-display" id="scoreDisplay">Puntuación: 0%</div></div></header>
+<div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+<div class="scene-info"><span id="sceneLabel">Módulo 1 de 9</span><span id="bloomLabel" class="bloom-badge">Bloom: Analizar</span></div>
+<section class="scene active" id="sc0">
+<div class="slide"><div class="slide-hdr hdr-blue"><span class="slide-tag">Bienvenida</span><h2>¿Qué vas a aprender hoy?</h2></div>
+<div class="slide-body">
+<p class="intro-text">Hoy aprenderás a identificar los <strong>cuatro segmentos de clientes empresa</strong> y a aplicar el protocolo correcto para cada uno. El mismo caso tiene respuestas radicalmente distintas según el segmento.</p>
+<div class="card-grid-3">
+  <div class="mini-card blue"><div class="mc-icon">&#127970;</div><h4>Conceptos clave</h4><p>6 tarjetas interactivas</p></div>
+  <div class="mini-card teal"><div class="mc-icon">&#128203;</div><h4>Casos de decisión</h4><p>3 situaciones reales</p></div>
+  <div class="mini-card amber"><div class="mc-icon">&#128269;</div><h4>Quiz de cierre</h4><p>4 preguntas con retroalimentación</p></div>
+</div>
+<div class="info-box">&#9200; <strong>Duración: 6–7 min</strong> — 6 conceptos clave, módulos de contenido, 3 casos de decisión y quiz.</div>
+</div></div></section>
+<section class="scene" id="sc1">
+<div class="slide"><div class="slide-hdr hdr-blue"><span class="slide-tag">Módulo 1 de 4 — Conceptos clave</span><h2>Clientes empresa — toca cada tarjeta para explorarla</h2></div>
+<div class="slide-body">
+<div class="concept-summary">Los clientes empresa tienen <strong>cuatro segmentos con protocolos radicalmente distintos</strong>. Identificar el segmento en ES32 es el primer paso OBLIGATORIO antes de cualquier gestión que afecte el suministro.</div>
+<p class="hint-text">Haz clic en cada tarjeta para ver la definición completa, los criterios de aplicación y las implicancias prácticas.</p>
+<div class="reveal-grid" id="cardGrid"></div>
+<div class="concept-counter" id="cardCnt">0 de 6 conceptos explorados</div>
+</div></div></section>
+<section class="scene" id="sc2">
+<div class="slide"><div class="slide-hdr hdr-teal"><span class="slide-tag">Módulo 2 de 4 — Protocolo diferenciado por segmento</span><h2>Protocolo diferenciado por segmento</h2></div>
+<div class="slide-body"><div class="concept-summary">El mismo caso (aviso de corte por deuda) tiene un <strong>protocolo radicalmente distinto</strong> según el segmento del cliente. Verificar el segmento en ES32 antes de responder cualquier consulta de suministro.</div>
+<div style="display:flex;flex-direction:column;gap:8px;margin:10px 0">
+  <div style="background:#FCEBEB;border-radius:8px;padding:11px 14px;border:0.5px solid #F7C1C1">
+    <div style="font-size:12px;font-weight:700;color:#791F1F">Cliente ED — Aviso de corte por deuda</div>
+    <p style="font-size:11px;color:#A32D2D">DETENER el proceso de corte. Escalar a Operaciones Y Jefatura de inmediato. Protocolo especial de notificación con anticipación mínima definida por normativa. Buscar acuerdo de pago urgente.</p>
+  </div>
+  <div style="background:#FAEEDA;border-radius:8px;padding:11px 14px;border:0.5px solid #FAC775">
+    <div style="font-size:12px;font-weight:700;color:#633806">Cliente crítico (hospital, agua potable) — Aviso de corte</div>
+    <p style="font-size:11px;color:#854F0B">NO proceder sin coordinación previa con Operaciones y Jefatura. Notificación formal con plazo normativo mínimo. Buscar acuerdo de pago — el corte es el último recurso.</p>
+  </div>
+  <div style="background:#E1F5EE;border-radius:8px;padding:11px 14px;border:0.5px solid #9FE1CB">
+    <div style="font-size:12px;font-weight:700;color:#085041">Cliente riego en temporada — Aviso de corte</div>
+    <p style="font-size:11px;color:#0F6E56">Verificar en SAP si hay acuerdo de moratoria activo. Consultar con supervisor. El corte en temporada puede tener impacto productivo irreversible.</p>
+  </div>
+  <div style="background:#E6F1FB;border-radius:8px;padding:11px 14px;border:0.5px solid #B5D4F4">
+    <div style="font-size:12px;font-weight:700;color:#0C447C">Cliente normal (BT1/BT2) — Aviso de corte</div>
+    <p style="font-size:11px;color:#185FA5">Verificar deuda en FPL9. Informar plazo de pago. Si no paga dentro del plazo, el corte procede según normativa estándar.</p>
+  </div>
+</div></div></div></section>
+<section class="scene" id="sc3">
+<div class="slide"><div class="slide-hdr hdr-amber"><span class="slide-tag">Caso 1 de 3 — Decisión</span><h2>Aviso de corte a cliente con código ED activo</h2></div>
+<div class="slide-body">
+<div class="case-box amber"><div class="case-label">Situación real</div><p>El sistema genera un aviso de corte automático por deuda de $340.000 para un cliente. Al revisar ES32 detectas que tiene <strong>código ED activo</strong> — depende de ventilador mecánico.</p></div>
+<p class="hint-text">¿Cuál es la acción correcta?</p>
+<div class="opts" id="d1"><button class="opt" onclick="decidir(1,'A')">A) Proceder con el corte — la deuda es real y el proceso es automático.</button><button class="opt" onclick="decidir(1,'B')">B) DETENER el proceso de corte. Escalar a Operaciones Y Jefatura de inmediato. Protocolo especial: notificación con anticipación mínima normativa y búsqueda urgente de acuerdo de pago.</button><button class="opt" onclick="decidir(1,'C')">C) Llamar al cliente para que pague en 48 horas antes del corte.</button></div>
+<div class="feedback" id="fb1"></div>
+</div></div></section>
+<section class="scene" id="sc4">
+<div class="slide"><div class="slide-hdr hdr-purp"><span class="slide-tag">Módulo 3 de 4 — Facturación empresa y Hora Punta</span><h2>Facturación empresa y Hora Punta</h2></div>
+<div class="slide-body"><div class="concept-summary">La facturación de clientes empresa incluye datos de <strong>demanda (kW)</strong> además de energía (kWh). En tarifas AT3/BT3, el cobro de Hora Punta aparece como ítem separado en FPL9 y tiene precio significativamente mayor.</div>
+<div class="formula-box">
+  <div class="formula-title">Verificación de cobro HP en FPL9</div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+    <div style="background:rgba(255,255,255,.7);border-radius:6px;padding:9px 12px">
+      <div style="font-size:11px;font-weight:700;color:#185FA5;margin-bottom:5px">Cómo leer el cobro HP en FPL9</div>
+      <div style="font-size:11px;color:#1E293B;line-height:1.6">En FPL9 → Detalle de factura → aparecen ítems separados:<br>
+      ・ "Energía HP: X kWh × $P.HP" (precio mayor)<br>
+      ・ "Energía HFP: X kWh × $P.HFP" (precio menor)<br>
+      ・ "Demanda HP: X kW × $P.Pot.HP" (si aplica AT3/BT4.2)</div>
+    </div>
+    <div style="background:rgba(255,255,255,.7);border-radius:6px;padding:9px 12px">
+      <div style="font-size:11px;font-weight:700;color:#085041;margin-bottom:5px">¿El cliente puede pedir excepción de HP?</div>
+      <div style="font-size:11px;color:#1E293B;line-height:1.6">Sí, si puede demostrar con datos históricos que NO consume en HP.<br>
+      Proceso: 1) Verificar historial HP en FPL9 → 2) Si consumo HP es mínimo o nulo → 3) Informar al cliente que puede presentar solicitud formal → 4) Escalar a Facturación/Comercial para evaluación.</div>
+    </div>
+  </div>
+</div></div></div></section>
+<section class="scene" id="sc5">
+<div class="slide"><div class="slide-hdr hdr-purp"><span class="slide-tag">Caso 2 de 3 — Decisión</span><h2>Empresa AT3 reclama cobro de Hora Punta</h2></div>
+<div class="slide-body">
+<div class="case-box purp"><div class="case-label">Situación real</div><p>Empresa de servicios (AT3) reclama el cobro de HP: 'Cerramos a las 17:00 y el HP comienza a las 18:00 — no deberíamos pagar HP'. Ofrecen aportar datos históricos de consumo horario.</p></div>
+<p class="hint-text">¿Cuál es la acción correcta?</p>
+<div class="opts" id="d2"><button class="opt" onclick="decidir(2,'A')">A) Verificar en FPL9 el historial de consumo HP. Si los datos muestran consumo mínimo o nulo en HP, informar al cliente que puede presentar solicitud formal de excepción HP con sus datos históricos. Escalar a Facturación/Comercial para evaluación.</button><button class="opt" onclick="decidir(2,'B')">B) Decirle que el cobro HP siempre aplica y que no hay excepciones posibles.</button><button class="opt" onclick="decidir(2,'C')">C) Eliminar directamente el cobro HP de la próxima factura del cliente.</button></div>
+<div class="feedback" id="fb2"></div>
+</div></div></section>
+<section class="scene" id="sc6">
+<div class="slide"><div class="slide-hdr hdr-teal"><span class="slide-tag">Caso 3 de 3 — Decisión</span><h2>Cliente riego con deuda en plena temporada</h2></div>
+<div class="slide-body">
+<div class="case-box teal"><div class="case-label">Situación real</div><p>Cliente riego con potencia de 150 kW tiene deuda de $1,2M de la temporada pasada. El sistema genera aviso de corte. Estamos en plena temporada de riego (noviembre).</p></div>
+<p class="hint-text">¿Cuál es la acción correcta?</p>
+<div class="opts" id="d3"><button class="opt" onclick="decidir(3,'A')">A) Proceder con el corte según el procedimiento estándar de cobros — la deuda es real.</button><button class="opt" onclick="decidir(3,'B')">B) Verificar en SAP si hay acuerdo de moratoria de temporada activo. Consultar con supervisor antes de confirmar el corte. El corte en plena temporada de riego puede tener impacto productivo irreversible.</button><button class="opt" onclick="decidir(3,'C')">C) Ignorar la deuda temporalmente porque estamos en temporada de riego — gestionar después.</button></div>
+<div class="feedback" id="fb3"></div>
+</div></div></section>
+<section class="scene" id="sc7">
+<div class="slide"><div class="slide-hdr hdr-amber"><span class="slide-tag">Quiz de cierre — 4 preguntas</span><h2>Demuestra lo que aprendiste</h2></div>
+<div class="slide-body">
+  <div id="qText"></div><div id="qOpts" class="opts"></div><div id="qFb" class="feedback"></div>
+  <div class="quiz-nav"><span id="qCounter" class="hint-text">Pregunta 1 de 4</span>
+  <button class="btn-primary" id="qNext" onclick="nextQ()" style="display:none">Siguiente &rarr;</button></div>
+</div></div></section>
+<section class="scene" id="sc8">
+<div class="result-card"><div class="result-title">Microcurso completado</div>
+<div class="result-score" id="resultScore">0/4</div><div class="result-pct" id="resultPct">0%</div>
+<div class="result-bar-wrap"><div class="result-bar" id="resultBar" style="width:0%"></div></div>
+<div class="result-badge" id="resultBadge">Cargando...</div></div>
+<div id="reviewBox"></div>
+<div class="result-actions"><button class="btn-secondary" onclick="restart()">&#8635; Reiniciar</button></div>
+</section>
+<nav class="mc-nav">
+  <button class="btn-secondary" id="btnPrev" onclick="goScene(-1)" disabled>&larr; Anterior</button>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="btn-primary" id="btnNext" onclick="goScene(1)">Siguiente &rarr;</button>
+</nav>
+</div>
+<script>
+/* SCORM 2004 API */
+
+var SCORM=(function(){
+  var api=null,init=false;
+  function find(w){var t=0;while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}return w.API_1484_11||null;}
+  function go(){api=find(window);if(!api&&window.opener)api=find(window.opener);if(api){var r=api.Initialize('');init=(r==='true'||r===true);}return init;}
+  function set(k,v){try{if(api&&init)api.SetValue(k,v);}catch(e){}}
+  function commit(){try{if(api&&init)api.Commit('');}catch(e){}}
+  function finish(){try{if(api&&init){api.Commit('');api.Terminate('');}}catch(e){}}
+  function setComplete(pct){
+    try{
+      set('cmi.score.raw',pct);set('cmi.score.min',0);set('cmi.score.max',100);
+      set('cmi.score.scaled',(pct/100).toFixed(4));
+      set('cmi.completion_status','completed');
+      set('cmi.success_status',pct>=75?'passed':'failed');
+      set('cmi.session_time','PT7M0S');
+      commit();finish();
+    }catch(e){}
+    var b=document.getElementById('resultBanner');
+    if(b){
+      b.style.display='block';
+      b.style.background=pct>=75?'#EAF3DE':'#FEE2E2';
+      b.style.color=pct>=75?'#166534':'#991B1B';
+      b.style.border='1px solid '+(pct>=75?'#86EFAC':'#FCA5A5');
+      b.innerHTML=(pct>=75?'&#10003; Aprobado: ':'&#9888; No aprobado: ')+pct+'%'+(pct>=75?' &mdash; M&oacute;dulo completado':' &mdash; Umbral m&iacute;nimo 75%. Intenta nuevamente');
+    }
+  }
+  go();
+  return{set:set,get:function(k){try{if(api&&init)return api.GetValue(k);}catch(e){}return'';},commit:commit,finish:finish,setComplete:setComplete,initialized:init};
+})();
+
+/* Course logic */
+var state={cur:0,total:9,cardRevealed:0,totalCards:6,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+var BLOOM=['Analizar','Analizar','Analizar','Analizar','Analizar','Analizar','Analizar','Evaluar','Evaluar'];
+var CARDS=[{name:'Cliente crítico',desc:'Hospitales, plantas de agua potable, centros de seguridad pública. Ninguna gestión que afecte el suministro sin coordinación previa con Operaciones y Jefatura. Los cortes requieren protocolo especial con notificación anticipada.',badge:'Riesgo comunitario · Protocolo especial',color:'red'},
+{name:'Electrodependiente (ED)',desc:'Personas que dependen de equipos eléctricos para mantener su vida o salud (ventiladores, bombas de insulina, diálisis). Registrado con código ED activo en ES32. NUNCA cortar sin proceso especial. Escalar a Operaciones y Jefatura inmediatamente.',badge:'Código ED en ES32 · Nunca cortar sin proceso',color:'purp'},
+{name:'Cliente riego',desc:'Empresa o persona con suministro destinado a riego agrícola. Demanda muy alta en temporada (primavera-verano) y casi nula fuera de ella. Pueden tener acuerdos de moratoria en temporada. Verificar acuerdos en SAP antes de confirmar cualquier corte.',badge:'Estacional · Verificar acuerdo en SAP',color:'teal'},
+{name:'Cliente libre',desc:'Demanda superior a 5.000 kW. Negocia precio de energía directamente con generadoras. La distribuidora solo factura el PEAJE de distribución (uso de la red). El precio de energía NO es responsabilidad de la distribuidora.',badge:'Precio libre · Solo peaje a la distribuidora',color:'amber'},
+{name:'Período Hora Punta (HP)',desc:'Franja de mayor demanda del sistema eléctrico, definida por la autoridad regulatoria. Aplica en tarifas BT3, BT4.2, AT3, AT4.2. Los precios HP son significativamente mayores. El cargo HP aparece como ítem separado en FPL9.',badge:'Definida por autoridad · Ítem separado en FPL9',color:'blue'},
+{name:'Excepción HP',desc:'Un cliente puede solicitar excepción al cobro de HP si demuestra con datos históricos de consumo horario que su operación NO consume en ese período. La excepción NO es automática — requiere solicitud formal y evaluación por parte de la distribuidora.',badge:'No automática · Solicitud formal + datos históricos',color:'green'}];
+var SYNTH=['SIEMPRE verificar el segmento del cliente en ES32 ANTES de cualquier gestión que afecte el suministro.','ED: NUNCA cortar sin proceso especial — escalar a Operaciones Y Jefatura de inmediato.','Cliente libre: la distribuidora solo factura el peaje — el precio de energía lo pactó con una generadora.','Cliente riego en temporada: verificar acuerdos de moratoria en SAP antes de confirmar corte.','Excepción HP: no es automática — requiere solicitud formal con datos históricos de consumo horario.'];
+var ERRORS=['Tratar a un cliente ED como cliente normal ante cualquier aviso de corte por deuda.','Decir al cliente libre que \'la distribuidora fijó ese precio de energía\'.','No verificar la segmentación del cliente en ES32 antes de gestionar cualquier acción de suministro.','Cortar a un cliente crítico (hospital, agua potable) sin coordinación previa con Operaciones y Jefatura.','Decir que la excepción de HP \'siempre aplica\' sin verificar los datos históricos de consumo del cliente.'];
+var DEC={
+  1:{correct:'B',A:{ok:false,msg:'Incorrecto. Cortar a un cliente ED sin proceso especial está prohibido por normativa y puede constituir una emergencia médica. Es uno de los errores más graves que puede cometer un especialista.'},B:{ok:true,msg:'Correcto. Cliente ED = DETENER el proceso de corte. Escalar a Operaciones Y Jefatura de inmediato. El proceso de regularización de deuda de un ED requiere protocolo especial con plazos de notificación específicos.'},C:{ok:false,msg:'Incorrecto. Llamar al cliente es insuficiente. El protocolo ED requiere coordinar con Operaciones y Jefatura antes de cualquier acción. Una llamada telefónica no reemplaza el protocolo de seguridad vital.'}},
+  2:{correct:'A',A:{ok:true,msg:'Correcto. El historial en FPL9 confirma que el consumo HP fue mínimo o nulo. El cliente tiene derecho a solicitar formalmente la excepción con sus datos de consumo horario. El especialista informa el proceso — no elimina el cobro directamente.'},B:{ok:false,msg:'Incorrecto. Existen condiciones para solicitar excepción de HP. Decir que no hay excepciones es incorrecto e impide que el cliente ejerza un derecho que puede tener según los datos de su consumo.'},C:{ok:false,msg:'Incorrecto. El especialista no puede eliminar ítems de facturación directamente. La excepción HP requiere evaluación formal y aprobación por parte de la distribuidora — no una modificación directa.'}},
+  3:{correct:'B',A:{ok:false,msg:'Incorrecto. El procedimiento estándar de corte no aplica directamente a clientes riego en temporada. Puede haber acuerdos especiales de moratoria. Proceder sin verificar puede tener consecuencias productivas graves e irreversibles.'},B:{ok:true,msg:'Correcto. Siempre verificar en SAP si hay acuerdo de moratoria en temporada activo. Consultar con supervisor antes de confirmar el corte. El corte en temporada de riego puede tener impacto productivo irreversible para el cliente.'},C:{ok:false,msg:'Incorrecto. La temporada de riego no cancela la deuda, pero puede activar protocolos especiales. No se puede ignorar el proceso — se gestiona con el supervisor y verificando los acuerdos en SAP.'}},
+};
+var QUIZ=[{q:'¿Qué código en SAP indica que un cliente tiene condición electrodependiente?',opts:['Código de tarifa BT4 especial','Código ED activo en ES32 sección Datos generales','Código de subsidio RSH 40%','Grupo de facturación E'],ans:1,exp:'El código ED (electrodependiente) se registra en ES32, sección Datos generales. El especialista SIEMPRE debe verificarlo antes de cualquier gestión que pueda afectar el suministro del cliente.'},
+{q:'Un cliente libre llama reclamando el precio de su energía. ¿Cuál es la respuesta correcta?',opts:['Verificar el pliego tarifario y explicar el precio de la distribuidora','El precio de energía lo pactó con su generadora. La distribuidora solo factura el peaje de distribución — no el precio de energía','Derivar a facturación para que expliquen el precio','Calcular según tarifa BT2 como referencia'],ans:1,exp:'Los clientes libres (>5.000 kW) negocian su precio de energía directamente con generadoras. La distribuidora solo cobra el uso de la red (peaje). El especialista no puede explicar ni modificar el precio de energía de un cliente libre.'},
+{q:'¿Cuándo puede un cliente AT3 solicitar excepción al cobro de Hora Punta?',opts:['Cuando el monto de HP supera $500.000','Cuando demuestra con datos históricos de consumo horario que su operación no consume en HP','Cuando tiene más de 2 años como cliente AT3','En cualquier momento — es un derecho automático'],ans:1,exp:'La excepción HP requiere demostrar con datos históricos de consumo horario que la operación no consume en ese período. No es automática ni por monto — requiere solicitud formal y evaluación por parte de la distribuidora.'},
+{q:'Un cliente riego tiene deuda de $1,2M en plena temporada. El sistema genera aviso de corte. ¿Qué haces?',opts:['Proceder con el corte según el procedimiento estándar de cobros','Verificar en SAP si hay acuerdo de moratoria en temporada y consultar con supervisor antes de confirmar el corte','Ignorar la deuda porque es temporada de riego','Llamar al cliente para que pague en 48 horas'],ans:1,exp:'Los clientes riego pueden tener acuerdos especiales de moratoria en temporada activos en SAP. Siempre verificar estos acuerdos y consultar con el supervisor antes de confirmar un corte — el impacto productivo puede ser irreversible.'}];
+
+document.addEventListener('DOMContentLoaded',function(){
+  buildDots();updateUI();buildCards();buildSynth();buildErrors();
+  if(window.SCORM&&SCORM.set){SCORM.set('cmi.core.lesson_status','incomplete');SCORM.commit();}
+});
+
+function buildCards(){
+  var g=document.getElementById('cardGrid');if(!g)return;
+  CARDS.forEach(function(c){
+    var d=document.createElement('div');
+    d.className='rev-card '+c.color;
+    d.innerHTML='<h4>'+c.name+'</h4><div class="rev-desc"></div><span class="rev-hint">Toca para ver</span>';
+    d.onclick=function(){revealCard(this,c.desc,c.badge);};
+    g.appendChild(d);
+  });
+}
+function buildSynth(){
+  var b=document.getElementById('synthBody');if(!b)return;
+  b.innerHTML=SYNTH.map(function(s){return buildRevCard(s,false);}).join('');
+}
+function buildErrors(){
+  var b=document.getElementById('errorBody');if(!b)return;
+  b.innerHTML=ERRORS.map(function(e){return buildRevCard(e,true);}).join('');
+}
+function buildReview(){
+  var b=document.getElementById('reviewBox');if(!b)return;
+  b.innerHTML='<div class="review-box"><div class="review-title">Puntos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+}
+function restart(){
+  state={cur:0,total:9,cardRevealed:0,totalCards:6,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+  document.querySelectorAll('.scene').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('sc0').classList.add('active');
+  document.querySelectorAll('.opt').forEach(function(b){b.className='opt';});
+  document.querySelectorAll('.feedback').forEach(function(f){f.className='feedback';f.innerHTML='';});
+  document.querySelectorAll('.rev-card').forEach(function(c){c.classList.remove('revealed');if(c.querySelector('.rev-desc'))c.querySelector('.rev-desc').textContent='';if(c.querySelector('.rev-hint'))c.querySelector('.rev-hint').textContent='Toca para ver';});
+  var cnt=document.getElementById('cardCnt');if(cnt)cnt.textContent='0 de 6 conceptos explorados';
+  document.getElementById('reviewBox').innerHTML='';
+  document.getElementById('resultBar').style.width='0%';
+  if(document.getElementById('scoreDisplay'))document.getElementById('scoreDisplay').textContent='Puntuación: 0%';
+  buildSynth();buildErrors();updateUI();
+}
+
+
+function goScene(dir){var n=state.cur+dir;if(n<0||n>=state.total)return;setScene(n);}
+function setScene(idx){
+  document.getElementById('sc'+state.cur).classList.remove('active');
+  state.cur=idx;document.getElementById('sc'+state.cur).classList.add('active');
+  updateUI();
+  if(idx===state.total-2&&!state.qInitDone)renderQuiz();
+  if(idx===state.total-1)showResults();
+  if(window.SCORM&&SCORM.set)SCORM.set('cmi.core.lesson_location',idx);
+  if(window.SCORM&&SCORM.commit)SCORM.commit();
+}
+function updateUI(){
+  var pct=Math.round(state.cur/(state.total-1)*100);
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('sceneLabel').textContent='Módulo '+(state.cur+1)+' de '+state.total;
+  document.getElementById('bloomLabel').textContent='Bloom: '+(BLOOM[state.cur]||'');
+  document.getElementById('btnPrev').disabled=state.cur===0;
+  document.getElementById('btnNext').disabled=state.cur===state.total-1;
+  updateDots();
+}
+function buildDots(){var w=document.getElementById('navDots');if(!w)return;w.innerHTML='';for(var i=0;i<state.total;i++){var d=document.createElement('div');d.className='nav-dot';w.appendChild(d);}}
+function updateDots(){document.querySelectorAll('.nav-dot').forEach(function(d,i){d.className='nav-dot'+(i<state.cur?' done':i===state.cur?' active':'');});}
+function decidir(n,opt){
+  if(state.decisions[n])return;state.decisions[n]=opt;
+  var dec=DEC[n];var btns=document.querySelectorAll('#d'+n+' .opt');var letters=['A','B','C'];
+  btns.forEach(function(b,i){if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');});
+  var res=dec[opt];var fb=document.getElementById('fb'+n);
+  fb.className='feedback show '+(res.ok?'ok':'ko');
+  fb.innerHTML=(res.ok?'&#10003; ':'&#10007; ')+res.msg;
+}
+function renderQuiz(){
+  state.qInitDone=true;showQuestion();
+}
+function showQuestion(){
+  var q=QUIZ[state.quizCurrent];
+  document.getElementById('qCounter').textContent='Pregunta '+(state.quizCurrent+1)+' de '+QUIZ.length;
+  document.getElementById('qFb').className='feedback';document.getElementById('qNext').style.display='none';state.quizAnswered=false;
+  document.getElementById('qText').innerHTML='<p style="font-size:13px;line-height:1.6;margin-bottom:12px;font-weight:500">'+q.q+'</p>';
+  var opts=document.getElementById('qOpts');opts.innerHTML='';
+  q.opts.forEach(function(o,i){var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){return function(){answerQ(idx);};})(i);opts.appendChild(b);});
+}
+function answerQ(idx){
+  if(state.quizAnswered)return;state.quizAnswered=true;
+  var q=QUIZ[state.quizCurrent];
+  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');});
+  var ok=idx===q.ans;if(ok)state.quizScore++;
+  var fb=document.getElementById('qFb');fb.className='feedback show '+(ok?'ok':'ko');fb.innerHTML=(ok?'&#10003; Correcto. ':'&#10007; Incorrecto. ')+q.exp;
+  document.getElementById('qNext').style.display='inline-block';
+  if(window.SCORM&&SCORM.set){SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');SCORM.commit();}
+}
+function nextQ(){state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else goScene(1);}
+function showResults(){
+  var pct=Math.round(state.quizScore/QUIZ.length*100);
+  document.getElementById('resultScore').textContent=state.quizScore+'/'+QUIZ.length;
+  document.getElementById('resultPct').textContent=pct+'% correcto';
+  if(document.getElementById('scoreDisplay'))document.getElementById('scoreDisplay').textContent='Puntuación: '+pct+'%';
+  setTimeout(function(){document.getElementById('resultBar').style.width=pct+'%';},200);
+  var b=pct===100?'&#9733; Dominio total — puntaje perfecto':pct>=75?'&#128077; Buen desempeño — aprobado':' &#8635; Bajo el umbral — revisa los módulos';
+  document.getElementById('resultBadge').innerHTML=b;
+  if(pct<100&&document.getElementById('reviewBox'))buildReview();
+  if(window.SCORM&&SCORM.setComplete)SCORM.setComplete(pct);
+}
+function buildRevCard(txt,isErr){
+  return '<div style="display:flex;gap:8px;align-items:flex-start;padding:9px 12px;background:'+(isErr?'#FCEBEB':'#EAF3DE')+';border-radius:7px;margin-bottom:7px"><span style="color:'+(isErr?'#DC2626':'#3B6D11')+';font-size:15px;flex-shrink:0">'+(isErr?'&#10007;':'&#10004;')+'</span><span style="font-size:12px;line-height:1.55;color:'+(isErr?'#791F1F':'#27500A')+'">'+txt+'</span></div>';
+}
+function revealCard(el,desc,badge){
+  if(el.classList.contains('revealed'))return;
+  el.classList.add('revealed');
+  el.querySelector('.rev-desc').textContent=desc;
+  el.querySelector('.rev-hint').textContent=badge;
+  state.cardRevealed++;
+  var cnt=document.getElementById('cardCnt');
+  if(cnt)cnt.textContent=state.cardRevealed+' de '+state.totalCards+' conceptos explorados';
+}
+
+
+/* Touch + keyboard navigation */
+
+// ═══ TOUCH / SWIPE NAVIGATION ═══
+(function(){
+  var startX = 0, startY = 0;
+  document.addEventListener('touchstart', function(e){
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, {passive: true});
+  document.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50){
+      if(dx < 0) goScene(1);   // swipe left = next
+      else goScene(-1);          // swipe right = prev
+    }
+  }, {passive: true});
+})();
+
+// ═══ KEYBOARD NAVIGATION ═══
+document.addEventListener('keydown', function(e){
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') goScene(1);
+  if(e.key === 'ArrowLeft'  || e.key === 'ArrowUp')  goScene(-1);
+});
+
+// ═══ HIDE SWIPE HINT AFTER 4s ═══
+setTimeout(function(){
+  var h = document.getElementById('swipeHint');
+  if(h){ h.style.opacity = '0'; setTimeout(function(){ h.style.display='none'; }, 1000); }
+}, 4000);
+
+</script>
+</body>
+</html>

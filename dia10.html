@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Microcurso Día 10 — Contingencias Empresa y Evaluación Final</title>
+<style>
+/* Base styles */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;font-size:15px}
+.mc-wrap{max-width:820px;margin:0 auto;padding:16px 16px 80px}
+
+/* Header */
+.mc-header{background:#1B3A6B;border-radius:12px;padding:18px 22px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.header-left{display:flex;align-items:center;gap:14px}
+.header-icon{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;flex-shrink:0}
+.mc-header h1{color:#fff;font-size:16px;font-weight:700;line-height:1.3;margin-bottom:3px}
+.mc-header p{color:#B5D4F4;font-size:11px}
+.score-display{background:rgba(255,255,255,.15);color:#E1F5EE;font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px}
+
+/* Progress */
+.progress-wrap{background:#E2E8F0;border-radius:20px;height:6px;margin-bottom:8px;overflow:hidden}
+.progress-bar{height:6px;background:#185FA5;border-radius:20px;transition:width .4s ease}
+.scene-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.scene-info span{font-size:11px;color:#64748B}
+.bloom-badge{background:#1B3A6B;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px}
+
+/* Slides */
+
+
+.slide{background:#fff;border-radius:12px;border:0.5px solid #E2E8F0;overflow:hidden;margin-bottom:14px}
+.slide-hdr{padding:14px 18px;border-bottom:0.5px solid #E2E8F0}
+.hdr-blue{background:#E6F1FB}
+.hdr-teal{background:#E1F5EE}
+.hdr-amber{background:#FAEEDA}
+.hdr-purp{background:#EEEDFE}
+.hdr-red{background:#FCEBEB}
+.slide-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;padding:2px 8px;border-radius:20px}
+.hdr-blue .slide-tag{background:#B5D4F4;color:#042C53}
+.hdr-teal .slide-tag{background:#9FE1CB;color:#04342C}
+.hdr-amber .slide-tag{background:#FAC775;color:#412402}
+.hdr-purp .slide-tag{background:#CECBF6;color:#26215C}
+.hdr-red .slide-tag{background:#F7C1C1;color:#501313}
+.slide-hdr h2{font-size:15px;font-weight:700;color:#1E293B;line-height:1.3}
+.slide-body{padding:16px 18px}
+
+/* Cards */
+.card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+.mini-card{border-radius:10px;padding:14px 12px;text-align:center}
+.mini-card.blue{background:#E6F1FB}
+.mini-card.teal{background:#E1F5EE}
+.mini-card.amber{background:#FAEEDA}
+.mini-card h4{font-size:12px;font-weight:700;margin-bottom:3px}
+.mini-card.blue h4{color:#0C447C}
+.mini-card.teal h4{color:#085041}
+.mini-card.amber h4{color:#633806}
+.mini-card p{font-size:10px}
+.mini-card.blue p{color:#185FA5}
+.mini-card.teal p{color:#0F6E56}
+.mini-card.amber p{color:#854F0B}
+.mc-icon{font-size:22px;margin-bottom:7px}
+
+/* Tariff grid */
+.tariff-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.tariff-card{border-radius:10px;padding:12px 14px;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.tariff-card:hover{transform:translateY(-2px)}
+.tariff-card.blue{background:#E6F1FB}
+.tariff-card.teal{background:#E1F5EE}
+.tariff-card.purp{background:#EEEDFE}
+.tariff-card.amber{background:#FAEEDA}
+.tariff-card.red{background:#FCEBEB}
+.tariff-card.gray{background:#F1EFE8}
+.tariff-card h4{font-size:13px;font-weight:700;margin-bottom:4px}
+.tariff-card.blue h4{color:#0C447C}
+.tariff-card.teal h4{color:#085041}
+.tariff-card.purp h4{color:#26215C}
+.tariff-card.amber h4{color:#412402}
+.tariff-card.red h4{color:#501313}
+.tariff-card.gray h4{color:#2C2C2A}
+.tariff-desc{font-size:11px;line-height:1.5;display:none;margin:5px 0}
+.tariff-card.blue .tariff-desc{color:#185FA5}
+.tariff-card.teal .tariff-desc{color:#0F6E56}
+.tariff-card.purp .tariff-desc{color:#534AB7}
+.tariff-card.amber .tariff-desc{color:#854F0B}
+.tariff-card.red .tariff-desc{color:#A32D2D}
+.tariff-card.gray .tariff-desc{color:#5F5E5A}
+.tariff-card.revealed .tariff-desc{display:block}
+.tariff-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:5px}
+.tariff-card.blue .tariff-badge{background:#B5D4F4;color:#042C53}
+.tariff-card.teal .tariff-badge{background:#9FE1CB;color:#04342C}
+.tariff-card.purp .tariff-badge{background:#CECBF6;color:#26215C}
+.tariff-card.amber .tariff-badge{background:#FAC775;color:#412402}
+.tariff-card.red .tariff-badge{background:#F7C1C1;color:#501313}
+.tariff-card.gray .tariff-badge{background:#D3D1C7;color:#2C2C2A}
+
+/* Case boxes */
+.case-box{border-radius:10px;padding:14px 16px;margin-bottom:12px;border:0.5px solid transparent}
+.case-box.amber{background:#FAEEDA;border-color:#FAC775}
+.case-box.red{background:#FCEBEB;border-color:#F7C1C1}
+.case-box.teal{background:#E1F5EE;border-color:#9FE1CB}
+.case-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.case-box.amber .case-label{color:#854F0B}
+.case-box.red .case-label{color:#A32D2D}
+.case-box.teal .case-label{color:#0F6E56}
+.case-box p{font-size:13px;line-height:1.6;color:#1E293B}
+
+/* Options */
+.opts{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.opt{border-radius:9px;padding:11px 14px;cursor:pointer;border:1.5px solid #CBD5E1;background:#fff;font-size:13px;text-align:left;color:#1E293B;transition:all .15s;line-height:1.5}
+.opt:hover{border-color:#185FA5;background:#E6F1FB}
+.opt.correct{border-color:#3B6D11;background:#EAF3DE;color:#27500A;pointer-events:none;font-weight:700}
+.opt.wrong{border-color:#A32D2D;background:#FCEBEB;color:#791F1F;pointer-events:none}
+.opt.disabled{opacity:.45;pointer-events:none}
+
+/* Feedback */
+.feedback{border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;display:none;margin-top:8px}
+.feedback.show{display:block}
+.feedback.ok{background:#EAF3DE;color:#27500A;border:0.5px solid #97C459}
+.feedback.ko{background:#FCEBEB;color:#791F1F;border:0.5px solid #F09595}
+
+/* SAP Simulation */
+.sap-steps{display:flex;gap:8px;margin-bottom:12px}
+.sap-step{flex:1;border-radius:8px;padding:8px 10px;text-align:center;font-size:11px;font-weight:700;border:1.5px solid #D3D1C7;background:#F1EFE8;color:#888780;transition:all .3s}
+.sap-step.active{background:#E6F1FB;color:#0C447C;border-color:#185FA5}
+.sap-step.done{background:#EAF3DE;color:#27500A;border-color:#97C459}
+.sap-terminal{border-radius:10px;border:0.5px solid #E2E8F0;overflow:hidden;margin-bottom:12px}
+.sap-bar{background:#1B3A6B;padding:8px 14px;display:flex;align-items:center;gap:10px}
+.sap-sys{color:#B5D4F4;font-size:11px;font-weight:600}
+.sap-cmd{background:rgba(255,255,255,.15);border-radius:4px;padding:2px 10px;color:#fff;font-size:11px;font-family:monospace}
+.sap-desc{color:#9FE1CB;font-size:10px;margin-left:auto}
+.sap-content{background:#F8FAFC;padding:14px}
+.sap-field{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sap-lbl{font-size:12px;color:#64748B;min-width:140px}
+.sap-input{flex:1;border:1px solid #CBD5E1;border-radius:4px;padding:7px 10px;font-size:13px;font-family:monospace;background:#fff;color:#1E293B}
+.sap-input:focus{outline:none;border-color:#185FA5;box-shadow:0 0 0 2px #B5D4F4}
+.sap-btn{background:#1B3A6B;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;margin-top:6px}
+.sap-btn:hover{background:#185FA5}
+.sap-result{border-radius:6px;padding:10px 12px;margin-top:10px;font-size:12px;line-height:1.6;display:none}
+.sap-result.ok{display:block;background:#EAF3DE;color:#27500A}
+.sap-result.err{display:block;background:#FCEBEB;color:#791F1F}
+
+/* Formula box */
+.formula-box{background:#E6F1FB;border-radius:10px;padding:14px 16px;border:0.5px solid #B5D4F4;margin-bottom:14px}
+.formula-title{font-size:12px;font-weight:700;color:#185FA5;margin-bottom:8px}
+.formula{font-size:14px;font-weight:700;color:#0C447C;text-align:center;padding:10px;background:rgba(255,255,255,.65);border-radius:6px;margin:6px 0;font-family:monospace}
+.formula-examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.fex{border-radius:8px;padding:10px 12px}
+.fex.blue{background:rgba(255,255,255,.7);border:0.5px solid #B5D4F4}
+.fex.teal{background:rgba(255,255,255,.7);border:0.5px solid #9FE1CB}
+.fex-title{font-size:10px;font-weight:700;margin-bottom:6px}
+.fex.blue .fex-title{color:#185FA5}
+.fex.teal .fex-title{color:#0F6E56}
+.fex-row{display:flex;justify-content:space-between;font-size:11px;color:#64748B;margin-bottom:4px}
+.fex-total{font-size:12px;font-weight:700;color:#fff;border-radius:5px;padding:5px 8px;text-align:center;margin-top:6px}
+.fex.blue .fex-total{background:#185FA5}
+.fex.teal .fex-total{background:#0F6E56}
+
+/* Info/tip boxes */
+.info-box{border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#444441;border:0.5px solid #D3D1C7;background:#F1EFE8}
+.info-box.green{background:#EAF3DE;color:#27500A;border-color:#97C459}
+.tip-box{background:#FAEEDA;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#633806;border:0.5px solid #FAC775}
+
+/* Quiz */
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+
+/* Result */
+.result-card{background:#1B3A6B;border-radius:14px;padding:24px;text-align:center;color:#fff;margin-bottom:16px}
+.result-title{font-size:13px;color:#B5D4F4;margin-bottom:8px}
+.result-score{font-size:54px;font-weight:700;line-height:1;margin-bottom:8px}
+.result-pct{font-size:14px;color:#B5D4F4;margin-bottom:16px}
+.result-bar-wrap{background:rgba(255,255,255,.15);border-radius:20px;height:10px;overflow:hidden;margin-bottom:16px}
+.result-bar{height:10px;background:#9FE1CB;border-radius:20px;transition:width 1s ease}
+.result-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border-radius:20px;padding:7px 16px;font-size:12px;color:#E1F5EE}
+.result-actions{text-align:center;margin-top:16px;display:flex;gap:10px;justify-content:center}
+
+/* Review box */
+.review-box{background:#fff;border-radius:12px;border:0.5px solid #E2E8F0;padding:14px 16px;margin-bottom:12px}
+.review-title{font-size:12px;font-weight:700;color:#1E293B;margin-bottom:8px}
+.review-list{font-size:12px;color:#64748B;line-height:1.8;padding-left:16px}
+
+/* Navigation */
+
+.nav-dots{display:flex;gap:5px}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:#CBD5E1;transition:all .3s}
+.nav-dot.done{background:#9FE1CB}
+.nav-dot.active{background:#185FA5;width:20px;border-radius:4px}
+
+/* Buttons */
+
+.btn-primary:hover{background:#185FA5}
+.btn-primary:disabled{opacity:.35;cursor:default}
+
+.btn-secondary:hover{background:#E2E8F0}
+.btn-secondary:disabled{opacity:.35;cursor:default}
+
+/* Helpers */
+.intro-text{font-size:13px;line-height:1.7;color:#1E293B;margin-bottom:14px}
+.hint-text{font-size:12px;color:#64748B;margin-bottom:6px}
+.counter-text{font-size:11px;color:#64748B;text-align:center;margin-top:10px}
+
+@media(max-width:600px){
+  .card-grid-3{grid-template-columns:1fr}
+  .tariff-grid{grid-template-columns:1fr}
+  .formula-examples{grid-template-columns:1fr}
+}
+
+/* Fixed overrides for iframe compatibility */
+
+/* ═══ IFRAME COMPATIBILITY FIXES ═══ */
+html, body {
+  height: 100%;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #F0F4F8;
+  color: #1E293B;
+  font-size: 15px;
+  line-height: 1.6;
+  cursor: default;
+}
+/* Scene visibility - definitive rules */
+.scene { display: none !important; visibility: hidden !important; }
+.scene.active { display: block !important; visibility: visible !important; }
+
+/* Navigation bar - fixed at bottom, always visible, high z-index */
+.mc-nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 9999 !important;
+  background: rgba(255,255,255,0.97) !important;
+  backdrop-filter: blur(8px);
+  border-top: 1px solid #E2E8F0 !important;
+  padding: 10px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.08) !important;
+}
+/* Buttons - ensure clickable */
+.btn-primary, .btn-secondary, .opt, .rev-card, .tariff-card,
+button, input[type=button], input[type=submit] {
+  cursor: pointer !important;
+  pointer-events: all !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+  touch-action: manipulation !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+.btn-primary {
+  background: #1B3A6B !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 11px 22px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  min-width: 120px !important;
+  box-shadow: 0 2px 6px rgba(27,58,107,0.25) !important;
+}
+.btn-primary:hover { background: #185FA5 !important; }
+.btn-primary:active { transform: scale(0.97) !important; }
+.btn-secondary {
+  background: #F1F5F9 !important;
+  color: #1E293B !important;
+  border: 0.5px solid #CBD5E1 !important;
+  border-radius: 8px !important;
+  padding: 11px 22px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  min-width: 120px !important;
+}
+.btn-secondary:disabled { opacity: 0.35 !important; cursor: not-allowed !important; }
+
+/* Content area - leave room for fixed nav */
+.mc-wrap { 
+  max-width: 820px !important; 
+  margin: 0 auto !important; 
+  padding: 16px 16px 90px !important;
+}
+/* Progress bar */
+.progress-wrap { 
+  background: #E2E8F0; border-radius: 20px; height: 6px; 
+  margin-bottom: 8px; overflow: hidden;
+}
+.progress-bar { 
+  height: 6px; background: #185FA5; border-radius: 20px; 
+  transition: width 0.4s ease;
+}
+/* Result banner */
+#resultBanner {
+  display: none;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 12px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+/* Swipe hint */
+#swipeHint {
+  position: fixed;
+  bottom: 65px;
+  right: 16px;
+  background: rgba(27,58,107,0.85);
+  color: #fff;
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  z-index: 9998;
+  opacity: 1;
+  transition: opacity 1s;
+  pointer-events: none;
+}
+
+</style>
+</head>
+<body>
+<div id="resultBanner"></div>
+<div id="swipeHint">&#8592; Desliza o usa las flechas del teclado &#8594;</div>
+<div class="mc-wrap">
+<header class="mc-header"><div class="header-left">
+  <div class="header-icon">&#127942;</div>
+  <div><h1>Contingencias empresa y evaluación final</h1><p>Microcurso · Día 10 · Semana 2 · Bloom: Evaluar · 6–7 min</p></div>
+</div><div class="header-right"><div class="score-display" id="scoreDisplay">Puntuación: 0%</div></div></header>
+<div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+<div class="scene-info"><span id="sceneLabel">Módulo 1 de 9</span><span id="bloomLabel" class="bloom-badge">Bloom: Evaluar</span></div>
+<section class="scene active" id="sc0">
+<div class="slide"><div class="slide-hdr hdr-blue"><span class="slide-tag">Bienvenida</span><h2>¿Qué vas a aprender hoy?</h2></div>
+<div class="slide-body">
+<p class="intro-text">Hoy cierras el programa dominando las contingencias más complejas de clientes empresa: <strong>períodos rezagados, reliquidaciones masivas</strong> y el protocolo de la Evaluación Final que pondera el 40% de tu nota.</p>
+<div class="card-grid-3">
+  <div class="mini-card blue"><div class="mc-icon">&#127942;</div><h4>Conceptos clave</h4><p>6 tarjetas interactivas</p></div>
+  <div class="mini-card teal"><div class="mc-icon">&#128203;</div><h4>Casos de decisión</h4><p>3 situaciones reales</p></div>
+  <div class="mini-card amber"><div class="mc-icon">&#128269;</div><h4>Quiz de cierre</h4><p>4 preguntas con retroalimentación</p></div>
+</div>
+<div class="info-box">&#9200; <strong>Duración: 6–7 min</strong> — 6 conceptos clave, módulos de contenido, 3 casos de decisión y quiz.</div>
+</div></div></section>
+<section class="scene" id="sc1">
+<div class="slide"><div class="slide-hdr hdr-blue"><span class="slide-tag">Módulo 1 de 4 — Conceptos clave</span><h2>Contingencias empresa y evaluación final — toca cada tarjeta para explorarla</h2></div>
+<div class="slide-body">
+<div class="concept-summary">El período rezagado es consumo real transmitido con retraso — <strong>no es un error de cobro</strong>. Las reliquidaciones masivas requieren comunicación previa al cliente empresa ANTES de cualquier cobro adicional. Sin comunicación previa = error grave.</div>
+<p class="hint-text">Haz clic en cada tarjeta para ver la definición completa, los criterios de aplicación y las implicancias prácticas.</p>
+<div class="reveal-grid" id="cardGrid"></div>
+<div class="concept-counter" id="cardCnt">0 de 6 conceptos explorados</div>
+</div></div></section>
+<section class="scene" id="sc2">
+<div class="slide"><div class="slide-hdr hdr-teal"><span class="slide-tag">Módulo 2 de 4 — Períodos rezagados y cómo explicarlos</span><h2>Períodos rezagados y cómo explicarlos</h2></div>
+<div class="slide-body"><div class="concept-summary">La habilidad clave es explicar el período rezagado con claridad usando los datos de <strong>FPL9</strong>. El cliente debe comprender que no se le cobró dos veces — se le cobró el consumo real de meses anteriores que llegó con retraso.</div>
+<div style="background:#E6F1FB;border-radius:8px;padding:12px 14px;border:0.5px solid #B5D4F4;margin:10px 0">
+  <div style="font-size:12px;font-weight:700;color:#0C447C;margin-bottom:8px">Cómo leer y explicar un período rezagado en FPL9</div>
+  <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:#185FA5;line-height:1.6">
+    <div>1) Abrir FPL9 → Detalle de la factura que reclama el cliente.</div>
+    <div>2) Identificar los períodos incluidos: la boleta mostrará más de un período de facturación.</div>
+    <div>3) Mostrar al cliente el desglose: "Período agosto: X kWh = $Y. Período septiembre: X kWh = $Y. Período octubre (actual): X kWh = $Y".</div>
+    <div>4) Explicar: "Su medidor inteligente no transmitió los datos de agosto y septiembre a tiempo. Lo que aparece en esta boleta es su consumo real de esos meses — simplemente llegó con retraso al sistema".</div>
+  </div>
+</div>
+<div style="background:#EAF3DE;border-radius:8px;padding:10px 14px;border:0.5px solid #C0DD97;font-size:11px;color:#27500A">
+  &#10004; Si el cliente puede verificar en su historial de consumo propio que efectivamente usó esa energía, la explicación queda respaldada por datos concretos — no por la palabra del especialista.
+</div></div></div></section>
+<section class="scene" id="sc3">
+<div class="slide"><div class="slide-hdr hdr-amber"><span class="slide-tag">Caso 1 de 3 — Decisión</span><h2>Cliente empresa con boleta 3 veces más alta</h2></div>
+<div class="slide-body">
+<div class="case-box amber"><div class="case-label">Situación real</div><p>Cliente empresa (BT4.1) llama furioso: 'Mi boleta de este mes es 3 veces más alta que lo normal'. Revisas FPL9 y ves que incluye el período actual más dos períodos rezagados de meses anteriores donde el medidor inteligente no había transmitido datos.</p></div>
+<p class="hint-text">¿Cuál es la acción correcta?</p>
+<div class="opts" id="d1"><button class="opt" onclick="decidir(1,'A')">A) Decirle que es un error del sistema y emitir NC por los 2 períodos adicionales.</button><button class="opt" onclick="decidir(1,'B')">B) Explicar que su medidor inteligente no transmitió los datos de los meses anteriores a tiempo. Lo que aparece es su consumo REAL de 3 meses llegando junto. Mostrar el desglose período por período en FPL9.</button><button class="opt" onclick="decidir(1,'C')">C) Derivar a área técnica sin explicar nada al cliente.</button></div>
+<div class="feedback" id="fb1"></div>
+</div></div></section>
+<section class="scene" id="sc4">
+<div class="slide"><div class="slide-hdr hdr-purp"><span class="slide-tag">Módulo 3 de 4 — Protocolo de reliquidación masiva</span><h2>Protocolo de reliquidación masiva</h2></div>
+<div class="slide-body"><div class="concept-summary">Una reliquidación masiva en cliente empresa es uno de los casos de <strong>mayor complejidad y mayor impacto en la relación comercial</strong>. El protocolo de 6 pasos es obligatorio y no admite atajos.</div>
+<ol style="list-style:none;margin:10px 0;display:flex;flex-direction:column;gap:8px">
+  <li style="display:flex;gap:10px;align-items:flex-start">
+    <span style="background:#1B3A6B;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">1</span>
+    <div><div style="font-size:12px;font-weight:700;color:#1E293B">Diagnóstico</div><div style="font-size:11px;color:#64748B">Identificar todos los períodos afectados, el origen del error (lectura, tarifa, datos maestros) y el rango temporal.</div></div>
+  </li>
+  <li style="display:flex;gap:10px;align-items:flex-start">
+    <span style="background:#1B3A6B;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">2</span>
+    <div><div style="font-size:12px;font-weight:700;color:#1E293B">Cálculo detallado</div><div style="font-size:11px;color:#64748B">Reliquidar cada período con el pliego correcto. Calcular la diferencia acumulada total. Si es AT3: usar 4 precios distintos HP/HFP.</div></div>
+  </li>
+  <li style="display:flex;gap:10px;align-items:flex-start">
+    <span style="background:#DC2626;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">3</span>
+    <div><div style="font-size:12px;font-weight:700;color:#DC2626">Comunicación previa OBLIGATORIA</div><div style="font-size:11px;color:#A32D2D">Contactar al representante del cliente empresa antes de emitir cualquier cobro. Explicar el error, el cálculo y el resultado. NUNCA sorprender con un cobro masivo.</div></div>
+  </li>
+  <li style="display:flex;gap:10px;align-items:flex-start">
+    <span style="background:#1B3A6B;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">4</span>
+    <div><div style="font-size:12px;font-weight:700;color:#1E293B">Acuerdo de regularización</div><div style="font-size:11px;color:#64748B">Acordar la forma de pago del cobro adicional (o la forma de compensación si es NC). Ofrecer cuotas si el monto es significativo.</div></div>
+  </li>
+  <li style="display:flex;gap:10px;align-items:flex-start">
+    <span style="background:#1B3A6B;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">5</span>
+    <div><div style="font-size:12px;font-weight:700;color:#1E293B">Notificación formal escrita</div><div style="font-size:11px;color:#64748B">Emitir carta formal al cliente con el detalle de períodos reliquidados, error detectado y acuerdo de regularización.</div></div>
+  </li>
+  <li style="display:flex;gap:10px;align-items:flex-start">
+    <span style="background:#1B3A6B;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">6</span>
+    <div><div style="font-size:12px;font-weight:700;color:#1E293B">Cierre con documentación completa</div><div style="font-size:11px;color:#64748B">Registrar en el sistema todo el proceso: cálculo, comunicaciones, acuerdo y seguimiento hasta confirmar la regularización.</div></div>
+  </li>
+</ol></div></div></section>
+<section class="scene" id="sc5">
+<div class="slide"><div class="slide-hdr hdr-purp"><span class="slide-tag">Caso 2 de 3 — Decisión</span><h2>Reliquidación masiva AT3 — $1,8M a favor del cliente</h2></div>
+<div class="slide-body">
+<div class="case-box purp"><div class="case-label">Situación real</div><p>Detectas que un cliente empresa AT3 fue cobrado con precio HP incorrecto durante 6 meses. La diferencia acumulada a su favor es <strong>$1,8 millones</strong>. El cálculo es correcto y verificado.</p></div>
+<p class="hint-text">¿Cuál es la acción correcta?</p>
+<div class="opts" id="d2"><button class="opt" onclick="decidir(2,'A')">A) Calcular período por período, preparar informe detallado, contactar al representante del cliente empresa antes de emitir la NC, explicar el error y acordar el mecanismo de compensación. Obtener aprobación de Gerencia Comercial.</button><button class="opt" onclick="decidir(2,'B')">B) Emitir la NC de $1,8M directamente — le favorece al cliente, no hay problema en procesarla de inmediato.</button><button class="opt" onclick="decidir(2,'C')">C) Esperar a que el cliente reclame antes de iniciar el proceso de corrección.</button></div>
+<div class="feedback" id="fb2"></div>
+</div></div></section>
+<section class="scene" id="sc6">
+<div class="slide"><div class="slide-hdr hdr-teal"><span class="slide-tag">Caso 3 de 3 — Decisión</span><h2>Caso integrador de la Evaluación Final</h2></div>
+<div class="slide-body">
+<div class="case-box teal"><div class="case-label">Situación real</div><p>El caso C de la Evaluación Final presenta: un cliente empresa crítica con código ED activo, que tiene Netbilling activo y reclama cobro de HP. ¿Cuál es la estructura correcta del análisis?</p></div>
+<p class="hint-text">¿Cuál es la acción correcta?</p>
+<div class="opts" id="d3"><button class="opt" onclick="decidir(3,'A')">A) Analizar las 3 situaciones por separado con su protocolo: 1) ED → verificar protocolo de suministro crítico. 2) Netbilling → verificar medidor en ES32 y créditos en FPL9. 3) HP → verificar historial y evaluar excepción.</button><button class="opt" onclick="decidir(3,'B')">B) Resolver primero el reclamo HP porque es el más urgente económicamente.</button><button class="opt" onclick="decidir(3,'C')">C) Derivar todo al área técnica sin analizar — es demasiado complejo para el especialista.</button></div>
+<div class="feedback" id="fb3"></div>
+</div></div></section>
+<section class="scene" id="sc7">
+<div class="slide"><div class="slide-hdr hdr-amber"><span class="slide-tag">Quiz de cierre — 4 preguntas</span><h2>Demuestra lo que aprendiste</h2></div>
+<div class="slide-body">
+  <div id="qText"></div><div id="qOpts" class="opts"></div><div id="qFb" class="feedback"></div>
+  <div class="quiz-nav"><span id="qCounter" class="hint-text">Pregunta 1 de 4</span>
+  <button class="btn-primary" id="qNext" onclick="nextQ()" style="display:none">Siguiente &rarr;</button></div>
+</div></div></section>
+<section class="scene" id="sc8">
+<div class="result-card"><div class="result-title">Microcurso completado</div>
+<div class="result-score" id="resultScore">0/4</div><div class="result-pct" id="resultPct">0%</div>
+<div class="result-bar-wrap"><div class="result-bar" id="resultBar" style="width:0%"></div></div>
+<div class="result-badge" id="resultBadge">Cargando...</div></div>
+<div id="reviewBox"></div>
+<div class="result-actions"><button class="btn-secondary" onclick="restart()">&#8635; Reiniciar</button></div>
+</section>
+<nav class="mc-nav">
+  <button class="btn-secondary" id="btnPrev" onclick="goScene(-1)" disabled>&larr; Anterior</button>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="btn-primary" id="btnNext" onclick="goScene(1)">Siguiente &rarr;</button>
+</nav>
+</div>
+<script>
+/* SCORM 2004 API */
+
+var SCORM=(function(){
+  var api=null,init=false;
+  function find(w){var t=0;while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}return w.API_1484_11||null;}
+  function go(){api=find(window);if(!api&&window.opener)api=find(window.opener);if(api){var r=api.Initialize('');init=(r==='true'||r===true);}return init;}
+  function set(k,v){try{if(api&&init)api.SetValue(k,v);}catch(e){}}
+  function commit(){try{if(api&&init)api.Commit('');}catch(e){}}
+  function finish(){try{if(api&&init){api.Commit('');api.Terminate('');}}catch(e){}}
+  function setComplete(pct){
+    try{
+      set('cmi.score.raw',pct);set('cmi.score.min',0);set('cmi.score.max',100);
+      set('cmi.score.scaled',(pct/100).toFixed(4));
+      set('cmi.completion_status','completed');
+      set('cmi.success_status',pct>=75?'passed':'failed');
+      set('cmi.session_time','PT7M0S');
+      commit();finish();
+    }catch(e){}
+    var b=document.getElementById('resultBanner');
+    if(b){
+      b.style.display='block';
+      b.style.background=pct>=75?'#EAF3DE':'#FEE2E2';
+      b.style.color=pct>=75?'#166534':'#991B1B';
+      b.style.border='1px solid '+(pct>=75?'#86EFAC':'#FCA5A5');
+      b.innerHTML=(pct>=75?'&#10003; Aprobado: ':'&#9888; No aprobado: ')+pct+'%'+(pct>=75?' &mdash; M&oacute;dulo completado':' &mdash; Umbral m&iacute;nimo 75%. Intenta nuevamente');
+    }
+  }
+  go();
+  return{set:set,get:function(k){try{if(api&&init)return api.GetValue(k);}catch(e){}return'';},commit:commit,finish:finish,setComplete:setComplete,initialized:init};
+})();
+
+/* Course logic */
+var state={cur:0,total:9,cardRevealed:0,totalCards:6,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+var BLOOM=['Analizar','Analizar','Evaluar','Evaluar','Evaluar','Evaluar','Evaluar','Evaluar','Evaluar'];
+var CARDS=[{name:'Período rezagado',desc:'Ocurre cuando los datos de consumo de un medidor inteligente (smart meter) llegan al sistema de facturación CON RETRASO por falla de comunicación del medidor. La boleta resultante puede ser mucho mayor al incluir varios meses de consumo real. NO es un error de cobro — es consumo real del cliente.',badge:'Smart meter · Consumo real con retraso',color:'blue'},
+{name:'Reliquidación masiva',desc:'Recalculación de varios períodos de un cliente empresa que fueron mal facturados. El proceso tiene 6 pasos obligatorios: diagnóstico → cálculo → comunicación previa → acuerdo de regularización → notificación formal → cierre con documentación completa.',badge:'6 pasos · Comunicación previa obligatoria',color:'red'},
+{name:'Desconexión AT programada',desc:'Solicitud formal con mínimo 5 días hábiles de anticipación. Incluye fecha, hora y duración de la desconexión. La distribuidora coordina con Operaciones. Sin ese plazo, la distribuidora no puede garantizar la coordinación operativa.',badge:'5 días hábiles mínimo · Solicitud formal',color:'amber'},
+{name:'Alzas tarifarias AT3/AT4',desc:'Cuando hay alza en tarifas AT con diferenciación HP/HFP, la distribuidora debe aplicar los nuevos precios HP y HFP por separado — no un solo precio promedio. Si el alza ocurre a mitad de período, aplicar proporcionalidad temporal con precio viejo y nuevo.',badge:'4 precios distintos · Proporcionalidad temporal',color:'purp'},
+{name:'Evaluación Final — estructura',desc:'Pondera el 40% de la nota total. Umbral: 75%. Estructura: 30 min repaso + 90 min examen (20 selección múltiple + 3 casos integradores) + 30 min corrección grupal. Los casos integradores combinan al menos 2 módulos.',badge:'40% nota final · 75% umbral',color:'teal'},
+{name:'Kirkpatrick 3 y 4',desc:'Nivel 3 (Transferencia): seguimiento a 30 días — ¿el especialista aplica en terreno lo aprendido? Nivel 4 (Resultados): medición a 60-90 días — variación en errores de facturación, tiempo de resolución y satisfacción del cliente.',badge:'30 días L3 · 60–90 días L4',color:'green'}];
+var SYNTH=['Período rezagado = consumo real con retraso en la transmisión. NO es error de cobro — mostrar desglose en FPL9.','Reliquidación masiva: diagnóstico → cálculo → comunicación previa → acuerdo → notificación → cierre.','NUNCA emitir cobro adicional masivo sin comunicación y acuerdo previo con el cliente empresa.','Desconexión AT programada: solicitud formal con mínimo 5 días hábiles de anticipación.','Evaluación Final: 40% nota total, umbral 75%, 3 casos integradores que combinan al menos 2 módulos.'];
+var ERRORS=['Explicar el período rezagado como \'un error del sistema\' — es consumo real transmitido con retraso.','Emitir cobro adicional de reliquidación masiva sin comunicación y acuerdo previo con el cliente empresa.','En alzas tarifarias AT3/AT4: aplicar un solo precio sin distinguir HP y HFP.','Aceptar una solicitud verbal de desconexión AT sin requerir la documentación formal.','Cerrar el caso de reliquidación masiva sin registrar toda la documentación en el sistema.'];
+var DEC={
+  1:{correct:'B',A:{ok:false,msg:'Incorrecto. El período rezagado NO es un error del sistema. Es el consumo REAL del cliente que el medidor inteligente transmitió con retraso. Emitir NC sería incorrecto — se estaría eliminando un cobro legítimo.'},B:{ok:true,msg:'Correcto. Mostrar el desglose en FPL9: separar claramente los períodos y su consumo individual. El cliente puede verificar que el consumo total corresponde a lo que realmente usó en esos meses — simplemente llegó con retraso.'},C:{ok:false,msg:'Incorrecto. El especialista puede y debe explicar el período rezagado directamente con los datos de FPL9. Derivar sin explicar deja al cliente sin respuesta y genera escalada innecesaria.'}},
+  2:{correct:'A',A:{ok:true,msg:'Correcto. Aunque la NC sea a favor del cliente, $1,8M requiere proceso formal: calcular período por período, informe detallado, contactar al representante del cliente empresa y obtener aprobación de Gerencia Comercial antes de emitir.'},B:{ok:false,msg:'Incorrecto. Incluso cuando la NC favorece al cliente, requiere el proceso formal completo. Una NC de $1,8M sin coordinación previa puede generar problemas contables y de gestión para el cliente empresa.'},C:{ok:false,msg:'Incorrecto. Si detectas el error, tienes la obligación profesional y normativa de iniciar el proceso de corrección. No esperar el reclamo del cliente es parte de la ética profesional del especialista.'}},
+  3:{correct:'A',A:{ok:true,msg:'Correcto. Los casos integradores requieren analizar cada situación de forma estructurada: protocolo ED (riesgo vital primero) → diagnóstico Netbilling con SAP → verificación HP con datos históricos. Cada parte tiene su procedimiento propio.'},B:{ok:false,msg:'Incorrecto. La urgencia económica nunca supera el protocolo de seguridad vital. El protocolo ED siempre va primero, independiente del monto del reclamo HP.'},C:{ok:false,msg:'Incorrecto. El especialista debe diagnosticar cada situación antes de derivar. Un caso integrador evaluado sin análisis no demuestra la competencia de nivel Evaluar (Bloom).'}},
+};
+var QUIZ=[{q:'¿Qué es un período rezagado en medición inteligente?',opts:['Un error del sistema que cobra dos veces el mismo período','El consumo real del cliente que llegó al sistema de facturación con retraso por falla de comunicación del medidor','Una estimación de consumo por medidor averiado','Un período en que el cliente no pagó y se acumuló la deuda'],ans:1,exp:'Un período rezagado es consumo REAL que el medidor inteligente transmitió con retraso al sistema de facturación. No es un error de cobro — el cliente consumió esa energía. La boleta puede ser mayor al incluir varios meses de consumo real.'},
+{q:'¿Cuál es el plazo mínimo de anticipación para una solicitud de desconexión AT programada?',opts:['24 horas','48 horas','5 días hábiles','10 días hábiles'],ans:2,exp:'Las solicitudes de desconexión AT programada requieren mínimo 5 días hábiles de anticipación con documentación formal escrita. Sin ese plazo, la distribuidora no puede garantizar la coordinación operativa necesaria.'},
+{q:'¿Cuál es la ponderación de la Evaluación Final en la nota total del programa?',opts:['25%','30%','40%','50%'],ans:2,exp:'La Evaluación Final pondera el 40% de la nota total — es el instrumento más relevante del programa. El umbral sigue siendo 75%. Los casos integradores combinan al menos 2 módulos del programa.'},
+{q:'En una reliquidación masiva de cliente empresa, ¿cuándo se puede emitir el cobro adicional?',opts:['Inmediatamente al detectar el error','Solo después de comunicar al cliente, explicar el cálculo y acordar la forma de regularización','Al final del mes en curso para acumular con otros ajustes','Cuando el supervisor lo aprueba, sin necesidad de comunicar al cliente'],ans:1,exp:'NUNCA sorprender al cliente empresa con un cobro masivo sin comunicación previa. El protocolo obliga a: calcular → comunicar al representante → explicar el error → acordar la regularización → notificación formal → emitir el cobro.'}];
+
+document.addEventListener('DOMContentLoaded',function(){
+  buildDots();updateUI();buildCards();buildSynth();buildErrors();
+  if(window.SCORM&&SCORM.set){SCORM.set('cmi.core.lesson_status','incomplete');SCORM.commit();}
+});
+
+function buildCards(){
+  var g=document.getElementById('cardGrid');if(!g)return;
+  CARDS.forEach(function(c){
+    var d=document.createElement('div');
+    d.className='rev-card '+c.color;
+    d.innerHTML='<h4>'+c.name+'</h4><div class="rev-desc"></div><span class="rev-hint">Toca para ver</span>';
+    d.onclick=function(){revealCard(this,c.desc,c.badge);};
+    g.appendChild(d);
+  });
+}
+function buildSynth(){
+  var b=document.getElementById('synthBody');if(!b)return;
+  b.innerHTML=SYNTH.map(function(s){return buildRevCard(s,false);}).join('');
+}
+function buildErrors(){
+  var b=document.getElementById('errorBody');if(!b)return;
+  b.innerHTML=ERRORS.map(function(e){return buildRevCard(e,true);}).join('');
+}
+function buildReview(){
+  var b=document.getElementById('reviewBox');if(!b)return;
+  b.innerHTML='<div class="review-box"><div class="review-title">Puntos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+}
+function restart(){
+  state={cur:0,total:9,cardRevealed:0,totalCards:6,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+  document.querySelectorAll('.scene').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('sc0').classList.add('active');
+  document.querySelectorAll('.opt').forEach(function(b){b.className='opt';});
+  document.querySelectorAll('.feedback').forEach(function(f){f.className='feedback';f.innerHTML='';});
+  document.querySelectorAll('.rev-card').forEach(function(c){c.classList.remove('revealed');if(c.querySelector('.rev-desc'))c.querySelector('.rev-desc').textContent='';if(c.querySelector('.rev-hint'))c.querySelector('.rev-hint').textContent='Toca para ver';});
+  var cnt=document.getElementById('cardCnt');if(cnt)cnt.textContent='0 de 6 conceptos explorados';
+  document.getElementById('reviewBox').innerHTML='';
+  document.getElementById('resultBar').style.width='0%';
+  if(document.getElementById('scoreDisplay'))document.getElementById('scoreDisplay').textContent='Puntuación: 0%';
+  buildSynth();buildErrors();updateUI();
+}
+
+
+function goScene(dir){var n=state.cur+dir;if(n<0||n>=state.total)return;setScene(n);}
+function setScene(idx){
+  document.getElementById('sc'+state.cur).classList.remove('active');
+  state.cur=idx;document.getElementById('sc'+state.cur).classList.add('active');
+  updateUI();
+  if(idx===state.total-2&&!state.qInitDone)renderQuiz();
+  if(idx===state.total-1)showResults();
+  if(window.SCORM&&SCORM.set)SCORM.set('cmi.core.lesson_location',idx);
+  if(window.SCORM&&SCORM.commit)SCORM.commit();
+}
+function updateUI(){
+  var pct=Math.round(state.cur/(state.total-1)*100);
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('sceneLabel').textContent='Módulo '+(state.cur+1)+' de '+state.total;
+  document.getElementById('bloomLabel').textContent='Bloom: '+(BLOOM[state.cur]||'');
+  document.getElementById('btnPrev').disabled=state.cur===0;
+  document.getElementById('btnNext').disabled=state.cur===state.total-1;
+  updateDots();
+}
+function buildDots(){var w=document.getElementById('navDots');if(!w)return;w.innerHTML='';for(var i=0;i<state.total;i++){var d=document.createElement('div');d.className='nav-dot';w.appendChild(d);}}
+function updateDots(){document.querySelectorAll('.nav-dot').forEach(function(d,i){d.className='nav-dot'+(i<state.cur?' done':i===state.cur?' active':'');});}
+function decidir(n,opt){
+  if(state.decisions[n])return;state.decisions[n]=opt;
+  var dec=DEC[n];var btns=document.querySelectorAll('#d'+n+' .opt');var letters=['A','B','C'];
+  btns.forEach(function(b,i){if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');});
+  var res=dec[opt];var fb=document.getElementById('fb'+n);
+  fb.className='feedback show '+(res.ok?'ok':'ko');
+  fb.innerHTML=(res.ok?'&#10003; ':'&#10007; ')+res.msg;
+}
+function renderQuiz(){
+  state.qInitDone=true;showQuestion();
+}
+function showQuestion(){
+  var q=QUIZ[state.quizCurrent];
+  document.getElementById('qCounter').textContent='Pregunta '+(state.quizCurrent+1)+' de '+QUIZ.length;
+  document.getElementById('qFb').className='feedback';document.getElementById('qNext').style.display='none';state.quizAnswered=false;
+  document.getElementById('qText').innerHTML='<p style="font-size:13px;line-height:1.6;margin-bottom:12px;font-weight:500">'+q.q+'</p>';
+  var opts=document.getElementById('qOpts');opts.innerHTML='';
+  q.opts.forEach(function(o,i){var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){return function(){answerQ(idx);};})(i);opts.appendChild(b);});
+}
+function answerQ(idx){
+  if(state.quizAnswered)return;state.quizAnswered=true;
+  var q=QUIZ[state.quizCurrent];
+  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');});
+  var ok=idx===q.ans;if(ok)state.quizScore++;
+  var fb=document.getElementById('qFb');fb.className='feedback show '+(ok?'ok':'ko');fb.innerHTML=(ok?'&#10003; Correcto. ':'&#10007; Incorrecto. ')+q.exp;
+  document.getElementById('qNext').style.display='inline-block';
+  if(window.SCORM&&SCORM.set){SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');SCORM.commit();}
+}
+function nextQ(){state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else goScene(1);}
+function showResults(){
+  var pct=Math.round(state.quizScore/QUIZ.length*100);
+  document.getElementById('resultScore').textContent=state.quizScore+'/'+QUIZ.length;
+  document.getElementById('resultPct').textContent=pct+'% correcto';
+  if(document.getElementById('scoreDisplay'))document.getElementById('scoreDisplay').textContent='Puntuación: '+pct+'%';
+  setTimeout(function(){document.getElementById('resultBar').style.width=pct+'%';},200);
+  var b=pct===100?'&#9733; Dominio total — puntaje perfecto':pct>=75?'&#128077; Buen desempeño — aprobado':' &#8635; Bajo el umbral — revisa los módulos';
+  document.getElementById('resultBadge').innerHTML=b;
+  if(pct<100&&document.getElementById('reviewBox'))buildReview();
+  if(window.SCORM&&SCORM.setComplete)SCORM.setComplete(pct);
+}
+function buildRevCard(txt,isErr){
+  return '<div style="display:flex;gap:8px;align-items:flex-start;padding:9px 12px;background:'+(isErr?'#FCEBEB':'#EAF3DE')+';border-radius:7px;margin-bottom:7px"><span style="color:'+(isErr?'#DC2626':'#3B6D11')+';font-size:15px;flex-shrink:0">'+(isErr?'&#10007;':'&#10004;')+'</span><span style="font-size:12px;line-height:1.55;color:'+(isErr?'#791F1F':'#27500A')+'">'+txt+'</span></div>';
+}
+function revealCard(el,desc,badge){
+  if(el.classList.contains('revealed'))return;
+  el.classList.add('revealed');
+  el.querySelector('.rev-desc').textContent=desc;
+  el.querySelector('.rev-hint').textContent=badge;
+  state.cardRevealed++;
+  var cnt=document.getElementById('cardCnt');
+  if(cnt)cnt.textContent=state.cardRevealed+' de '+state.totalCards+' conceptos explorados';
+}
+
+
+/* Touch + keyboard navigation */
+
+// ═══ TOUCH / SWIPE NAVIGATION ═══
+(function(){
+  var startX = 0, startY = 0;
+  document.addEventListener('touchstart', function(e){
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, {passive: true});
+  document.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50){
+      if(dx < 0) goScene(1);   // swipe left = next
+      else goScene(-1);          // swipe right = prev
+    }
+  }, {passive: true});
+})();
+
+// ═══ KEYBOARD NAVIGATION ═══
+document.addEventListener('keydown', function(e){
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') goScene(1);
+  if(e.key === 'ArrowLeft'  || e.key === 'ArrowUp')  goScene(-1);
+});
+
+// ═══ HIDE SWIPE HINT AFTER 4s ═══
+setTimeout(function(){
+  var h = document.getElementById('swipeHint');
+  if(h){ h.style.opacity = '0'; setTimeout(function(){ h.style.display='none'; }, 1000); }
+}, 4000);
+
+</script>
+</body>
+</html>
