@@ -2,11 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Microcurso Día 4 — Aplicación de Tarifas BT1 a BT3</title>
 <style>
-/* Base styles */
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;font-size:15px}
 .mc-wrap{max-width:820px;margin:0 auto;padding:16px 16px 80px}
@@ -181,8 +180,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;fo
 
 /* Navigation */
 
-.nav-dots{display:flex;gap:5px}
-.nav-dot{width:8px;height:8px;border-radius:50%;background:#CBD5E1;transition:all .3s}
+
+
 .nav-dot.done{background:#9FE1CB}
 .nav-dot.active{background:#185FA5;width:20px;border-radius:4px}
 
@@ -205,124 +204,155 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;fo
   .formula-examples{grid-template-columns:1fr}
 }
 
-/* Fixed overrides for iframe compatibility */
 
-/* ═══ IFRAME COMPATIBILITY FIXES ═══ */
-html, body {
-  height: 100%;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch;
-}
+/* ═══ RESET ═══ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { height: 100%; scroll-behavior: smooth; }
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background: #F0F4F8;
   color: #1E293B;
   font-size: 15px;
   line-height: 1.6;
-  cursor: default;
+  min-height: 100%;
+  overflow-y: scroll;
 }
-/* Scene visibility - definitive rules */
-.scene { display: none !important; visibility: hidden !important; }
-.scene.active { display: block !important; visibility: visible !important; }
 
-/* Navigation bar - fixed at bottom, always visible, high z-index */
-.mc-nav {
-  position: fixed !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  z-index: 9999 !important;
-  background: rgba(255,255,255,0.97) !important;
-  backdrop-filter: blur(8px);
-  border-top: 1px solid #E2E8F0 !important;
-  padding: 10px 16px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-  box-shadow: 0 -2px 12px rgba(0,0,0,0.08) !important;
+/* ═══ SCENE CONTROL ═══ */
+.scene { display: none !important; }
+.scene.active { display: block !important; }
+
+/* ═══ WRAPPER ═══ */
+.mc-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px 16px 120px;
 }
-/* Buttons - ensure clickable */
-.btn-primary, .btn-secondary, .opt, .rev-card, .tariff-card,
-button, input[type=button], input[type=submit] {
+
+/* ═══ NAVIGATION — LARGE VISIBLE BUTTONS ═══ */
+.nav-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  background: #1B3A6B;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
+}
+.nav-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+.nav-counter {
+  color: #B5D4F4;
+  font-size: 11px;
+  font-weight: 500;
+}
+.nav-dots-row {
+  display: flex;
+  gap: 4px;
+}
+.nav-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  transition: all 0.3s;
+}
+.nav-dot.done { background: #9FE1CB; }
+.nav-dot.cur { background: #fff; width: 20px; border-radius: 4px; }
+
+/* BIG NAV BUTTONS */
+.btn-nav-big {
+  background: #fff;
+  color: #1B3A6B;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  min-width: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  -webkit-tap-highlight-color: rgba(27,58,107,0.2);
+  touch-action: manipulation;
+  user-select: none;
+  transition: transform 0.1s, background 0.15s;
+}
+.btn-nav-big:hover { background: #E6F1FB; }
+.btn-nav-big:active { transform: scale(0.95); background: #B5D4F4; }
+.btn-nav-big:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.btn-nav-big.next-btn {
+  background: #2563EB;
+  color: #fff;
+}
+.btn-nav-big.next-btn:hover { background: #185FA5; }
+.btn-nav-big.next-btn:active { background: #1B3A6B; }
+
+/* ═══ ALL INTERACTIVE ELEMENTS ═══ */
+button, .opt, .rev-card, .tariff-card, .chk-item, input {
   cursor: pointer !important;
-  pointer-events: all !important;
-  -webkit-tap-highlight-color: rgba(0,0,0,0.1);
   touch-action: manipulation !important;
-  user-select: none !important;
-  -webkit-user-select: none !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.08);
 }
-.btn-primary {
-  background: #1B3A6B !important;
-  color: #fff !important;
-  border: none !important;
-  border-radius: 8px !important;
-  padding: 11px 22px !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  min-width: 120px !important;
-  box-shadow: 0 2px 6px rgba(27,58,107,0.25) !important;
+.opt {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-radius: 9px;
+  padding: 12px 14px;
+  cursor: pointer;
+  border: 1.5px solid #CBD5E1;
+  background: #fff;
+  font-size: 13px;
+  color: #1E293B;
+  transition: all 0.15s;
+  line-height: 1.5;
+  margin-bottom: 8px;
 }
-.btn-primary:hover { background: #185FA5 !important; }
-.btn-primary:active { transform: scale(0.97) !important; }
-.btn-secondary {
-  background: #F1F5F9 !important;
-  color: #1E293B !important;
-  border: 0.5px solid #CBD5E1 !important;
-  border-radius: 8px !important;
-  padding: 11px 22px !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  min-width: 120px !important;
-}
-.btn-secondary:disabled { opacity: 0.35 !important; cursor: not-allowed !important; }
+.opt:hover { border-color: #185FA5; background: #E6F1FB; }
+.opt.correct { border-color: #3B6D11; background: #EAF3DE; color: #27500A; pointer-events: none; font-weight: 700; }
+.opt.wrong { border-color: #A32D2D; background: #FCEBEB; color: #791F1F; pointer-events: none; }
+.opt.disabled { opacity: 0.45; pointer-events: none; }
 
-/* Content area - leave room for fixed nav */
-.mc-wrap { 
-  max-width: 820px !important; 
-  margin: 0 auto !important; 
-  padding: 16px 16px 90px !important;
+.btn-primary {
+  background: #1B3A6B; color: #fff; border: none;
+  border-radius: 8px; padding: 10px 20px;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  touch-action: manipulation;
 }
-/* Progress bar */
-.progress-wrap { 
-  background: #E2E8F0; border-radius: 20px; height: 6px; 
-  margin-bottom: 8px; overflow: hidden;
-}
-.progress-bar { 
-  height: 6px; background: #185FA5; border-radius: 20px; 
-  transition: width 0.4s ease;
-}
-/* Result banner */
+.btn-primary:hover { background: #185FA5; }
+
+/* ═══ RESULT BANNER ═══ */
 #resultBanner {
   display: none;
-  border-radius: 8px;
-  padding: 14px 18px;
-  margin: 12px 16px;
-  font-size: 14px;
-  font-weight: 700;
   text-align: center;
-}
-/* Swipe hint */
-#swipeHint {
-  position: fixed;
-  bottom: 65px;
-  right: 16px;
-  background: rgba(27,58,107,0.85);
-  color: #fff;
-  font-size: 11px;
-  padding: 5px 10px;
-  border-radius: 20px;
-  z-index: 9998;
-  opacity: 1;
-  transition: opacity 1s;
-  pointer-events: none;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 16px 0;
+  font-size: 13px;
+  line-height: 1.8;
 }
 
 </style>
 </head>
 <body>
 <div id="resultBanner"></div>
-<div id="swipeHint">&#8592; Desliza o usa las flechas del teclado &#8594;</div>
 <div class="mc-wrap">
 <header class="mc-header"><div class="header-left">
   <div class="header-icon">&#128207;</div>
@@ -462,45 +492,51 @@ button, input[type=button], input[type=submit] {
 <div id="reviewBox"></div>
 <div class="result-actions"><button class="btn-secondary" onclick="restart()">&#8635; Reiniciar</button></div>
 </section>
-<nav class="mc-nav">
-  <button class="btn-secondary" id="btnPrev" onclick="goScene(-1)" disabled>&larr; Anterior</button>
-  <div class="nav-dots" id="navDots"></div>
-  <button class="btn-primary" id="btnNext" onclick="goScene(1)">Siguiente &rarr;</button>
-</nav>
+
+</div>
+
+<div class="nav-fixed" role="navigation" aria-label="Navegación del módulo">
+  <button class="btn-nav-big" id="bigPrev"
+    onclick="goScene(-1)" disabled
+    aria-label="Módulo anterior">
+    &#9664; Anterior
+  </button>
+  <div class="nav-info">
+    <span class="nav-counter" id="navCounter">1 / 9</span>
+    <div class="nav-dots-row" id="navDotsRow"></div>
+  </div>
+  <button class="btn-nav-big next-btn" id="bigNext"
+    onclick="goScene(1)"
+    aria-label="Siguiente módulo">
+    Siguiente &#9654;
+  </button>
 </div>
 <script>
-/* SCORM 2004 API */
 
 var SCORM=(function(){
   var api=null,init=false;
-  function find(w){var t=0;while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}return w.API_1484_11||null;}
-  function go(){api=find(window);if(!api&&window.opener)api=find(window.opener);if(api){var r=api.Initialize('');init=(r==='true'||r===true);}return init;}
+  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}}catch(e){}return w.API_1484_11||null;}
+  function go(){try{api=find(window);if(!api&&window.opener)api=find(window.opener);if(api){var r=api.Initialize('');init=(r==='true'||r===true);}}catch(e){}return init;}
   function set(k,v){try{if(api&&init)api.SetValue(k,v);}catch(e){}}
   function commit(){try{if(api&&init)api.Commit('');}catch(e){}}
   function finish(){try{if(api&&init){api.Commit('');api.Terminate('');}}catch(e){}}
   function setComplete(pct){
-    try{
-      set('cmi.score.raw',pct);set('cmi.score.min',0);set('cmi.score.max',100);
-      set('cmi.score.scaled',(pct/100).toFixed(4));
-      set('cmi.completion_status','completed');
-      set('cmi.success_status',pct>=75?'passed':'failed');
-      set('cmi.session_time','PT7M0S');
-      commit();finish();
-    }catch(e){}
+    try{set('cmi.score.raw',pct);set('cmi.score.min',0);set('cmi.score.max',100);set('cmi.score.scaled',(pct/100).toFixed(4));set('cmi.completion_status','completed');set('cmi.success_status',pct>=75?'passed':'failed');set('cmi.session_time','PT7M0S');commit();finish();}catch(e){}
+    showBanner(pct);
+  }
+  function showBanner(pct){
     var b=document.getElementById('resultBanner');
-    if(b){
-      b.style.display='block';
-      b.style.background=pct>=75?'#EAF3DE':'#FEE2E2';
-      b.style.color=pct>=75?'#166534':'#991B1B';
-      b.style.border='1px solid '+(pct>=75?'#86EFAC':'#FCA5A5');
-      b.innerHTML=(pct>=75?'&#10003; Aprobado: ':'&#9888; No aprobado: ')+pct+'%'+(pct>=75?' &mdash; M&oacute;dulo completado':' &mdash; Umbral m&iacute;nimo 75%. Intenta nuevamente');
-    }
+    if(!b)return;
+    b.style.display='block';
+    b.style.background=pct>=75?'#EAF3DE':'#FEE2E2';
+    b.style.color=pct>=75?'#166534':'#991B1B';
+    b.style.border='2px solid '+(pct>=75?'#86EFAC':'#FCA5A5');
+    b.innerHTML='<span style="font-size:24px">'+(pct>=75?'✅':'⚠️')+'</span><br><strong>'+(pct>=75?'¡Aprobado! '+pct+'%':'No aprobado: '+pct+'%')+'</strong><br><span style="font-size:12px">'+(pct>=75?'Módulo completado correctamente':'Umbral mínimo 75%. Revisa el contenido e intenta nuevamente.')+'</span>';
   }
   go();
   return{set:set,get:function(k){try{if(api&&init)return api.GetValue(k);}catch(e){}return'';},commit:commit,finish:finish,setComplete:setComplete,initialized:init};
 })();
 
-/* Course logic */
 var state={cur:0,total:9,cardRevealed:0,totalCards:6,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
 var BLOOM=['Analizar','Analizar','Analizar','Analizar','Analizar','Analizar','Analizar','Evaluar','Evaluar'];
 var CARDS=[{name:'BT1 — Tarifa base',desc:'Aplica a clientes con potencia ≤ 10 kW, tensión baja (≤ 400V), sin medición de demanda y fuera de zona ECOSUR. Es la tarifa más frecuente — más del 70% de la cartera.',badge:'≤ 10 kW · Sin demanda',color:'blue'},
@@ -646,36 +682,92 @@ function revealCard(el,desc,badge){
 }
 
 
-/* Touch + keyboard navigation */
 
-// ═══ TOUCH / SWIPE NAVIGATION ═══
-(function(){
-  var startX = 0, startY = 0;
-  document.addEventListener('touchstart', function(e){
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-  }, {passive: true});
-  document.addEventListener('touchend', function(e){
-    var dx = e.changedTouches[0].clientX - startX;
-    var dy = e.changedTouches[0].clientY - startY;
-    if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50){
-      if(dx < 0) goScene(1);   // swipe left = next
-      else goScene(-1);          // swipe right = prev
-    }
-  }, {passive: true});
-})();
+// ═══ NEW NAVIGATION ═══
+function updateNav(){
+  var total = state.total;
+  var cur = state.cur;
+  var pct = Math.round(cur/(total-1)*100);
 
-// ═══ KEYBOARD NAVIGATION ═══
+  // Progress bar
+  var pb = document.getElementById('topProgress');
+  if(pb) pb.style.width = pct + '%';
+
+  // Counter
+  var cnt = document.getElementById('navCounter');
+  if(cnt) cnt.textContent = (cur+1) + ' / ' + total;
+
+  // Dots
+  var dotsWrap = document.getElementById('navDotsRow');
+  if(dotsWrap){
+    var dots = dotsWrap.querySelectorAll('.nav-dot');
+    dots.forEach(function(d,i){
+      d.className = 'nav-dot' + (i < cur ? ' done' : i === cur ? ' cur' : '');
+    });
+  }
+
+  // Bloom label
+  var bl = document.getElementById('bloomLabel');
+  if(bl && typeof BLOOM !== 'undefined') bl.textContent = 'Bloom: ' + (BLOOM[cur]||'');
+
+  // Scene label
+  var sl = document.getElementById('sceneLabel');
+  if(sl) sl.textContent = 'Módulo ' + (cur+1) + ' de ' + total;
+
+  // Buttons
+  var prev = document.getElementById('bigPrev');
+  var next = document.getElementById('bigNext');
+  if(prev) prev.disabled = cur === 0;
+  if(next) next.disabled = cur === total-1;
+}
+
+// Override goScene to call updateNav
+var _origGoScene = goScene;
+goScene = function(dir){
+  var n = state.cur + dir;
+  if(n < 0 || n >= state.total) return;
+  document.getElementById('sc'+state.cur).classList.remove('active');
+  state.cur = n;
+  document.getElementById('sc'+n).classList.add('active');
+  updateNav();
+  // Init quiz/results
+  if(n === state.total-2 && !state.qInitDone) renderQuiz();
+  if(n === state.total-1) showResults();
+  // Scroll to top
+  window.scrollTo(0,0);
+  try{if(window.SCORM&&SCORM.set)SCORM.set('cmi.core.lesson_location',n);}catch(e){}
+};
+
+// Keyboard
 document.addEventListener('keydown', function(e){
-  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') goScene(1);
-  if(e.key === 'ArrowLeft'  || e.key === 'ArrowUp')  goScene(-1);
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') goScene(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') goScene(-1);
 });
 
-// ═══ HIDE SWIPE HINT AFTER 4s ═══
-setTimeout(function(){
-  var h = document.getElementById('swipeHint');
-  if(h){ h.style.opacity = '0'; setTimeout(function(){ h.style.display='none'; }, 1000); }
-}, 4000);
+// Touch/swipe
+var _tx=0,_ty=0;
+document.addEventListener('touchstart',function(e){_tx=e.touches[0].clientX;_ty=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',function(e){
+  var dx=e.changedTouches[0].clientX-_tx;
+  var dy=e.changedTouches[0].clientY-_ty;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){
+    if(dx<0) goScene(1); else goScene(-1);
+  }
+},{passive:true});
+
+document.addEventListener('DOMContentLoaded', function(){
+  // Build nav dots
+  var dotsWrap = document.getElementById('navDotsRow');
+  if(dotsWrap){
+    dotsWrap.innerHTML='';
+    for(var i=0;i<state.total;i++){
+      var d=document.createElement('div');
+      d.className='nav-dot'+(i===0?' cur':'');
+      dotsWrap.appendChild(d);
+    }
+  }
+  updateNav();
+});
 
 </script>
 </body>
