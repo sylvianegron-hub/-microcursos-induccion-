@@ -260,11 +260,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;fo
 <script>
 var SCORM=(function(){
   var a=null,ok=false;
-  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}}catch(e){}return w.API_1484_11||null;}
-  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}}catch(e){}})();
-  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}}
+  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}catch(e){}return w.API_1484_11||null;}
+  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}catch(e){})();
+  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}
   function done(p){
-    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}}catch(e){}
+    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}catch(e){}
     var b=document.getElementById('resultBanner');
     if(b){b.style.cssText='display:block;border-radius:12px;padding:22px;margin:14px 0;text-align:center;font-size:14px;line-height:1.9;background:'+(p>=75?'linear-gradient(135deg,#F0FDF4,#DCFCE7)':'linear-gradient(135deg,#FFF5F5,#FEE2E2)')+';color:'+(p>=75?'#14532D':'#7F1D1D')+';border:2px solid '+(p>=75?'#86EFAC':'#FCA5A5');
     b.innerHTML='<div style="font-size:38px;margin-bottom:8px">'+(p>=75?'🎉':'⚠️')+'</div><strong style="font-size:18px">'+(p>=75?'¡Aprobado! '+p+'%':'No aprobado — '+p+'%')+'</strong><br><span style="font-size:13px">'+(p>=75?'Módulo completado correctamente. ¡Continúa con el siguiente día!':'Umbral mínimo 75%. Revisa el contenido y vuelve a intentarlo.')+'</span>';}
@@ -299,93 +299,93 @@ function updateDots(){UPD();}
 function updateUI(){UPD();}
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown')NAV(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')NAV(-1);});
 var _tx=0;document.addEventListener('touchstart',function(e){_tx=e.touches[0].clientX;},{passive:true});
-document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);}},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);},{passive:true});
 
-var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null};
 
 var BLOOM=["Analizar", "Analizar", "Analizar", "Analizar", "Analizar", "Analizar", "Analizar", "Evaluar", "Evaluar"];
 var CARDS=[{"name": "Netbilling — ¿qué es?", "icon": "☀️", "color": "blue", "desc": "Sistema que permite a clientes con generación renovable (paneles solares) inyectar excedentes a la red y recibir un crédito en su boleta. El cliente pasa a ser 'prosumidor'. Requiere medidor bidireccional instalado y contrato específico. Regulado por Ley 20.936."}, {"name": "Crédito de excedentes", "icon": "💰", "color": "teal", "desc": "Crédito = kWh inyectados × precio de valorización (del pliego Netbilling). Este precio es SIEMPRE menor al precio de consumo — el sistema incentiva el autoconsumo, no el negocio de venta de energía. Los excedentes del período actual aparecen en la SIGUIENTE boleta."}, {"name": "Verificación en ES32", "icon": "🔍", "color": "amber", "desc": "Para confirmar que Netbilling está activo: verificar en ES32 pestaña Medición que el medidor sea bidireccional (tipo B). Si aparece unidireccional (tipo U), Netbilling no puede estar funcionando aunque el contrato esté firmado."}, {"name": "Excedentes acumulados", "icon": "📦", "color": "purp", "desc": "Si el crédito supera el monto de la boleta, el excedente se acumula para el mes siguiente. Los excedentes acumulados caducan a los 12 meses si no son compensados. No se pagan en dinero al cliente."}, {"name": "PMGD — definición", "icon": "⚡", "color": "red", "desc": "Pequeño Medio de Generación Distribuida. Clientes con generación propia conectada a la red (molinos, paneles de gran escala, etc.). Tienen condición especial en el sistema: verificar código PMGD en ES32 antes de cualquier gestión. Protocolo: escalar a Técnica + Jefatura."}, {"name": "Fallas 00:00 hrs", "icon": "🌙", "color": "green", "desc": "Fallas reportadas cerca de la medianoche tienen una particularidad: el registro en el sistema puede quedar en el día anterior o en el nuevo día dependiendo del momento exacto. Impacta los cálculos de tiempo de reposición y los plazos normativos. Registrar la hora exacta siempre."}];
-var DEC={1:{correct:'B',A:{ok:false,msg:"Si el medidor en ES32 es unidireccional, Netbilling no puede estar activo aunque el contrato esté firmado. Decirle que \'hay un atraso\' sin diagnosticar la causa real es incorrecto y genera otra llamada de reclamo."},B:{ok:true,msg:"Correcto. El medidor bidireccional es condición indispensable para que Netbilling funcione. Si ES32 muestra medidor unidireccional, el problema es técnico y debe resolverse en el hardware o en SAP — escalar a área técnica."},C:{ok:false,msg:"Un crédito estimado sin respaldo de medición real es imposible de documentar correctamente. Primero hay que resolver el problema del medidor — el crédito vendrá naturalmente cuando Netbilling esté activo."}},2:{correct:'A',A:{ok:true,msg:"Correcto. 200 × $62 = $12.400 es correcto. El precio de valorización de excedentes es deliberadamente menor al precio de consumo — el sistema busca incentivar el autoconsumo, no crear un negocio de venta de energía. Esta es una de las consultas más frecuentes de prosumidores."},B:{ok:false,msg:"El precio de valorización de excedentes siempre es menor al precio de consumo — es un diseño deliberado del sistema Netbilling, no un error. Calcular al precio de consumo sería incorrecto."},C:{ok:false,msg:"El cálculo es correcto y el ejecutivo/a puede confirmarlo directamente. Derivar sin diagnosticar genera demoras innecesarias y no resuelve la expectativa incorrecta del cliente."}},3:{correct:'C',A:{ok:false,msg:"Un cliente PMGD tiene condición especial que cambia el protocolo completamente. Atender como cliente normal puede llevar a gestiones incorrectas con impacto en la red."},B:{ok:false,msg:"El ejecutivo/a gestiona internamente el escalamiento — no redirecciona al cliente para que llame a otra área. El cliente no debería tener que hacer múltiples llamadas."},C:{ok:true,msg:"Correcto. Verificar el código PMGD en ES32, confirmar la condición, informar al cliente, registrar en C4C con el código correcto y escalar a Técnica + Jefatura. El cliente debe saber qué está pasando en todo momento."}},};
+var DEC={1:{correct:'B',A:{ok:false,msg:"Si el medidor en ES32 es unidireccional, Netbilling no puede estar activo aunque el contrato esté firmado. Decirle que \'hay un atraso\' sin diagnosticar la causa real es incorrecto y genera otra llamada de reclamo."},B:{ok:true,msg:"Correcto. El medidor bidireccional es condición indispensable para que Netbilling funcione. Si ES32 muestra medidor unidireccional, el problema es técnico y debe resolverse en el hardware o en SAP — escalar a área técnica."},C:{ok:false,msg:"Un crédito estimado sin respaldo de medición real es imposible de documentar correctamente. Primero hay que resolver el problema del medidor — el crédito vendrá naturalmente cuando Netbilling esté activo."},2:{correct:'A',A:{ok:true,msg:"Correcto. 200 × $62 = $12.400 es correcto. El precio de valorización de excedentes es deliberadamente menor al precio de consumo — el sistema busca incentivar el autoconsumo, no crear un negocio de venta de energía. Esta es una de las consultas más frecuentes de prosumidores."},B:{ok:false,msg:"El precio de valorización de excedentes siempre es menor al precio de consumo — es un diseño deliberado del sistema Netbilling, no un error. Calcular al precio de consumo sería incorrecto."},C:{ok:false,msg:"El cálculo es correcto y el ejecutivo/a puede confirmarlo directamente. Derivar sin diagnosticar genera demoras innecesarias y no resuelve la expectativa incorrecta del cliente."},3:{correct:'C',A:{ok:false,msg:"Un cliente PMGD tiene condición especial que cambia el protocolo completamente. Atender como cliente normal puede llevar a gestiones incorrectas con impacto en la red."},B:{ok:false,msg:"El ejecutivo/a gestiona internamente el escalamiento — no redirecciona al cliente para que llame a otra área. El cliente no debería tener que hacer múltiples llamadas."},C:{ok:true,msg:"Correcto. Verificar el código PMGD en ES32, confirmar la condición, informar al cliente, registrar en C4C con el código correcto y escalar a Técnica + Jefatura. El cliente debe saber qué está pasando en todo momento."},};
 var QUIZ=[{"q": "¿Cuándo aparecen los excedentes Netbilling de este mes en la boleta del prosumidor?", "opts": ["En la boleta del mes actual", "En la siguiente boleta (mes siguiente)", "En las dos siguientes boletas por partes", "En la boleta del mismo mes pero como ítem separado"], "ans": 1, "exp": "Los excedentes del período actual se reflejan en la boleta del SIGUIENTE período. Esta es la causa más frecuente de consultas — el prosumidor espera ver el crédito de inmediato y no aparece hasta el mes siguiente."}, {"q": "¿Cómo verificas en ES32 si el sistema Netbilling está activo para un cliente?", "opts": ["Revisando el historial de facturación en FPL9", "Verificando en ES32 pestaña Medición que el medidor sea de tipo bidireccional (tipo B)", "Revisando los tickets activos en C4C", "Consultando directamente con el área técnica"], "ans": 1, "exp": "ES32 pestaña Medición muestra el tipo de medidor. Si es bidireccional (tipo B), el hardware está instalado. Si es unidireccional (tipo U), Netbilling no puede estar funcionando aunque el contrato esté firmado."}, {"q": "¿Por qué el precio de valorización de excedentes Netbilling es menor al precio de consumo?", "opts": ["Es un error del pliego que debe corregirse", "Es un diseño deliberado del sistema — Netbilling busca incentivar el autoconsumo, no crear un negocio de venta de energía", "Depende del tipo de tarifa del cliente", "Se aplica IVA al precio de consumo y por eso parece menor"], "ans": 1, "exp": "El precio de valorización de excedentes siempre es menor al precio de consumo por diseño deliberado del sistema Netbilling. El objetivo es incentivar que el cliente use su propia energía primero, no que 'venda' energía a la red al mismo precio que la compra."}, {"q": "Al atender a un cliente con código PMGD activo en ES32, ¿cuál es el protocolo correcto?", "opts": ["Atender como cliente BT normal — el código no cambia el procedimiento", "Escalar directamente sin informar al cliente", "Verificar el código PMGD, confirmar la condición, informar al cliente, registrar en C4C con código PMGD y escalar a Técnica + Jefatura", "Derivar al cliente para que llame directamente a técnica"], "ans": 2, "exp": "El código PMGD activa un protocolo especial: verificar en ES32, confirmar la condición, informar al cliente del escalamiento (y por qué), registrar en C4C con el código PMGD correspondiente y escalar a Técnica + Jefatura. El cliente no debe tener que hacer múltiples llamadas."}];
 var SYNTH=["Netbilling: crédito = kWh inyectados × precio valorización (pliego). Precio valorización < precio consumo — es por diseño.", "Excedentes del período actual → aparecen en la SIGUIENTE boleta. No es error — es el ciclo normal.", "Verificar Netbilling: ES32 pestaña Medición → medidor tipo B (bidireccional). Tipo U = no está activo.", "PMGD: verificar código ES32 → informar cliente → registrar C4C código PMGD → escalar Técnica + Jefatura.", "Excedentes acumulados caducan a 12 meses. No se pagan en dinero — solo se compensan en la boleta."];
 var ERRORS=["Decir que los excedentes 'ya deberían aparecer en la boleta de este mes' — aparecen en la SIGUIENTE.", "Confundir precio de valorización con precio de consumo — siempre son distintos por diseño.", "Atender a un cliente PMGD como cliente normal sin verificar el código especial en ES32.", "Emitir créditos estimados sin respaldo de medición real para compensar al prosumidor.", "Redirigir al cliente PMGD para que llame directamente a técnica — el ejecutivo gestiona el escalamiento internamente."];
 
-function buildCards(){{
+function buildCards(){
   var g=document.getElementById('cardGrid');if(!g)return;
-  CARDS.forEach(function(c){{
+  CARDS.forEach(function(c){
     var d=document.createElement('div');d.className='rev-card '+c.color;
     d.innerHTML='<h4><span class="card-icon">'+c.icon+'</span>'+c.name+'</h4><div class="rev-desc">'+c.desc+'</div><span class="rev-hint">👆 Toca para explorar</span>';
-    d.onclick=function(){{
+    d.onclick=function(){
       if(this.classList.contains('revealed'))return;
       this.classList.add('revealed');this.querySelector('.rev-hint').textContent='✓ Explorado';
       state.cardRevealed=(state.cardRevealed||0)+1;
       var cnt=document.getElementById('cardCnt');
       if(cnt)cnt.textContent=state.cardRevealed+' de '+CARDS.length+' conceptos explorados';
-    }};
+    };
     g.appendChild(d);
-  }});
-}}
-function buildSynth(){{
+  });
+}
+function buildSynth(){
   var b=document.getElementById('synthBody');if(!b)return;
-  b.innerHTML=SYNTH.map(function(s){{return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}}).join('');
-}}
-function buildErrors(){{
+  b.innerHTML=SYNTH.map(function(s){return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}).join('');
+}
+function buildErrors(){
   var b=document.getElementById('errorBody');if(!b)return;
-  b.innerHTML=ERRORS.map(function(e){{return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}}).join('');
-}}
-function decidir(n,opt){{
+  b.innerHTML=ERRORS.map(function(e){return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}).join('');
+}
+function decidir(n,opt){
   if(state.decisions[n])return;state.decisions[n]=opt;
   var dec=DEC[n];var btns=document.querySelectorAll('#d'+n+' .opt');var letters=['A','B','C'];
-  btns.forEach(function(b,i){{if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');}});
+  btns.forEach(function(b,i){if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');});
   var res=dec[opt];var fb=document.getElementById('fb'+n);
   fb.className='feedback show '+(res.ok?'ok':'ko');
   fb.innerHTML=(res.ok?'<strong>✓ Correcto</strong> — ':'<strong>✗ Incorrecto</strong> — ')+res.msg;
-}}
-function showQuestion(){{
+}
+function showQuestion(){
   var q=QUIZ[state.quizCurrent];
   document.getElementById('qCounter').textContent='Pregunta '+(state.quizCurrent+1)+' de '+QUIZ.length;
   document.getElementById('qFb').className='feedback';document.getElementById('qNext').style.display='none';state.quizAnswered=false;
   document.getElementById('qText').innerHTML='<p style="font-size:13.5px;line-height:1.7;margin-bottom:14px;font-weight:600;color:#1E293B">'+q.q+'</p>';
   var opts=document.getElementById('qOpts');opts.innerHTML='';
-  q.opts.forEach(function(o,i){{var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){{return function(){{answerQ(idx);}};}})(i);opts.appendChild(b);}});
-}}
-function answerQ(idx){{
+  q.opts.forEach(function(o,i){var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){return function(){answerQ(idx);};})(i);opts.appendChild(b);});
+}
+function answerQ(idx){
   if(state.quizAnswered)return;state.quizAnswered=true;
   var q=QUIZ[state.quizCurrent];
-  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){{if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');}});
+  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');});
   var ok=idx===q.ans;if(ok)state.quizScore++;
   var fb=document.getElementById('qFb');fb.className='feedback show '+(ok?'ok':'ko');
   fb.innerHTML='<strong>'+(ok?'✓ Correcto':'✗ Incorrecto')+'</strong> — '+q.exp;
   document.getElementById('qNext').style.display='inline-block';
-  try{{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}}catch(e){{}}
-}}
-function nextQ(){{state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}}
-function showResults(){{
+  try{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}catch(e){}
+}
+function nextQ(){state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}
+function showResults(){
   var pct=Math.round(state.quizScore/QUIZ.length*100);
   document.getElementById('resultScore').textContent=state.quizScore+'/'+QUIZ.length;
   document.getElementById('resultPct').textContent=pct+'% correcto';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: '+pct+'%';
-  setTimeout(function(){{document.getElementById('resultBar').style.width=pct+'%';}},300);
-  var badges={{100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'}};
+  setTimeout(function(){document.getElementById('resultBar').style.width=pct+'%';},300);
+  var badges={100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'};
   var key=pct===100?100:pct>=75?75:0;
   document.getElementById('resultBadge').innerHTML=badges[key];
-  if(pct<100&&document.getElementById('reviewBox')){{
-    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){{return '<li>'+e+'</li>';}}).join('')+'</ul></div>';
-  }}
+  if(pct<100&&document.getElementById('reviewBox')){
+    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+  }
   SCORM.setComplete(pct);
-}}
-function restartQuiz(){{
-  state={{cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{{1:null,2:null,3:null}}}};
-  document.querySelectorAll('.scene').forEach(function(s){{s.classList.remove('active');}});
+}
+function restartQuiz(){
+  state={cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+  document.querySelectorAll('.scene').forEach(function(s){s.classList.remove('active');});
   document.getElementById('sc0').classList.add('active');CUR=0;
-  document.querySelectorAll('.opt').forEach(function(b){{b.className='opt';}});
-  document.querySelectorAll('.feedback').forEach(function(f){{f.className='feedback';f.innerHTML='';}});
-  document.querySelectorAll('.rev-card').forEach(function(c){{c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';}});
+  document.querySelectorAll('.opt').forEach(function(b){b.className='opt';});
+  document.querySelectorAll('.feedback').forEach(function(f){f.className='feedback';f.innerHTML='';});
+  document.querySelectorAll('.rev-card').forEach(function(c){c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';});
   document.getElementById('reviewBox').innerHTML='';
   document.getElementById('resultBar').style.width='0%';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: 0%';
   buildCards();buildSynth();buildErrors();UPD();
-}}
+}
 
 document.addEventListener('DOMContentLoaded',function(){
   TOTAL_SC=9;

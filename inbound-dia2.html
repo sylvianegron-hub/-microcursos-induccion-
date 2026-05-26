@@ -322,11 +322,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;fo
 <script>
 var SCORM=(function(){
   var a=null,ok=false;
-  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}}catch(e){}return w.API_1484_11||null;}
-  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}}catch(e){}})();
-  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}}
+  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}catch(e){}return w.API_1484_11||null;}
+  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}catch(e){})();
+  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}
   function done(p){
-    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}}catch(e){}
+    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}catch(e){}
     var b=document.getElementById('resultBanner');
     if(b){b.style.cssText='display:block;border-radius:12px;padding:22px;margin:14px 0;text-align:center;font-size:14px;line-height:1.9;background:'+(p>=75?'linear-gradient(135deg,#F0FDF4,#DCFCE7)':'linear-gradient(135deg,#FFF5F5,#FEE2E2)')+';color:'+(p>=75?'#14532D':'#7F1D1D')+';border:2px solid '+(p>=75?'#86EFAC':'#FCA5A5');
     b.innerHTML='<div style="font-size:38px;margin-bottom:8px">'+(p>=75?'🎉':'⚠️')+'</div><strong style="font-size:18px">'+(p>=75?'¡Aprobado! '+p+'%':'No aprobado — '+p+'%')+'</strong><br><span style="font-size:13px">'+(p>=75?'Módulo completado correctamente. ¡Continúa con el siguiente día!':'Umbral mínimo 75%. Revisa el contenido y vuelve a intentarlo.')+'</span>';}
@@ -361,93 +361,93 @@ function updateDots(){UPD();}
 function updateUI(){UPD();}
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown')NAV(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')NAV(-1);});
 var _tx=0;document.addEventListener('touchstart',function(e){_tx=e.touches[0].clientX;},{passive:true});
-document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);}},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);},{passive:true});
 
-var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null};
 
 var BLOOM=["Comprender", "Comprender", "Comprender", "Analizar", "Analizar", "Analizar", "Analizar", "Evaluar", "Evaluar"];
 var CARDS=[{"name": "Tipos de llamadas", "icon": "📞", "color": "blue", "desc": "Las llamadas inbound se clasifican en 3 niveles: Básica (consulta estado, información general), Intermedia (reclamo, NC, plazo) y Avanzada (ED, PMGD, falla masiva). Esta clasificación define el protocolo a seguir."}, {"name": "Escucha activa — 5 fases", "icon": "👂", "color": "teal", "desc": "1) Saludo cálido e identificación. 2) Comprensión del motivo (sin interrumpir). 3) Reformulación para confirmar. 4) Resolución o derivación. 5) Cierre y resumen de acciones. Cada fase tiene frases clave."}, {"name": "Protocolo de escalamiento", "icon": "⬆️", "color": "amber", "desc": "Escalar = derivar a un nivel superior cuando el ejecutivo/a no puede resolver directamente. Criterios: emergencia domiciliaria, cliente crítico, PMGD, falla masiva o incumplimiento de otras áreas."}, {"name": "Manejo emocional del cliente", "icon": "💬", "color": "purp", "desc": "Cuando el cliente está alterado: no interrumpir, validar su emoción ('entiendo su molestia'), mantener tono calmado, enfocarse en lo que SÍ se puede hacer. Evitar frases como 'no puedo' o 'no es mi área'."}, {"name": "Pauta de observación", "icon": "📋", "color": "green", "desc": "La pauta de observación tiene 5 dimensiones: saludo y apertura, identificación del problema, manejo emocional, resolución/escalamiento y cierre. Es la herramienta del rol play Feedback 360°."}, {"name": "Feedback 360° — protocolo", "icon": "🔄", "color": "red", "desc": "Autoevaluación (2 min) → pares con pauta (4–5 min) → síntesis del formador (3–4 min) → ronda de aprendizaje '¿Qué me llevo?' (2 min). Lenguaje descriptivo, no evaluativo."}];
-var DEC={1:{correct:'B',A:{ok:false,msg:"El orden de llegada nunca es el criterio. El nivel de riesgo vital siempre prioriza. Un cliente ED sin suministro es urgente inmediato, independientemente de cuándo llamó."},B:{ok:true,msg:"Correcto. La jerarquía es: ED/riesgo vital → reclamo con impacto significativo → consulta de información. El tiempo transcurrido no es el factor relevante."},C:{ok:false,msg:"El tamaño de la empresa no determina la prioridad. El riesgo vital (cliente ED) siempre supera cualquier criterio económico o de antigüedad del caso."}},2:{correct:'A',A:{ok:true,msg:"Correcto. Primero validar la emoción (\'entiendo que es urgente y frustrante\'), luego explicar qué se puede hacer. Nunca decir \'no puedo\' sin ofrecer una alternativa concreta."},B:{ok:false,msg:"Pedir al cliente que \'se calme\' directamente suele tener el efecto contrario — el cliente siente que no está siendo escuchado. La validación emocional es el primer paso."},C:{ok:false,msg:"Derivar sin diagnosticar genera la misma experiencia negativa en la siguiente área. El ejecutivo/a debe al menos intentar resolver o informar lo que hará antes de derivar."}},3:{correct:'C',A:{ok:false,msg:"El silencio prolongado sin explicación aumenta la ansiedad del cliente. Siempre informar qué se está haciendo: \'Estoy consultando su historial, aguarde un momento\'."},B:{ok:false,msg:"Usar jerga técnica como \'FPL9\' o \'Tx ES32\' confunde al cliente y genera desconfianza. El cliente quiere entender qué está pasando, no aprender los nombres de los sistemas."},C:{ok:true,msg:"Correcto. Cierre efectivo: resumir lo acordado, confirmar los próximos pasos con plazos concretos y preguntar si quedó conforme. Esto reduce los reingresos por el mismo caso."}},};
+var DEC={1:{correct:'B',A:{ok:false,msg:"El orden de llegada nunca es el criterio. El nivel de riesgo vital siempre prioriza. Un cliente ED sin suministro es urgente inmediato, independientemente de cuándo llamó."},B:{ok:true,msg:"Correcto. La jerarquía es: ED/riesgo vital → reclamo con impacto significativo → consulta de información. El tiempo transcurrido no es el factor relevante."},C:{ok:false,msg:"El tamaño de la empresa no determina la prioridad. El riesgo vital (cliente ED) siempre supera cualquier criterio económico o de antigüedad del caso."},2:{correct:'A',A:{ok:true,msg:"Correcto. Primero validar la emoción (\'entiendo que es urgente y frustrante\'), luego explicar qué se puede hacer. Nunca decir \'no puedo\' sin ofrecer una alternativa concreta."},B:{ok:false,msg:"Pedir al cliente que \'se calme\' directamente suele tener el efecto contrario — el cliente siente que no está siendo escuchado. La validación emocional es el primer paso."},C:{ok:false,msg:"Derivar sin diagnosticar genera la misma experiencia negativa en la siguiente área. El ejecutivo/a debe al menos intentar resolver o informar lo que hará antes de derivar."},3:{correct:'C',A:{ok:false,msg:"El silencio prolongado sin explicación aumenta la ansiedad del cliente. Siempre informar qué se está haciendo: \'Estoy consultando su historial, aguarde un momento\'."},B:{ok:false,msg:"Usar jerga técnica como \'FPL9\' o \'Tx ES32\' confunde al cliente y genera desconfianza. El cliente quiere entender qué está pasando, no aprender los nombres de los sistemas."},C:{ok:true,msg:"Correcto. Cierre efectivo: resumir lo acordado, confirmar los próximos pasos con plazos concretos y preguntar si quedó conforme. Esto reduce los reingresos por el mismo caso."},};
 var QUIZ=[{"q": "Un cliente llama diciendo que 'no tiene luz' y que 'depende de una máquina de diálisis'. ¿Cómo clasificas esta llamada?", "opts": ["Básica — es una consulta de estado de suministro", "Intermedia — es un reclamo por corte", "Avanzada — es una emergencia domiciliaria (ED) que requiere escalamiento inmediato", "Depende del historial del cliente en el sistema"], "ans": 2, "exp": "Cliente con equipo de mantención de vida sin suministro = emergencia domiciliaria (ED) = llamada avanzada. Activar protocolo inmediato: escalar a Operaciones y Jefatura de forma simultánea."}, {"q": "¿Cuál es el orden correcto de las 5 fases de la escucha activa?", "opts": ["Resolución → saludo → comprensión → reformulación → cierre", "Saludo → comprensión → reformulación → resolución → cierre", "Comprensión → saludo → reformulación → cierre → resolución", "Saludo → resolución → reformulación → comprensión → cierre"], "ans": 1, "exp": "El orden es siempre: 1)Saludo cálido e identificación, 2)Comprensión sin interrumpir, 3)Reformulación para confirmar que entendiste bien, 4)Resolución o derivación, 5)Cierre y resumen de acciones."}, {"q": "Un cliente dice: 'Llevan 3 días sin darme solución y estoy harto'. ¿Cuál es la respuesta correcta de apertura?", "opts": ["'Cálmese, voy a revisar su caso ahora mismo'", "'Entiendo que lleva varios días esperando y eso es muy frustrante. Voy a revisar su caso ahora mismo para darte una respuesta concreta'", "'¿Puede darme su número de cliente para buscar el caso?'", "'Ese tiempo de espera no es normal, alguien cometió un error'"], "ans": 1, "exp": "La respuesta B valida la emoción del cliente sin restarle importancia, y de inmediato toma acción concreta. Pedir el número de cliente sin validar primero la emoción genera mayor frustración."}, {"q": "¿Cuánto tiempo tiene el ejecutivo que realizó el rol play para su autoevaluación en el Feedback 360°?", "opts": ["30 segundos — respuesta rápida", "1 minuto — solo la conclusión principal", "2 minutos — qué hice bien, qué cambiaría, dónde me bloqueé", "5 minutos — análisis completo de la llamada"], "ans": 2, "exp": "La autoevaluación tiene 2 minutos y debe responder 3 preguntas: ¿Qué hice bien? ¿Qué cambiaría? ¿En qué punto me bloqueé? Este tiempo es intencional — la síntesis posterior la hace el formador."}];
 var SYNTH=["3 niveles de llamada: Básica (consulta) → Intermedia (reclamo/NC) → Avanzada (ED, PMGD, falla). El nivel define el protocolo.", "Escucha activa en 5 fases: Saludo → Comprensión → Reformulación → Resolución → Cierre. Nunca saltarse fases.", "Escalamiento: cuando no se puede resolver directamente. Criterios: ED, PMGD, cliente crítico, falla masiva.", "Manejo emocional: validar primero ('entiendo'), luego enfocarse en qué SÍ se puede hacer. Nunca decir 'no puedo' sin alternativa.", "Feedback 360°: autoevaluación (2 min) → pares con pauta (4–5 min) → formador (3–4 min) → ronda aprendizaje (2 min)."];
 var ERRORS=["Atender por orden de llegada ignorando el nivel de urgencia — siempre priorizar por riesgo vital.", "Decirle al cliente 'cálmese' directamente — usar validación emocional antes de cualquier acción.", "Saltarse la fase de reformulación — confirmar siempre que entendiste correctamente el problema.", "Cerrar la llamada sin resumir los acuerdos y próximos pasos con plazos concretos.", "Usar jerga técnica del sistema (FPL9, Tx ES32) con el cliente — hablar en lenguaje simple."];
 
-function buildCards(){{
+function buildCards(){
   var g=document.getElementById('cardGrid');if(!g)return;
-  CARDS.forEach(function(c){{
+  CARDS.forEach(function(c){
     var d=document.createElement('div');d.className='rev-card '+c.color;
     d.innerHTML='<h4><span class="card-icon">'+c.icon+'</span>'+c.name+'</h4><div class="rev-desc">'+c.desc+'</div><span class="rev-hint">👆 Toca para explorar</span>';
-    d.onclick=function(){{
+    d.onclick=function(){
       if(this.classList.contains('revealed'))return;
       this.classList.add('revealed');this.querySelector('.rev-hint').textContent='✓ Explorado';
       state.cardRevealed=(state.cardRevealed||0)+1;
       var cnt=document.getElementById('cardCnt');
       if(cnt)cnt.textContent=state.cardRevealed+' de '+CARDS.length+' conceptos explorados';
-    }};
+    };
     g.appendChild(d);
-  }});
-}}
-function buildSynth(){{
+  });
+}
+function buildSynth(){
   var b=document.getElementById('synthBody');if(!b)return;
-  b.innerHTML=SYNTH.map(function(s){{return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}}).join('');
-}}
-function buildErrors(){{
+  b.innerHTML=SYNTH.map(function(s){return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}).join('');
+}
+function buildErrors(){
   var b=document.getElementById('errorBody');if(!b)return;
-  b.innerHTML=ERRORS.map(function(e){{return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}}).join('');
-}}
-function decidir(n,opt){{
+  b.innerHTML=ERRORS.map(function(e){return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}).join('');
+}
+function decidir(n,opt){
   if(state.decisions[n])return;state.decisions[n]=opt;
   var dec=DEC[n];var btns=document.querySelectorAll('#d'+n+' .opt');var letters=['A','B','C'];
-  btns.forEach(function(b,i){{if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');}});
+  btns.forEach(function(b,i){if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');});
   var res=dec[opt];var fb=document.getElementById('fb'+n);
   fb.className='feedback show '+(res.ok?'ok':'ko');
   fb.innerHTML=(res.ok?'<strong>✓ Correcto</strong> — ':'<strong>✗ Incorrecto</strong> — ')+res.msg;
-}}
-function showQuestion(){{
+}
+function showQuestion(){
   var q=QUIZ[state.quizCurrent];
   document.getElementById('qCounter').textContent='Pregunta '+(state.quizCurrent+1)+' de '+QUIZ.length;
   document.getElementById('qFb').className='feedback';document.getElementById('qNext').style.display='none';state.quizAnswered=false;
   document.getElementById('qText').innerHTML='<p style="font-size:13.5px;line-height:1.7;margin-bottom:14px;font-weight:600;color:#1E293B">'+q.q+'</p>';
   var opts=document.getElementById('qOpts');opts.innerHTML='';
-  q.opts.forEach(function(o,i){{var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){{return function(){{answerQ(idx);}};}})(i);opts.appendChild(b);}});
-}}
-function answerQ(idx){{
+  q.opts.forEach(function(o,i){var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){return function(){answerQ(idx);};})(i);opts.appendChild(b);});
+}
+function answerQ(idx){
   if(state.quizAnswered)return;state.quizAnswered=true;
   var q=QUIZ[state.quizCurrent];
-  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){{if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');}});
+  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');});
   var ok=idx===q.ans;if(ok)state.quizScore++;
   var fb=document.getElementById('qFb');fb.className='feedback show '+(ok?'ok':'ko');
   fb.innerHTML='<strong>'+(ok?'✓ Correcto':'✗ Incorrecto')+'</strong> — '+q.exp;
   document.getElementById('qNext').style.display='inline-block';
-  try{{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}}catch(e){{}}
-}}
-function nextQ(){{state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}}
-function showResults(){{
+  try{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}catch(e){}
+}
+function nextQ(){state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}
+function showResults(){
   var pct=Math.round(state.quizScore/QUIZ.length*100);
   document.getElementById('resultScore').textContent=state.quizScore+'/'+QUIZ.length;
   document.getElementById('resultPct').textContent=pct+'% correcto';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: '+pct+'%';
-  setTimeout(function(){{document.getElementById('resultBar').style.width=pct+'%';}},300);
-  var badges={{100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'}};
+  setTimeout(function(){document.getElementById('resultBar').style.width=pct+'%';},300);
+  var badges={100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'};
   var key=pct===100?100:pct>=75?75:0;
   document.getElementById('resultBadge').innerHTML=badges[key];
-  if(pct<100&&document.getElementById('reviewBox')){{
-    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){{return '<li>'+e+'</li>';}}).join('')+'</ul></div>';
-  }}
+  if(pct<100&&document.getElementById('reviewBox')){
+    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+  }
   SCORM.setComplete(pct);
-}}
-function restartQuiz(){{
-  state={{cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{{1:null,2:null,3:null}}}};
-  document.querySelectorAll('.scene').forEach(function(s){{s.classList.remove('active');}});
+}
+function restartQuiz(){
+  state={cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+  document.querySelectorAll('.scene').forEach(function(s){s.classList.remove('active');});
   document.getElementById('sc0').classList.add('active');CUR=0;
-  document.querySelectorAll('.opt').forEach(function(b){{b.className='opt';}});
-  document.querySelectorAll('.feedback').forEach(function(f){{f.className='feedback';f.innerHTML='';}});
-  document.querySelectorAll('.rev-card').forEach(function(c){{c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';}});
+  document.querySelectorAll('.opt').forEach(function(b){b.className='opt';});
+  document.querySelectorAll('.feedback').forEach(function(f){f.className='feedback';f.innerHTML='';});
+  document.querySelectorAll('.rev-card').forEach(function(c){c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';});
   document.getElementById('reviewBox').innerHTML='';
   document.getElementById('resultBar').style.width='0%';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: 0%';
   buildCards();buildSynth();buildErrors();UPD();
-}}
+}
 
 document.addEventListener('DOMContentLoaded',function(){
   TOTAL_SC=9;

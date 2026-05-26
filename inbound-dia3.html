@@ -331,11 +331,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;fo
 <script>
 var SCORM=(function(){
   var a=null,ok=false;
-  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}}catch(e){}return w.API_1484_11||null;}
-  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}}catch(e){}})();
-  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}}
+  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}catch(e){}return w.API_1484_11||null;}
+  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}catch(e){})();
+  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}
   function done(p){
-    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}}catch(e){}
+    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}catch(e){}
     var b=document.getElementById('resultBanner');
     if(b){b.style.cssText='display:block;border-radius:12px;padding:22px;margin:14px 0;text-align:center;font-size:14px;line-height:1.9;background:'+(p>=75?'linear-gradient(135deg,#F0FDF4,#DCFCE7)':'linear-gradient(135deg,#FFF5F5,#FEE2E2)')+';color:'+(p>=75?'#14532D':'#7F1D1D')+';border:2px solid '+(p>=75?'#86EFAC':'#FCA5A5');
     b.innerHTML='<div style="font-size:38px;margin-bottom:8px">'+(p>=75?'🎉':'⚠️')+'</div><strong style="font-size:18px">'+(p>=75?'¡Aprobado! '+p+'%':'No aprobado — '+p+'%')+'</strong><br><span style="font-size:13px">'+(p>=75?'Módulo completado correctamente. ¡Continúa con el siguiente día!':'Umbral mínimo 75%. Revisa el contenido y vuelve a intentarlo.')+'</span>';}
@@ -370,93 +370,93 @@ function updateDots(){UPD();}
 function updateUI(){UPD();}
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown')NAV(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')NAV(-1);});
 var _tx=0;document.addEventListener('touchstart',function(e){_tx=e.touches[0].clientX;},{passive:true});
-document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);}},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);},{passive:true});
 
-var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null};
 
 var BLOOM=["Aplicar", "Aplicar", "Aplicar", "Aplicar", "Aplicar", "Aplicar", "Aplicar", "Evaluar", "Evaluar"];
 var CARDS=[{"name": "¿Qué es C4C?", "icon": "💻", "color": "blue", "desc": "SAP Cloud for Customer (C4C) es el CRM del cargo. Aquí se crean y gestionan todos los tickets, se consulta el historial del cliente y se registran las observaciones de cada interacción. Es la herramienta central del ejecutivo/a inbound."}, {"name": "Flujo completo C4C", "icon": "🔄", "color": "teal", "desc": "1)Buscar cliente (por RUT o N° servicio). 2)Revisar historial y tickets activos. 3)Crear ticket nuevo (tipo + descripción). 4)Asignar categoría y prioridad. 5)Escribir observación con nomenclatura OA. 6)Guardar y confirmar número al cliente."}, {"name": "Estados de Genesys", "icon": "🎚️", "color": "purp", "desc": "Disponible (recibe llamadas), No disponible + motivo (pausa autorizada), En llamada (automático), Post-llamada/ACW (registrando en C4C), Capacitación. Cada estado tiene un impacto en las métricas del equipo — no cambiar sin criterio."}, {"name": "Nomenclatura OAs", "icon": "📝", "color": "amber", "desc": "Las observaciones en tickets deben ser precisas, breves y con los códigos correctos. Incluir: motivo del contacto, acción tomada, compromisos al cliente (plazo + acción), y código de categoría. Sin jerga interna — el texto lo puede leer el cliente."}, {"name": "Tarjeta de referencia C4C", "icon": "🗂️", "color": "green", "desc": "Atajos clave: F4 = buscar cliente, Ctrl+N = nuevo ticket, Ctrl+S = guardar. Código de categoría en la última columna del menú desplegable. El campo 'Descripción corta' es el que el cliente ve en el portal de autogestión."}, {"name": "ACW — tiempo de post-llamada", "icon": "⏱️", "color": "gray", "desc": "ACW (After Call Work) es el tiempo entre que termina la llamada y que te vuelves a poner disponible. Úsalo para registrar la observación y cerrar correctamente el ticket. El ACW excesivo afecta el AHT del equipo — ser eficiente es parte del rol."}];
-var DEC={1:{correct:'B',A:{ok:false,msg:"Crear el ticket sin antes revisar el historial es un error frecuente — puede haber un ticket activo por el mismo problema, duplicando trabajo y confundiendo al cliente."},B:{ok:true,msg:"Correcto. El flujo es siempre: buscar cliente → revisar historial y tickets activos → solo entonces crear ticket nuevo si no existe uno. Esto evita duplicados y da contexto completo al ejecutivo."},C:{ok:false,msg:"El número de teléfono no es el identificador principal en C4C. El RUT o número de servicio permite encontrar exactamente el punto de suministro correcto, especialmente cuando el cliente tiene varios suministros."}},2:{correct:'C',A:{ok:false,msg:"El estado \'No disponible\' sin motivo registrado genera alertas de gestión. Cada pausa debe tener su motivo: baño, reunión, capacitación, etc. El sistema registra todo."},B:{ok:false,msg:"Quedarse en estado \'Post-llamada/ACW\' más tiempo del necesario para hacer otras tareas afecta las métricas del equipo. El ACW es solo para registrar el ticket de la llamada recién terminada."},C:{ok:true,msg:"Correcto. Al terminar la llamada: usar ACW para registrar la observación en C4C → guardar el ticket → volver al estado \'Disponible\'. Este flujo es el más eficiente y el que cuida el AHT."}},3:{correct:'A',A:{ok:true,msg:"Correcto. Una observación efectiva incluye: motivo del contacto, acción tomada, compromiso al cliente (qué + cuándo) y código de categoría. Sin jerga interna que el cliente no entienda."},B:{ok:false,msg:"Las observaciones deben ser precisas y breves — no un relato completo de la llamada. El objetivo es que quien lea el ticket después entienda rápidamente qué pasó y qué sigue."},C:{ok:false,msg:"El campo \'Descripción corta\' puede ser visible para el cliente en el portal de autogestión. Nunca incluir información interna ni opiniones sobre el cliente en ese campo."}},};
+var DEC={1:{correct:'B',A:{ok:false,msg:"Crear el ticket sin antes revisar el historial es un error frecuente — puede haber un ticket activo por el mismo problema, duplicando trabajo y confundiendo al cliente."},B:{ok:true,msg:"Correcto. El flujo es siempre: buscar cliente → revisar historial y tickets activos → solo entonces crear ticket nuevo si no existe uno. Esto evita duplicados y da contexto completo al ejecutivo."},C:{ok:false,msg:"El número de teléfono no es el identificador principal en C4C. El RUT o número de servicio permite encontrar exactamente el punto de suministro correcto, especialmente cuando el cliente tiene varios suministros."},2:{correct:'C',A:{ok:false,msg:"El estado \'No disponible\' sin motivo registrado genera alertas de gestión. Cada pausa debe tener su motivo: baño, reunión, capacitación, etc. El sistema registra todo."},B:{ok:false,msg:"Quedarse en estado \'Post-llamada/ACW\' más tiempo del necesario para hacer otras tareas afecta las métricas del equipo. El ACW es solo para registrar el ticket de la llamada recién terminada."},C:{ok:true,msg:"Correcto. Al terminar la llamada: usar ACW para registrar la observación en C4C → guardar el ticket → volver al estado \'Disponible\'. Este flujo es el más eficiente y el que cuida el AHT."},3:{correct:'A',A:{ok:true,msg:"Correcto. Una observación efectiva incluye: motivo del contacto, acción tomada, compromiso al cliente (qué + cuándo) y código de categoría. Sin jerga interna que el cliente no entienda."},B:{ok:false,msg:"Las observaciones deben ser precisas y breves — no un relato completo de la llamada. El objetivo es que quien lea el ticket después entienda rápidamente qué pasó y qué sigue."},C:{ok:false,msg:"El campo \'Descripción corta\' puede ser visible para el cliente en el portal de autogestión. Nunca incluir información interna ni opiniones sobre el cliente en ese campo."},};
 var QUIZ=[{"q": "¿Cuál es el orden correcto del flujo en C4C al atender una llamada?", "opts": ["Crear ticket → buscar cliente → escribir observación → guardar", "Buscar cliente → revisar historial → crear ticket si no existe → observación → guardar", "Abrir ticket nuevo directamente → llenar los datos del cliente → guardar", "Revisar historial → crear ticket → buscar cliente → guardar"], "ans": 1, "exp": "El orden es: buscar cliente (RUT o N° servicio) → revisar historial y tickets activos → crear ticket nuevo solo si no existe uno → escribir observación → guardar y confirmar número al cliente."}, {"q": "¿Cuál es el estado correcto de Genesys mientras estás registrando el ticket después de terminar una llamada?", "opts": ["Disponible — para recibir la siguiente llamada", "No disponible — para tener tiempo sin interrupciones", "Post-llamada / ACW — tiempo específico para el registro del ticket", "Capacitación — para estudiar sin llamadas"], "ans": 2, "exp": "ACW (After Call Work) es el estado diseñado exactamente para el tiempo de registro post-llamada. Usarlo correctamente es parte del protocolo — permite registrar bien sin afectar innecesariamente la disponibilidad del equipo."}, {"q": "¿Qué información DEBE contener una observación de ticket bien redactada?", "opts": ["Solo el nombre del cliente y el motivo de la llamada", "Motivo del contacto, acción tomada, compromiso al cliente (qué + cuándo) y código de categoría", "Una descripción detallada de toda la conversación incluyendo el tono del cliente", "El nombre del ejecutivo y la hora de la llamada únicamente"], "ans": 1, "exp": "Una observación efectiva tiene 4 elementos: motivo del contacto (por qué llamó), acción tomada (qué hiciste), compromiso al cliente (qué sigue y cuándo) y código de categoría. Sin jerga interna."}, {"q": "¿Dónde encuentras el historial completo de tickets anteriores de un cliente en C4C?", "opts": ["En la pestaña 'Descripción' del ticket actual", "En el panel lateral de 'Actividad' o 'Historial' del perfil del cliente", "Hay que llamar a un supervisor para acceder al historial", "En el sistema Genesys, no en C4C"], "ans": 1, "exp": "El historial de tickets anteriores está en el perfil del cliente en C4C, en la pestaña 'Actividad' o 'Historial'. Revisarlo antes de crear un nuevo ticket evita duplicados y da contexto completo sobre el caso."}];
 var SYNTH=["Flujo C4C: buscar cliente (RUT/N° servicio) → historial → ticket nuevo (si no existe) → observación → guardar.", "Genesys: Disponible → En llamada → ACW (registrar ticket) → Disponible. Cada estado tiene un impacto en las métricas.", "Observación efectiva: motivo + acción + compromiso (qué+cuándo) + código categoría. Sin jerga interna.", "El campo 'Descripción corta' puede ser visible para el cliente en el portal — cuidar el lenguaje.", "ACW es el tiempo exacto para registrar el ticket — no para otras tareas. Cuidar el AHT del equipo."];
 var ERRORS=["Crear un ticket nuevo sin revisar el historial — puede haber un ticket activo por el mismo problema.", "Quedarse en estado ACW más tiempo del necesario para hacer otras tareas — afecta el AHT del equipo.", "Buscar al cliente por teléfono en vez de RUT o N° de servicio — puede traer el perfil incorrecto.", "Escribir observaciones con jerga interna o siglas que el cliente no entendería si las lee.", "Olvidar confirmar el número de ticket al cliente al cierre — es su respaldo para hacer seguimiento."];
 
-function buildCards(){{
+function buildCards(){
   var g=document.getElementById('cardGrid');if(!g)return;
-  CARDS.forEach(function(c){{
+  CARDS.forEach(function(c){
     var d=document.createElement('div');d.className='rev-card '+c.color;
     d.innerHTML='<h4><span class="card-icon">'+c.icon+'</span>'+c.name+'</h4><div class="rev-desc">'+c.desc+'</div><span class="rev-hint">👆 Toca para explorar</span>';
-    d.onclick=function(){{
+    d.onclick=function(){
       if(this.classList.contains('revealed'))return;
       this.classList.add('revealed');this.querySelector('.rev-hint').textContent='✓ Explorado';
       state.cardRevealed=(state.cardRevealed||0)+1;
       var cnt=document.getElementById('cardCnt');
       if(cnt)cnt.textContent=state.cardRevealed+' de '+CARDS.length+' conceptos explorados';
-    }};
+    };
     g.appendChild(d);
-  }});
-}}
-function buildSynth(){{
+  });
+}
+function buildSynth(){
   var b=document.getElementById('synthBody');if(!b)return;
-  b.innerHTML=SYNTH.map(function(s){{return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}}).join('');
-}}
-function buildErrors(){{
+  b.innerHTML=SYNTH.map(function(s){return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}).join('');
+}
+function buildErrors(){
   var b=document.getElementById('errorBody');if(!b)return;
-  b.innerHTML=ERRORS.map(function(e){{return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}}).join('');
-}}
-function decidir(n,opt){{
+  b.innerHTML=ERRORS.map(function(e){return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}).join('');
+}
+function decidir(n,opt){
   if(state.decisions[n])return;state.decisions[n]=opt;
   var dec=DEC[n];var btns=document.querySelectorAll('#d'+n+' .opt');var letters=['A','B','C'];
-  btns.forEach(function(b,i){{if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');}});
+  btns.forEach(function(b,i){if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');});
   var res=dec[opt];var fb=document.getElementById('fb'+n);
   fb.className='feedback show '+(res.ok?'ok':'ko');
   fb.innerHTML=(res.ok?'<strong>✓ Correcto</strong> — ':'<strong>✗ Incorrecto</strong> — ')+res.msg;
-}}
-function showQuestion(){{
+}
+function showQuestion(){
   var q=QUIZ[state.quizCurrent];
   document.getElementById('qCounter').textContent='Pregunta '+(state.quizCurrent+1)+' de '+QUIZ.length;
   document.getElementById('qFb').className='feedback';document.getElementById('qNext').style.display='none';state.quizAnswered=false;
   document.getElementById('qText').innerHTML='<p style="font-size:13.5px;line-height:1.7;margin-bottom:14px;font-weight:600;color:#1E293B">'+q.q+'</p>';
   var opts=document.getElementById('qOpts');opts.innerHTML='';
-  q.opts.forEach(function(o,i){{var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){{return function(){{answerQ(idx);}};}})(i);opts.appendChild(b);}});
-}}
-function answerQ(idx){{
+  q.opts.forEach(function(o,i){var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){return function(){answerQ(idx);};})(i);opts.appendChild(b);});
+}
+function answerQ(idx){
   if(state.quizAnswered)return;state.quizAnswered=true;
   var q=QUIZ[state.quizCurrent];
-  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){{if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');}});
+  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');});
   var ok=idx===q.ans;if(ok)state.quizScore++;
   var fb=document.getElementById('qFb');fb.className='feedback show '+(ok?'ok':'ko');
   fb.innerHTML='<strong>'+(ok?'✓ Correcto':'✗ Incorrecto')+'</strong> — '+q.exp;
   document.getElementById('qNext').style.display='inline-block';
-  try{{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}}catch(e){{}}
-}}
-function nextQ(){{state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}}
-function showResults(){{
+  try{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}catch(e){}
+}
+function nextQ(){state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}
+function showResults(){
   var pct=Math.round(state.quizScore/QUIZ.length*100);
   document.getElementById('resultScore').textContent=state.quizScore+'/'+QUIZ.length;
   document.getElementById('resultPct').textContent=pct+'% correcto';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: '+pct+'%';
-  setTimeout(function(){{document.getElementById('resultBar').style.width=pct+'%';}},300);
-  var badges={{100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'}};
+  setTimeout(function(){document.getElementById('resultBar').style.width=pct+'%';},300);
+  var badges={100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'};
   var key=pct===100?100:pct>=75?75:0;
   document.getElementById('resultBadge').innerHTML=badges[key];
-  if(pct<100&&document.getElementById('reviewBox')){{
-    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){{return '<li>'+e+'</li>';}}).join('')+'</ul></div>';
-  }}
+  if(pct<100&&document.getElementById('reviewBox')){
+    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+  }
   SCORM.setComplete(pct);
-}}
-function restartQuiz(){{
-  state={{cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{{1:null,2:null,3:null}}}};
-  document.querySelectorAll('.scene').forEach(function(s){{s.classList.remove('active');}});
+}
+function restartQuiz(){
+  state={cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+  document.querySelectorAll('.scene').forEach(function(s){s.classList.remove('active');});
   document.getElementById('sc0').classList.add('active');CUR=0;
-  document.querySelectorAll('.opt').forEach(function(b){{b.className='opt';}});
-  document.querySelectorAll('.feedback').forEach(function(f){{f.className='feedback';f.innerHTML='';}});
-  document.querySelectorAll('.rev-card').forEach(function(c){{c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';}});
+  document.querySelectorAll('.opt').forEach(function(b){b.className='opt';});
+  document.querySelectorAll('.feedback').forEach(function(f){f.className='feedback';f.innerHTML='';});
+  document.querySelectorAll('.rev-card').forEach(function(c){c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';});
   document.getElementById('reviewBox').innerHTML='';
   document.getElementById('resultBar').style.width='0%';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: 0%';
   buildCards();buildSynth();buildErrors();UPD();
-}}
+}
 
 document.addEventListener('DOMContentLoaded',function(){
   TOTAL_SC=9;

@@ -265,11 +265,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;fo
 <script>
 var SCORM=(function(){
   var a=null,ok=false;
-  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}}catch(e){}return w.API_1484_11||null;}
-  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}}catch(e){}})();
-  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}}
+  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}catch(e){}return w.API_1484_11||null;}
+  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}catch(e){})();
+  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}
   function done(p){
-    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}}catch(e){}
+    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}catch(e){}
     var b=document.getElementById('resultBanner');
     if(b){b.style.cssText='display:block;border-radius:12px;padding:22px;margin:14px 0;text-align:center;font-size:14px;line-height:1.9;background:'+(p>=75?'linear-gradient(135deg,#F0FDF4,#DCFCE7)':'linear-gradient(135deg,#FFF5F5,#FEE2E2)')+';color:'+(p>=75?'#14532D':'#7F1D1D')+';border:2px solid '+(p>=75?'#86EFAC':'#FCA5A5');
     b.innerHTML='<div style="font-size:38px;margin-bottom:8px">'+(p>=75?'🎉':'⚠️')+'</div><strong style="font-size:18px">'+(p>=75?'¡Aprobado! '+p+'%':'No aprobado — '+p+'%')+'</strong><br><span style="font-size:13px">'+(p>=75?'Módulo completado correctamente. ¡Continúa con el siguiente día!':'Umbral mínimo 75%. Revisa el contenido y vuelve a intentarlo.')+'</span>';}
@@ -304,93 +304,93 @@ function updateDots(){UPD();}
 function updateUI(){UPD();}
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown')NAV(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')NAV(-1);});
 var _tx=0;document.addEventListener('touchstart',function(e){_tx=e.touches[0].clientX;},{passive:true});
-document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);}},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);},{passive:true});
 
-var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null};
 
 var BLOOM=["Evaluar", "Evaluar", "Evaluar", "Evaluar", "Evaluar", "Evaluar", "Evaluar", "Evaluar", "Evaluar"];
 var CARDS=[{"name": "Ley Karin — ¿qué protege?", "icon": "⚖️", "color": "blue", "desc": "La Ley 21.643 (Ley Karin) modifica el Código del Trabajo para proteger contra acoso laboral (hostigamiento sistemático que afecta la dignidad) y acoso sexual (conductas de connotación sexual no deseadas). Aplica a toda relación laboral, incluyendo el Contact Center. Vigente desde agosto 2024."}, {"name": "Conductas protegidas en el CC", "icon": "🛡️", "color": "teal", "desc": "En el contexto del Contact Center: un cliente que insulta, amenaza o acosa al ejecutivo/a durante la llamada puede generar una situación protegida. El ejecutivo/a tiene derecho a finalizar la llamada ante conductas abusivas sistemáticas, siguiendo el protocolo de registro y comunicación."}, {"name": "Canales de denuncia internos", "icon": "📢", "color": "amber", "desc": "Canales disponibles: (1) Correo del área de RRHH designada. (2) Canal de ética/denuncia anónima de la empresa. (3) Jefatura directa (si el acoso no es de la jefatura). (4) Inspección del Trabajo. La ley protege al denunciante de represalias — toda denuncia inicia una investigación formal."}, {"name": "Tipos de medidores", "icon": "⚡", "color": "purp", "desc": "Medidor monofásico (residencial estándar, 1 fase). Medidor bifásico (algunos residenciales especiales, 2 fases). Medidor trifásico (comercial/industrial, 3 fases). Medidor bidireccional (Netbilling, mide flujo en ambos sentidos). El tipo determina qué lectura es válida y qué código de estimación aplica."}, {"name": "Códigos de estimación (MI)", "icon": "📐", "color": "red", "desc": "Cuando no se puede leer el medidor se usa una estimación. Códigos frecuentes: MI-01 (sin acceso al medidor), MI-02 (medidor dañado), MI-03 (lectura anómala — consumo fuera del rango histórico), MI-04 (medidor en blanco o sin display). Cada código tiene un procedimiento específico de gestión."}, {"name": "Ticket Dummy — criterio", "icon": "🗺️", "color": "green", "desc": "Ticket Dummy: se crea cuando NO existe georreferenciación disponible para la dirección del suministro en el sistema. Si la dirección existe → asociar al servicio (no Dummy). Si la dirección no existe en el sistema → Dummy como nota en servicio. Nunca crear Dummy cuando hay dirección disponible — es un error de proceso."}];
-var DEC={1:{correct:'B',A:{ok:false,msg:"La Ley Karin protege explícitamente al trabajador/a de conductas abusivas y hostigamiento. \'El cliente siempre tiene la razón\' no aplica a conductas de acoso o insultos sistemáticos que afectan la dignidad del ejecutivo."},B:{ok:true,msg:"Correcto. El protocolo ante conducta abusiva: (1) advertir con claridad, (2) si continúa → finalizar la llamada con registro en C4C, (3) reportar a jefatura. La Ley Karin protege este proceso y la empresa tiene obligación de investigar el incidente."},C:{ok:false,msg:"Transferir sin registrar el incidente ni notificar a jefatura impide que la empresa cumpla su obligación de investigación bajo la Ley Karin. El registro es obligatorio."}},2:{correct:'A',A:{ok:true,msg:"Correcto. MI-03 (lectura anómala) activa el proceso de relectura. El cobro no se procesa hasta confirmar la lectura real. El ejecutivo registra en C4C, escala a técnica y notifica al cliente que el monto está suspendido hasta la verificación."},B:{ok:false,msg:"Emitir NC sin relectura asume que 180 kWh es correcto, pero podría ser que el consumo realmente fue mayor al histórico (por ejemplo, un equipo defectuoso). La relectura es el proceso correcto."},C:{ok:false,msg:"El código MI-03 existe precisamente porque el sistema identificó que esta lectura puede ser incorrecta. Decir que \'el sistema no se equivoca\' es incorrecto y contradice la información que el propio sistema entrega."}},3:{correct:'C',A:{ok:false,msg:"Asociar a una dirección diferente puede llevar a la brigada al lugar equivocado, retrasando la solución y generando pérdidas adicionales (viaje innecesario + problema sin resolver)."},B:{ok:false,msg:"Siempre hay una solución: si la dirección no existe → ticket Dummy con descripción detallada de la ubicación. No tener la dirección en el sistema no impide registrar y gestionar el caso."},C:{ok:true,msg:"Correcto. La dirección exacta no está en el sistema → criterio Dummy. Crear ticket Dummy con la descripción más detallada posible de la ubicación (referencias físicas, calle más cercana, número de suministro si lo tiene) para que la brigada pueda ubicar el punto."}},};
+var DEC={1:{correct:'B',A:{ok:false,msg:"La Ley Karin protege explícitamente al trabajador/a de conductas abusivas y hostigamiento. \'El cliente siempre tiene la razón\' no aplica a conductas de acoso o insultos sistemáticos que afectan la dignidad del ejecutivo."},B:{ok:true,msg:"Correcto. El protocolo ante conducta abusiva: (1) advertir con claridad, (2) si continúa → finalizar la llamada con registro en C4C, (3) reportar a jefatura. La Ley Karin protege este proceso y la empresa tiene obligación de investigar el incidente."},C:{ok:false,msg:"Transferir sin registrar el incidente ni notificar a jefatura impide que la empresa cumpla su obligación de investigación bajo la Ley Karin. El registro es obligatorio."},2:{correct:'A',A:{ok:true,msg:"Correcto. MI-03 (lectura anómala) activa el proceso de relectura. El cobro no se procesa hasta confirmar la lectura real. El ejecutivo registra en C4C, escala a técnica y notifica al cliente que el monto está suspendido hasta la verificación."},B:{ok:false,msg:"Emitir NC sin relectura asume que 180 kWh es correcto, pero podría ser que el consumo realmente fue mayor al histórico (por ejemplo, un equipo defectuoso). La relectura es el proceso correcto."},C:{ok:false,msg:"El código MI-03 existe precisamente porque el sistema identificó que esta lectura puede ser incorrecta. Decir que \'el sistema no se equivoca\' es incorrecto y contradice la información que el propio sistema entrega."},3:{correct:'C',A:{ok:false,msg:"Asociar a una dirección diferente puede llevar a la brigada al lugar equivocado, retrasando la solución y generando pérdidas adicionales (viaje innecesario + problema sin resolver)."},B:{ok:false,msg:"Siempre hay una solución: si la dirección no existe → ticket Dummy con descripción detallada de la ubicación. No tener la dirección en el sistema no impide registrar y gestionar el caso."},C:{ok:true,msg:"Correcto. La dirección exacta no está en el sistema → criterio Dummy. Crear ticket Dummy con la descripción más detallada posible de la ubicación (referencias físicas, calle más cercana, número de suministro si lo tiene) para que la brigada pueda ubicar el punto."},};
 var QUIZ=[{"q": "¿Qué protege la Ley Karin en el contexto del Contact Center?", "opts": ["Solo a ejecutivos/as frente a clientes abusivos", "A trabajadores/as de acoso laboral y sexual, incluyendo situaciones con clientes que acosan sistemáticamente durante llamadas", "Solo a ejecutivos/as frente a sus jefaturas", "Exclusivamente al acoso entre compañeros de trabajo"], "ans": 1, "exp": "La Ley Karin (21.643) protege a todos los trabajadores/as de acoso laboral y sexual en cualquier contexto laboral. En el Contact Center incluye situaciones donde clientes acosan sistemáticamente al ejecutivo/a durante llamadas — no solo el acoso entre compañeros o jefaturas."}, {"q": "¿Cuándo se crea un ticket Dummy en Centrality?", "opts": ["Cuando el cliente no tiene RUT registrado en el sistema", "Cuando la dirección del suministro NO existe en la base de datos de calles del sistema", "Cuando la falla es nocturna (después de las 22:00 hrs)", "Cuando el monto de la NC supera el límite de autorización"], "ans": 1, "exp": "Un ticket Dummy se crea única y exclusivamente cuando la dirección del suministro no existe en la base de datos de calles del sistema (sin georreferenciación disponible). Si la dirección existe → asociar al servicio. No existen otros criterios válidos para crear un ticket Dummy."}, {"q": "Un cliente tiene un consumo de 850 kWh en enero siendo que su promedio es 160 kWh. En ES32 aparece el código MI-03. ¿Qué significa?", "opts": ["Que el cliente tuvo un consumo real extremadamente alto", "Que el sistema identificó la lectura como anómala y debe realizarse una relectura", "Que el medidor fue cambiado durante el período", "Que hay un error en el precio aplicado a los kWh"], "ans": 1, "exp": "MI-03 es el código de 'Lectura Anómala' — el sistema detectó que el consumo está fuera del rango histórico y lo marcó automáticamente para verificación. El proceso es: suspender el cobro → relectura del medidor → cobrar según la lectura verificada."}, {"q": "Un ejecutivo/a recibe insultos sistemáticos de un cliente durante más de 5 minutos. ¿Cuál es la acción correcta?", "opts": ["Continuar la llamada sin importar los insultos porque el cliente puede estar muy frustrado", "Colgar inmediatamente sin decir nada", "Advertir al cliente que finalizará la llamada si los insultos continúan, y si persisten → finalizar la llamada con registro en C4C y reporte a jefatura", "Poner en espera al cliente hasta que se calme"], "ans": 2, "exp": "Protocolo ante conducta abusiva: (1) advertir con claridad ('si los insultos continúan me veré obligado a finalizar la llamada'), (2) si continúan → finalizar la llamada, (3) registrar el incidente en C4C con hora y descripción, (4) reportar a jefatura. La Ley Karin protege este proceso."}];
 var SYNTH=["Ley Karin: protege de acoso laboral y sexual. En CC incluye clientes que acosan sistemáticamente. El ejecutivo puede finalizar llamadas abusivas con registro y reporte.", "Medidores: monofásico (residencial), bifásico, trifásico (industrial), bidireccional (Netbilling). Cada tipo tiene sus propios códigos.", "MI-03: lectura anómala identificada por el sistema → suspender cobro → relectura → cobrar según lectura verificada.", "Ticket Dummy: SOLO cuando la dirección no existe en el sistema. Dirección disponible → asociar al servicio.", "Canales denuncia Ley Karin: RRHH, canal ético anónimo, jefatura directa, Inspección del Trabajo."];
 var ERRORS=["Continuar aguantando insultos sistemáticos de clientes — la Ley Karin protege el derecho del ejecutivo a finalizar llamadas abusivas.", "Crear ticket Dummy cuando la dirección existe en el sistema — ese es un error de proceso.", "Emitir NC ante un MI-03 sin esperar la relectura del medidor.", "No registrar en C4C un incidente de conducta abusiva de un cliente.", "Asociar un ticket a una dirección diferente porque la correcta no existe en el sistema."];
 
-function buildCards(){{
+function buildCards(){
   var g=document.getElementById('cardGrid');if(!g)return;
-  CARDS.forEach(function(c){{
+  CARDS.forEach(function(c){
     var d=document.createElement('div');d.className='rev-card '+c.color;
     d.innerHTML='<h4><span class="card-icon">'+c.icon+'</span>'+c.name+'</h4><div class="rev-desc">'+c.desc+'</div><span class="rev-hint">👆 Toca para explorar</span>';
-    d.onclick=function(){{
+    d.onclick=function(){
       if(this.classList.contains('revealed'))return;
       this.classList.add('revealed');this.querySelector('.rev-hint').textContent='✓ Explorado';
       state.cardRevealed=(state.cardRevealed||0)+1;
       var cnt=document.getElementById('cardCnt');
       if(cnt)cnt.textContent=state.cardRevealed+' de '+CARDS.length+' conceptos explorados';
-    }};
+    };
     g.appendChild(d);
-  }});
-}}
-function buildSynth(){{
+  });
+}
+function buildSynth(){
   var b=document.getElementById('synthBody');if(!b)return;
-  b.innerHTML=SYNTH.map(function(s){{return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}}).join('');
-}}
-function buildErrors(){{
+  b.innerHTML=SYNTH.map(function(s){return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}).join('');
+}
+function buildErrors(){
   var b=document.getElementById('errorBody');if(!b)return;
-  b.innerHTML=ERRORS.map(function(e){{return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}}).join('');
-}}
-function decidir(n,opt){{
+  b.innerHTML=ERRORS.map(function(e){return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}).join('');
+}
+function decidir(n,opt){
   if(state.decisions[n])return;state.decisions[n]=opt;
   var dec=DEC[n];var btns=document.querySelectorAll('#d'+n+' .opt');var letters=['A','B','C'];
-  btns.forEach(function(b,i){{if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');}});
+  btns.forEach(function(b,i){if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');});
   var res=dec[opt];var fb=document.getElementById('fb'+n);
   fb.className='feedback show '+(res.ok?'ok':'ko');
   fb.innerHTML=(res.ok?'<strong>✓ Correcto</strong> — ':'<strong>✗ Incorrecto</strong> — ')+res.msg;
-}}
-function showQuestion(){{
+}
+function showQuestion(){
   var q=QUIZ[state.quizCurrent];
   document.getElementById('qCounter').textContent='Pregunta '+(state.quizCurrent+1)+' de '+QUIZ.length;
   document.getElementById('qFb').className='feedback';document.getElementById('qNext').style.display='none';state.quizAnswered=false;
   document.getElementById('qText').innerHTML='<p style="font-size:13.5px;line-height:1.7;margin-bottom:14px;font-weight:600;color:#1E293B">'+q.q+'</p>';
   var opts=document.getElementById('qOpts');opts.innerHTML='';
-  q.opts.forEach(function(o,i){{var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){{return function(){{answerQ(idx);}};}})(i);opts.appendChild(b);}});
-}}
-function answerQ(idx){{
+  q.opts.forEach(function(o,i){var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){return function(){answerQ(idx);};})(i);opts.appendChild(b);});
+}
+function answerQ(idx){
   if(state.quizAnswered)return;state.quizAnswered=true;
   var q=QUIZ[state.quizCurrent];
-  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){{if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');}});
+  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');});
   var ok=idx===q.ans;if(ok)state.quizScore++;
   var fb=document.getElementById('qFb');fb.className='feedback show '+(ok?'ok':'ko');
   fb.innerHTML='<strong>'+(ok?'✓ Correcto':'✗ Incorrecto')+'</strong> — '+q.exp;
   document.getElementById('qNext').style.display='inline-block';
-  try{{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}}catch(e){{}}
-}}
-function nextQ(){{state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}}
-function showResults(){{
+  try{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}catch(e){}
+}
+function nextQ(){state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}
+function showResults(){
   var pct=Math.round(state.quizScore/QUIZ.length*100);
   document.getElementById('resultScore').textContent=state.quizScore+'/'+QUIZ.length;
   document.getElementById('resultPct').textContent=pct+'% correcto';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: '+pct+'%';
-  setTimeout(function(){{document.getElementById('resultBar').style.width=pct+'%';}},300);
-  var badges={{100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'}};
+  setTimeout(function(){document.getElementById('resultBar').style.width=pct+'%';},300);
+  var badges={100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'};
   var key=pct===100?100:pct>=75?75:0;
   document.getElementById('resultBadge').innerHTML=badges[key];
-  if(pct<100&&document.getElementById('reviewBox')){{
-    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){{return '<li>'+e+'</li>';}}).join('')+'</ul></div>';
-  }}
+  if(pct<100&&document.getElementById('reviewBox')){
+    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+  }
   SCORM.setComplete(pct);
-}}
-function restartQuiz(){{
-  state={{cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{{1:null,2:null,3:null}}}};
-  document.querySelectorAll('.scene').forEach(function(s){{s.classList.remove('active');}});
+}
+function restartQuiz(){
+  state={cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+  document.querySelectorAll('.scene').forEach(function(s){s.classList.remove('active');});
   document.getElementById('sc0').classList.add('active');CUR=0;
-  document.querySelectorAll('.opt').forEach(function(b){{b.className='opt';}});
-  document.querySelectorAll('.feedback').forEach(function(f){{f.className='feedback';f.innerHTML='';}});
-  document.querySelectorAll('.rev-card').forEach(function(c){{c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';}});
+  document.querySelectorAll('.opt').forEach(function(b){b.className='opt';});
+  document.querySelectorAll('.feedback').forEach(function(f){f.className='feedback';f.innerHTML='';});
+  document.querySelectorAll('.rev-card').forEach(function(c){c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';});
   document.getElementById('reviewBox').innerHTML='';
   document.getElementById('resultBar').style.width='0%';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: 0%';
   buildCards();buildSynth();buildErrors();UPD();
-}}
+}
 
 document.addEventListener('DOMContentLoaded',function(){
   TOTAL_SC=9;

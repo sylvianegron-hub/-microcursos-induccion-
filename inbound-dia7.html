@@ -299,11 +299,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;fo
 <script>
 var SCORM=(function(){
   var a=null,ok=false;
-  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}}catch(e){}return w.API_1484_11||null;}
-  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}}catch(e){}})();
-  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}}
+  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}catch(e){}return w.API_1484_11||null;}
+  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}catch(e){})();
+  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}
   function done(p){
-    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}}catch(e){}
+    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}catch(e){}
     var b=document.getElementById('resultBanner');
     if(b){b.style.cssText='display:block;border-radius:12px;padding:22px;margin:14px 0;text-align:center;font-size:14px;line-height:1.9;background:'+(p>=75?'linear-gradient(135deg,#F0FDF4,#DCFCE7)':'linear-gradient(135deg,#FFF5F5,#FEE2E2)')+';color:'+(p>=75?'#14532D':'#7F1D1D')+';border:2px solid '+(p>=75?'#86EFAC':'#FCA5A5');
     b.innerHTML='<div style="font-size:38px;margin-bottom:8px">'+(p>=75?'🎉':'⚠️')+'</div><strong style="font-size:18px">'+(p>=75?'¡Aprobado! '+p+'%':'No aprobado — '+p+'%')+'</strong><br><span style="font-size:13px">'+(p>=75?'Módulo completado correctamente. ¡Continúa con el siguiente día!':'Umbral mínimo 75%. Revisa el contenido y vuelve a intentarlo.')+'</span>';}
@@ -338,93 +338,93 @@ function updateDots(){UPD();}
 function updateUI(){UPD();}
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown')NAV(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')NAV(-1);});
 var _tx=0;document.addEventListener('touchstart',function(e){_tx=e.touches[0].clientX;},{passive:true});
-document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);}},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);},{passive:true});
 
-var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null};
 
 var BLOOM=["Analizar", "Analizar", "Analizar", "Analizar", "Analizar", "Analizar", "Analizar", "Evaluar", "Evaluar"];
 var CARDS=[{"name": "Reconexión por pago", "icon": "🔌", "color": "blue", "desc": "Cuando el cliente paga la deuda que generó el corte, la reconexión tiene un plazo normativo de 24 horas hábiles desde confirmado el pago. SLA interno: 6 horas. El especialista debe confirmar el pago en el sistema antes de comprometer el plazo."}, {"name": "Desconexión a solicitud", "icon": "✂️", "color": "teal", "desc": "Cuando el cliente solicita voluntariamente el corte del suministro (viaje largo, cambio de domicilio). Plazo: 24 a 48 horas hábiles. Requiere identificación del titular. El suministro puede reactivarse después mediante solicitud de reconexión."}, {"name": "Reposición fuera de plazo", "icon": "⚠️", "color": "red", "desc": "Cuando la empresa no cumple el plazo de reposición comprometido (falla técnica). El cliente tiene derecho a compensación según normativa. El ejecutivo/a debe registrar el caso, escalar a jefatura y no comprometer compensaciones sin autorización."}, {"name": "Plazo normativo vs SLA interno", "icon": "📊", "color": "purp", "desc": "Plazo normativo = mínimo legal obligatorio. SLA interno = objetivo del equipo, siempre más exigente. Ejemplo reconexión: normativo 24 horas, SLA interno 6 horas. Siempre comunicar el plazo normativo al cliente — nunca prometer el SLA interno como garantía."}, {"name": "Manejo de expectativa", "icon": "💬", "color": "amber", "desc": "Cuando el plazo no puede cumplirse, no decir 'no puedo' — decir 'lo que puedo hacer es [alternativa concreta]'. Si el cliente presiona por un plazo imposible, validar su urgencia y ofrecer un compromiso real: 'Voy a registrar como urgente y escalar a jefatura para acortar el tiempo'."}, {"name": "Compensación por fuera de plazo", "icon": "💰", "color": "green", "desc": "Si la empresa no cumple el plazo normativo de reposición, la normativa obliga a compensar al cliente. El ejecutivo/a no puede comprometer montos de compensación directamente — debe escalar a jefatura con el registro del caso documentado."}];
-var DEC={1:{correct:'B',A:{ok:false,msg:"Prometer 1 hora cuando el SLA interno es 6 horas genera un reclamo garantizado cuando no se cumple. El ejecutivo/a nunca puede prometer más de lo que el sistema puede cumplir."},B:{ok:true,msg:"Correcto. Informar el plazo normativo (24 horas), aclarar que se trabaja para ser más rápido, registrar como urgente y comprometerse a confirmar. Manejo de expectativa correcto sin prometer lo imposible."},C:{ok:false,msg:"\'No puedo hacer nada más\' cierra todas las opciones y frustra al cliente. El ejecutivo/a siempre puede registrar como urgente, escalar y comprometerse a confirmar — eso sí es algo concreto."}},2:{correct:'A',A:{ok:true,msg:"Correcto. Reconocer el incumplimiento, validar la molestia, documentar todo, escalar a jefatura y explicar el proceso de compensación sin comprometer montos. El ejecutivo/a no puede comprometer compensaciones directamente."},B:{ok:false,msg:"Decirle que \'30 horas es normal\' cuando se le prometieron 24 genera mayor frustración. El incumplimiento debe reconocerse — negar la realidad daña la confianza del cliente."},C:{ok:false,msg:"El ejecutivo/a no puede comprometer compensaciones directamente. Hacerlo sin autorización genera responsabilidades. El proceso correcto es documentar y escalar a jefatura."}},3:{correct:'C',A:{ok:false,msg:"Cortar sin verificar la identidad del titular es un error grave. La desconexión a solicitud requiere confirmar que quien pide es efectivamente el titular del suministro."},B:{ok:false,msg:"El trámite sí puede gestionarse por teléfono si el cliente tiene la información requerida. Decir que \'no se puede\' sin verificar genera frustración innecesaria."},C:{ok:true,msg:"Correcto. Explicar qué tipo de trámite es, qué requisitos tiene (identificación del titular), el plazo y qué pasa después (puede reconectar). Si tiene la información, procesar."}},};
+var DEC={1:{correct:'B',A:{ok:false,msg:"Prometer 1 hora cuando el SLA interno es 6 horas genera un reclamo garantizado cuando no se cumple. El ejecutivo/a nunca puede prometer más de lo que el sistema puede cumplir."},B:{ok:true,msg:"Correcto. Informar el plazo normativo (24 horas), aclarar que se trabaja para ser más rápido, registrar como urgente y comprometerse a confirmar. Manejo de expectativa correcto sin prometer lo imposible."},C:{ok:false,msg:"\'No puedo hacer nada más\' cierra todas las opciones y frustra al cliente. El ejecutivo/a siempre puede registrar como urgente, escalar y comprometerse a confirmar — eso sí es algo concreto."},2:{correct:'A',A:{ok:true,msg:"Correcto. Reconocer el incumplimiento, validar la molestia, documentar todo, escalar a jefatura y explicar el proceso de compensación sin comprometer montos. El ejecutivo/a no puede comprometer compensaciones directamente."},B:{ok:false,msg:"Decirle que \'30 horas es normal\' cuando se le prometieron 24 genera mayor frustración. El incumplimiento debe reconocerse — negar la realidad daña la confianza del cliente."},C:{ok:false,msg:"El ejecutivo/a no puede comprometer compensaciones directamente. Hacerlo sin autorización genera responsabilidades. El proceso correcto es documentar y escalar a jefatura."},3:{correct:'C',A:{ok:false,msg:"Cortar sin verificar la identidad del titular es un error grave. La desconexión a solicitud requiere confirmar que quien pide es efectivamente el titular del suministro."},B:{ok:false,msg:"El trámite sí puede gestionarse por teléfono si el cliente tiene la información requerida. Decir que \'no se puede\' sin verificar genera frustración innecesaria."},C:{ok:true,msg:"Correcto. Explicar qué tipo de trámite es, qué requisitos tiene (identificación del titular), el plazo y qué pasa después (puede reconectar). Si tiene la información, procesar."},};
 var QUIZ=[{"q": "¿Cuál es el plazo normativo para reconectar el suministro después de que el cliente paga su deuda?", "opts": ["6 horas", "12 horas hábiles", "24 horas hábiles", "48 horas hábiles"], "ans": 2, "exp": "El plazo normativo de reconexión es 24 horas hábiles desde confirmado el pago. El SLA interno del equipo es 6 horas (más exigente). Siempre comunicar el plazo normativo al cliente — nunca prometer el SLA interno como garantía."}, {"q": "El cliente dice que la empresa no cumplió el plazo de reposición prometido y pide compensación. ¿Qué haces?", "opts": ["Prometer compensación para calmar al cliente", "Decirle que los plazos son referenciales y que no hay compensación", "Registrar el caso documentando el incumplimiento, escalar a jefatura y explicar que la compensación será evaluada por el área correspondiente", "Ignorar el reclamo porque la falla fue por un evento climático"], "ans": 2, "exp": "El ejecutivo/a no puede comprometer compensaciones directamente. El proceso correcto es documentar el incumplimiento (horas sin suministro, plazo prometido vs. real), escalar a jefatura y explicar al cliente que la compensación que corresponda será evaluada por el área responsable."}, {"q": "¿Qué diferencia hay entre el plazo normativo y el SLA interno?", "opts": ["Son exactamente lo mismo", "El plazo normativo es el mínimo legal obligatorio; el SLA interno es el objetivo del equipo, siempre más exigente", "El SLA interno es el mínimo legal y el normativo es el objetivo", "El plazo normativo aplica solo a reconexiones; el SLA a fallas"], "ans": 1, "exp": "El plazo normativo es el mínimo legal que la empresa debe cumplir. El SLA interno es el objetivo del equipo, siempre más exigente que el normativo. Se comunica el normativo al cliente — nunca prometer el SLA interno como garantía porque puede no cumplirse en situaciones complejas."}, {"q": "¿Qué haces cuando un cliente exige un plazo de reconexión más corto que el normativo?", "opts": ["Prometer el plazo que pide para evitar el reclamo", "Informar el plazo normativo, registrar como urgente, escalar si es posible y comprometerse a confirmar cuando esté lista", "Decirle que 'no se puede' y cerrar la llamada", "Crear un ticket de emergencia aunque no corresponda la categoría"], "ans": 1, "exp": "Cuando el cliente presiona por un plazo más corto: informar el plazo normativo con claridad, registrar el caso como urgente, escalar si hay condiciones que lo justifiquen y comprometerse a confirmar cuando esté lista la reconexión. Nunca prometer lo que no se puede cumplir."}];
 var SYNTH=["Reconexión post-pago: plazo normativo 24 horas hábiles. SLA interno 6 horas. Comunicar siempre el normativo.", "Desconexión a solicitud: requiere identificación del titular. Plazo 24–48 horas. Puede reconectarse después.", "Reposición fuera de plazo: documentar incumplimiento, escalar a jefatura. El ejecutivo no puede comprometer compensaciones.", "Manejo de expectativa: informar plazo real, registrar como urgente si aplica, comprometerse a confirmar.", "Diferencia normativo vs SLA: normativo = mínimo legal. SLA = objetivo del equipo (siempre más exigente)."];
 var ERRORS=["Prometer el SLA interno (6 horas) como garantía al cliente — solo comprometer el plazo normativo.", "Comprometer compensaciones directamente sin autorización de jefatura.", "Decir 'no puedo hacer nada' cuando siempre hay algo concreto que se puede hacer (registrar, escalar, confirmar).", "Procesar una desconexión a solicitud sin verificar la identidad del titular.", "Ignorar un reclamo por reposición fuera de plazo — siempre documentar y escalar."];
 
-function buildCards(){{
+function buildCards(){
   var g=document.getElementById('cardGrid');if(!g)return;
-  CARDS.forEach(function(c){{
+  CARDS.forEach(function(c){
     var d=document.createElement('div');d.className='rev-card '+c.color;
     d.innerHTML='<h4><span class="card-icon">'+c.icon+'</span>'+c.name+'</h4><div class="rev-desc">'+c.desc+'</div><span class="rev-hint">👆 Toca para explorar</span>';
-    d.onclick=function(){{
+    d.onclick=function(){
       if(this.classList.contains('revealed'))return;
       this.classList.add('revealed');this.querySelector('.rev-hint').textContent='✓ Explorado';
       state.cardRevealed=(state.cardRevealed||0)+1;
       var cnt=document.getElementById('cardCnt');
       if(cnt)cnt.textContent=state.cardRevealed+' de '+CARDS.length+' conceptos explorados';
-    }};
+    };
     g.appendChild(d);
-  }});
-}}
-function buildSynth(){{
+  });
+}
+function buildSynth(){
   var b=document.getElementById('synthBody');if(!b)return;
-  b.innerHTML=SYNTH.map(function(s){{return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}}).join('');
-}}
-function buildErrors(){{
+  b.innerHTML=SYNTH.map(function(s){return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}).join('');
+}
+function buildErrors(){
   var b=document.getElementById('errorBody');if(!b)return;
-  b.innerHTML=ERRORS.map(function(e){{return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}}).join('');
-}}
-function decidir(n,opt){{
+  b.innerHTML=ERRORS.map(function(e){return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}).join('');
+}
+function decidir(n,opt){
   if(state.decisions[n])return;state.decisions[n]=opt;
   var dec=DEC[n];var btns=document.querySelectorAll('#d'+n+' .opt');var letters=['A','B','C'];
-  btns.forEach(function(b,i){{if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');}});
+  btns.forEach(function(b,i){if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');});
   var res=dec[opt];var fb=document.getElementById('fb'+n);
   fb.className='feedback show '+(res.ok?'ok':'ko');
   fb.innerHTML=(res.ok?'<strong>✓ Correcto</strong> — ':'<strong>✗ Incorrecto</strong> — ')+res.msg;
-}}
-function showQuestion(){{
+}
+function showQuestion(){
   var q=QUIZ[state.quizCurrent];
   document.getElementById('qCounter').textContent='Pregunta '+(state.quizCurrent+1)+' de '+QUIZ.length;
   document.getElementById('qFb').className='feedback';document.getElementById('qNext').style.display='none';state.quizAnswered=false;
   document.getElementById('qText').innerHTML='<p style="font-size:13.5px;line-height:1.7;margin-bottom:14px;font-weight:600;color:#1E293B">'+q.q+'</p>';
   var opts=document.getElementById('qOpts');opts.innerHTML='';
-  q.opts.forEach(function(o,i){{var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){{return function(){{answerQ(idx);}};}})(i);opts.appendChild(b);}});
-}}
-function answerQ(idx){{
+  q.opts.forEach(function(o,i){var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){return function(){answerQ(idx);};})(i);opts.appendChild(b);});
+}
+function answerQ(idx){
   if(state.quizAnswered)return;state.quizAnswered=true;
   var q=QUIZ[state.quizCurrent];
-  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){{if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');}});
+  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');});
   var ok=idx===q.ans;if(ok)state.quizScore++;
   var fb=document.getElementById('qFb');fb.className='feedback show '+(ok?'ok':'ko');
   fb.innerHTML='<strong>'+(ok?'✓ Correcto':'✗ Incorrecto')+'</strong> — '+q.exp;
   document.getElementById('qNext').style.display='inline-block';
-  try{{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}}catch(e){{}}
-}}
-function nextQ(){{state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}}
-function showResults(){{
+  try{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}catch(e){}
+}
+function nextQ(){state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}
+function showResults(){
   var pct=Math.round(state.quizScore/QUIZ.length*100);
   document.getElementById('resultScore').textContent=state.quizScore+'/'+QUIZ.length;
   document.getElementById('resultPct').textContent=pct+'% correcto';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: '+pct+'%';
-  setTimeout(function(){{document.getElementById('resultBar').style.width=pct+'%';}},300);
-  var badges={{100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'}};
+  setTimeout(function(){document.getElementById('resultBar').style.width=pct+'%';},300);
+  var badges={100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'};
   var key=pct===100?100:pct>=75?75:0;
   document.getElementById('resultBadge').innerHTML=badges[key];
-  if(pct<100&&document.getElementById('reviewBox')){{
-    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){{return '<li>'+e+'</li>';}}).join('')+'</ul></div>';
-  }}
+  if(pct<100&&document.getElementById('reviewBox')){
+    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+  }
   SCORM.setComplete(pct);
-}}
-function restartQuiz(){{
-  state={{cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{{1:null,2:null,3:null}}}};
-  document.querySelectorAll('.scene').forEach(function(s){{s.classList.remove('active');}});
+}
+function restartQuiz(){
+  state={cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+  document.querySelectorAll('.scene').forEach(function(s){s.classList.remove('active');});
   document.getElementById('sc0').classList.add('active');CUR=0;
-  document.querySelectorAll('.opt').forEach(function(b){{b.className='opt';}});
-  document.querySelectorAll('.feedback').forEach(function(f){{f.className='feedback';f.innerHTML='';}});
-  document.querySelectorAll('.rev-card').forEach(function(c){{c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';}});
+  document.querySelectorAll('.opt').forEach(function(b){b.className='opt';});
+  document.querySelectorAll('.feedback').forEach(function(f){f.className='feedback';f.innerHTML='';});
+  document.querySelectorAll('.rev-card').forEach(function(c){c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';});
   document.getElementById('reviewBox').innerHTML='';
   document.getElementById('resultBar').style.width='0%';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: 0%';
   buildCards();buildSynth();buildErrors();UPD();
-}}
+}
 
 document.addEventListener('DOMContentLoaded',function(){
   TOTAL_SC=9;

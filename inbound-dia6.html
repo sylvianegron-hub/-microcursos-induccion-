@@ -300,11 +300,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;fo
 <script>
 var SCORM=(function(){
   var a=null,ok=false;
-  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}}catch(e){}return w.API_1484_11||null;}
-  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}}catch(e){}})();
-  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}}
+  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}catch(e){}return w.API_1484_11||null;}
+  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}catch(e){})();
+  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}
   function done(p){
-    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}}catch(e){}
+    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}catch(e){}
     var b=document.getElementById('resultBanner');
     if(b){b.style.cssText='display:block;border-radius:12px;padding:22px;margin:14px 0;text-align:center;font-size:14px;line-height:1.9;background:'+(p>=75?'linear-gradient(135deg,#F0FDF4,#DCFCE7)':'linear-gradient(135deg,#FFF5F5,#FEE2E2)')+';color:'+(p>=75?'#14532D':'#7F1D1D')+';border:2px solid '+(p>=75?'#86EFAC':'#FCA5A5');
     b.innerHTML='<div style="font-size:38px;margin-bottom:8px">'+(p>=75?'🎉':'⚠️')+'</div><strong style="font-size:18px">'+(p>=75?'¡Aprobado! '+p+'%':'No aprobado — '+p+'%')+'</strong><br><span style="font-size:13px">'+(p>=75?'Módulo completado correctamente. ¡Continúa con el siguiente día!':'Umbral mínimo 75%. Revisa el contenido y vuelve a intentarlo.')+'</span>';}
@@ -339,93 +339,93 @@ function updateDots(){UPD();}
 function updateUI(){UPD();}
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown')NAV(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')NAV(-1);});
 var _tx=0;document.addEventListener('touchstart',function(e){_tx=e.touches[0].clientX;},{passive:true});
-document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);}},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);},{passive:true});
 
-var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null};
 
 var BLOOM=["Aplicar", "Aplicar", "Aplicar", "Analizar", "Analizar", "Analizar", "Analizar", "Evaluar", "Evaluar"];
 var CARDS=[{"name": "Anatomía de la boleta", "icon": "🧾", "color": "blue", "desc": "9 campos: datos del cliente, período de facturación, lecturas del medidor (anterior y actual), tarifa aplicada, cargo fijo, cargo por energía, cargo por potencia (si aplica), subsidio y total con IVA. El consumo = lectura actual - lectura anterior."}, {"name": "MI — Medición Irregular", "icon": "📐", "color": "red", "desc": "Cuando el medidor no pudo ser leído (problema de acceso, medidor dañado), el sistema genera una estimación basada en el consumo histórico. La boleta marca 'MI' o 'estimado'. En el siguiente período se rectifica con la lectura real."}, {"name": "CNR — Consumo No Registrado", "icon": "🔁", "color": "amber", "desc": "Cuando se detecta que el medidor no registró correctamente el consumo real, se genera un CNR. El sistema recalcula la diferencia y la incluye en la siguiente boleta. El cliente puede ver un cobro mayor al habitual."}, {"name": "Fórmula NC neta", "icon": "🧮", "color": "teal", "desc": "NC neta = monto cobrado (neto sin IVA) − monto correcto (neto sin IVA). NC total = NC neta × 1,19 (IVA). Ejemplo: cobrado $42.000 neto, correcto $35.000 neto → NC neta = $7.000 → NC total = $8.330. NUNCA calcular sobre el total con IVA."}, {"name": "Límites de autorización NC", "icon": "🔐", "color": "purp", "desc": "Hasta $50.000: el ejecutivo/a autoriza directamente. Entre $50.001 y $200.000: requiere firma del supervisor. Entre $200.001 y $1.000.000: requiere jefatura. Sobre $1.000.000: gerencia comercial. Nunca emitir sin la aprobación del nivel correspondiente."}, {"name": "NC vs. Refacturación", "icon": "↔️", "color": "green", "desc": "NC: ajusta un ítem específico de una boleta que sigue vigente. Refacturación: anula la boleta completa y emite una nueva. Usar NC cuando el error es puntual (precio, subsidio). Usar refacturación cuando el error afecta la base de cálculo completa (tarifa incorrecta, período equivocado)."}];
-var DEC={1:{correct:'B',A:{ok:false,msg:"El precio $92/kWh vs $82/kWh es un error verificable en FPL9. Decirle que \'los precios subieron\' sin haberlo revisado es una respuesta incorrecta y podría ser falsa."},B:{ok:true,msg:"Correcto. Verificar FPL9 primero, confirmar el error, calcular la NC correctamente sobre el neto (no sobre el total con IVA), verificar el monto vs. tu límite de autorización y proceder."},C:{ok:false,msg:"Emitir NC por el monto que dice el cliente sin verificar en FPL9 es un error grave. La NC requiere respaldo objetivo. Además, $7.000 podría no ser el monto correcto según el cálculo real."}},2:{correct:'A',A:{ok:true,msg:"Correcto. Error en la tarifa = error en la base de cálculo completa = refacturación. La NC ajusta un ítem; la refacturación reemplaza la boleta completa. Después de refacturar, la diferencia se tramita como NC."},B:{ok:false,msg:"Las NC ajustan ítems específicos de una boleta que sigue vigente. Si el error es la tarifa completa, la boleta entera es incorrecta — la solución es refacturación, no múltiples NC."},C:{ok:false,msg:"Si la tarifa fue incorrecta durante 4 meses, los 4 períodos deben corregirse. Solo corregir el último deja 3 períodos con error que afectan el historial del cliente."}},3:{correct:'B',A:{ok:false,msg:"La urgencia del cliente no permite saltarse los niveles de autorización. Emitir sin aprobación de jefatura genera responsabilidad disciplinaria para el ejecutivo/a."},B:{ok:true,msg:"Correcto. $350.000 requiere aprobación de jefatura. Ingresar el ticket hoy, solicitar aprobación urgente e informar al cliente el plazo. El proceso correcto protege al cliente y al ejecutivo."},C:{ok:false,msg:"Dividir artificialmente una NC para evitar el nivel de aprobación es una práctica irregular que puede considerarse evasión de controles internos — con consecuencias disciplinarias."}},};
+var DEC={1:{correct:'B',A:{ok:false,msg:"El precio $92/kWh vs $82/kWh es un error verificable en FPL9. Decirle que \'los precios subieron\' sin haberlo revisado es una respuesta incorrecta y podría ser falsa."},B:{ok:true,msg:"Correcto. Verificar FPL9 primero, confirmar el error, calcular la NC correctamente sobre el neto (no sobre el total con IVA), verificar el monto vs. tu límite de autorización y proceder."},C:{ok:false,msg:"Emitir NC por el monto que dice el cliente sin verificar en FPL9 es un error grave. La NC requiere respaldo objetivo. Además, $7.000 podría no ser el monto correcto según el cálculo real."},2:{correct:'A',A:{ok:true,msg:"Correcto. Error en la tarifa = error en la base de cálculo completa = refacturación. La NC ajusta un ítem; la refacturación reemplaza la boleta completa. Después de refacturar, la diferencia se tramita como NC."},B:{ok:false,msg:"Las NC ajustan ítems específicos de una boleta que sigue vigente. Si el error es la tarifa completa, la boleta entera es incorrecta — la solución es refacturación, no múltiples NC."},C:{ok:false,msg:"Si la tarifa fue incorrecta durante 4 meses, los 4 períodos deben corregirse. Solo corregir el último deja 3 períodos con error que afectan el historial del cliente."},3:{correct:'B',A:{ok:false,msg:"La urgencia del cliente no permite saltarse los niveles de autorización. Emitir sin aprobación de jefatura genera responsabilidad disciplinaria para el ejecutivo/a."},B:{ok:true,msg:"Correcto. $350.000 requiere aprobación de jefatura. Ingresar el ticket hoy, solicitar aprobación urgente e informar al cliente el plazo. El proceso correcto protege al cliente y al ejecutivo."},C:{ok:false,msg:"Dividir artificialmente una NC para evitar el nivel de aprobación es una práctica irregular que puede considerarse evasión de controles internos — con consecuencias disciplinarias."},};
 var QUIZ=[{"q": "¿Cuál es la fórmula correcta para calcular la NC total con IVA?", "opts": ["(Monto cobrado total − Monto correcto total) × 1,19", "(Monto cobrado neto − Monto correcto neto) × 1,19", "Monto cobrado total − Monto correcto total", "(Monto cobrado total − Monto correcto total) ÷ 1,19"], "ans": 1, "exp": "NC total = (monto cobrado NETO − monto correcto NETO) × 1,19. Siempre calcular primero la diferencia sobre los valores netos (sin IVA) y luego agregar el IVA. Calcular sobre el total con IVA es un error que infla el monto."}, {"q": "¿Qué es un MI en la boleta eléctrica?", "opts": ["Un error en el precio aplicado", "Una estimación del consumo cuando el medidor no pudo ser leído", "Un cobro adicional por mora", "Un cargo por potencia contratada no utilizada"], "ans": 1, "exp": "MI (Medición Irregular) ocurre cuando el medidor no pudo ser leído y el sistema genera una estimación basada en el consumo histórico. En el siguiente período se rectifica con la lectura real. No es un error — es un proceso normal cuando no hay acceso al medidor."}, {"q": "¿Cuándo corresponde refacturar en lugar de emitir NC?", "opts": ["Cuando el monto de la NC supera $100.000", "Cuando el error afecta la base de cálculo completa (tarifa incorrecta, período equivocado)", "Cuando el cliente lo solicita expresamente", "Cuando han pasado más de 3 meses del período afectado"], "ans": 1, "exp": "Refacturación corresponde cuando el error afecta la boleta completa (tarifa incorrecta, período equivocado, datos maestros erróneos). La NC ajusta un ítem específico de una boleta que en lo demás es correcta."}, {"q": "¿Cuál es el límite de monto que un ejecutivo/a puede autorizar directamente en una NC?", "opts": ["Hasta $100.000", "Hasta $75.000", "Hasta $50.000", "Sin límite si el error es verificado en FPL9"], "ans": 2, "exp": "El ejecutivo/a puede autorizar NC hasta $50.000. Entre $50.001 y $200.000 requiere supervisor. Entre $200.001 y $1.000.000 requiere jefatura. Sobre $1.000.000 requiere gerencia comercial."}];
 var SYNTH=["NC neta = cobrado neto − correcto neto. NC total = NC neta × 1,19. NUNCA calcular sobre el total con IVA.", "MI = estimación por falta de lectura. CNR = recalculación de consumo no registrado. Ambos son procesos normales.", "NC = ajuste de ítem puntual. Refacturación = error en base de cálculo completa. No son intercambiables.", "Límites NC: $50k (ejecutivo), $200k (supervisor), $1M (jefatura). Nunca saltarse niveles por urgencia.", "Verificar SIEMPRE en FPL9 antes de emitir NC — la NC requiere respaldo objetivo, no solo la palabra del cliente."];
 var ERRORS=["Calcular la NC sobre el total con IVA en lugar del neto — el resultado queda inflado.", "Emitir NC basándose solo en lo que dice el cliente, sin verificar primero en FPL9.", "Emitir NC cuando corresponde refacturación (error en la tarifa completa de la boleta).", "Saltarse el nivel de autorización correspondiente por urgencia o presión del cliente.", "Dividir artificialmente una NC para evitar el nivel de aprobación — es una práctica irregular."];
 
-function buildCards(){{
+function buildCards(){
   var g=document.getElementById('cardGrid');if(!g)return;
-  CARDS.forEach(function(c){{
+  CARDS.forEach(function(c){
     var d=document.createElement('div');d.className='rev-card '+c.color;
     d.innerHTML='<h4><span class="card-icon">'+c.icon+'</span>'+c.name+'</h4><div class="rev-desc">'+c.desc+'</div><span class="rev-hint">👆 Toca para explorar</span>';
-    d.onclick=function(){{
+    d.onclick=function(){
       if(this.classList.contains('revealed'))return;
       this.classList.add('revealed');this.querySelector('.rev-hint').textContent='✓ Explorado';
       state.cardRevealed=(state.cardRevealed||0)+1;
       var cnt=document.getElementById('cardCnt');
       if(cnt)cnt.textContent=state.cardRevealed+' de '+CARDS.length+' conceptos explorados';
-    }};
+    };
     g.appendChild(d);
-  }});
-}}
-function buildSynth(){{
+  });
+}
+function buildSynth(){
   var b=document.getElementById('synthBody');if(!b)return;
-  b.innerHTML=SYNTH.map(function(s){{return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}}).join('');
-}}
-function buildErrors(){{
+  b.innerHTML=SYNTH.map(function(s){return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}).join('');
+}
+function buildErrors(){
   var b=document.getElementById('errorBody');if(!b)return;
-  b.innerHTML=ERRORS.map(function(e){{return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}}).join('');
-}}
-function decidir(n,opt){{
+  b.innerHTML=ERRORS.map(function(e){return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}).join('');
+}
+function decidir(n,opt){
   if(state.decisions[n])return;state.decisions[n]=opt;
   var dec=DEC[n];var btns=document.querySelectorAll('#d'+n+' .opt');var letters=['A','B','C'];
-  btns.forEach(function(b,i){{if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');}});
+  btns.forEach(function(b,i){if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');});
   var res=dec[opt];var fb=document.getElementById('fb'+n);
   fb.className='feedback show '+(res.ok?'ok':'ko');
   fb.innerHTML=(res.ok?'<strong>✓ Correcto</strong> — ':'<strong>✗ Incorrecto</strong> — ')+res.msg;
-}}
-function showQuestion(){{
+}
+function showQuestion(){
   var q=QUIZ[state.quizCurrent];
   document.getElementById('qCounter').textContent='Pregunta '+(state.quizCurrent+1)+' de '+QUIZ.length;
   document.getElementById('qFb').className='feedback';document.getElementById('qNext').style.display='none';state.quizAnswered=false;
   document.getElementById('qText').innerHTML='<p style="font-size:13.5px;line-height:1.7;margin-bottom:14px;font-weight:600;color:#1E293B">'+q.q+'</p>';
   var opts=document.getElementById('qOpts');opts.innerHTML='';
-  q.opts.forEach(function(o,i){{var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){{return function(){{answerQ(idx);}};}})(i);opts.appendChild(b);}});
-}}
-function answerQ(idx){{
+  q.opts.forEach(function(o,i){var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){return function(){answerQ(idx);};})(i);opts.appendChild(b);});
+}
+function answerQ(idx){
   if(state.quizAnswered)return;state.quizAnswered=true;
   var q=QUIZ[state.quizCurrent];
-  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){{if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');}});
+  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');});
   var ok=idx===q.ans;if(ok)state.quizScore++;
   var fb=document.getElementById('qFb');fb.className='feedback show '+(ok?'ok':'ko');
   fb.innerHTML='<strong>'+(ok?'✓ Correcto':'✗ Incorrecto')+'</strong> — '+q.exp;
   document.getElementById('qNext').style.display='inline-block';
-  try{{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}}catch(e){{}}
-}}
-function nextQ(){{state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}}
-function showResults(){{
+  try{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}catch(e){}
+}
+function nextQ(){state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}
+function showResults(){
   var pct=Math.round(state.quizScore/QUIZ.length*100);
   document.getElementById('resultScore').textContent=state.quizScore+'/'+QUIZ.length;
   document.getElementById('resultPct').textContent=pct+'% correcto';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: '+pct+'%';
-  setTimeout(function(){{document.getElementById('resultBar').style.width=pct+'%';}},300);
-  var badges={{100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'}};
+  setTimeout(function(){document.getElementById('resultBar').style.width=pct+'%';},300);
+  var badges={100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'};
   var key=pct===100?100:pct>=75?75:0;
   document.getElementById('resultBadge').innerHTML=badges[key];
-  if(pct<100&&document.getElementById('reviewBox')){{
-    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){{return '<li>'+e+'</li>';}}).join('')+'</ul></div>';
-  }}
+  if(pct<100&&document.getElementById('reviewBox')){
+    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+  }
   SCORM.setComplete(pct);
-}}
-function restartQuiz(){{
-  state={{cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{{1:null,2:null,3:null}}}};
-  document.querySelectorAll('.scene').forEach(function(s){{s.classList.remove('active');}});
+}
+function restartQuiz(){
+  state={cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+  document.querySelectorAll('.scene').forEach(function(s){s.classList.remove('active');});
   document.getElementById('sc0').classList.add('active');CUR=0;
-  document.querySelectorAll('.opt').forEach(function(b){{b.className='opt';}});
-  document.querySelectorAll('.feedback').forEach(function(f){{f.className='feedback';f.innerHTML='';}});
-  document.querySelectorAll('.rev-card').forEach(function(c){{c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';}});
+  document.querySelectorAll('.opt').forEach(function(b){b.className='opt';});
+  document.querySelectorAll('.feedback').forEach(function(f){f.className='feedback';f.innerHTML='';});
+  document.querySelectorAll('.rev-card').forEach(function(c){c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';});
   document.getElementById('reviewBox').innerHTML='';
   document.getElementById('resultBar').style.width='0%';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: 0%';
   buildCards();buildSynth();buildErrors();UPD();
-}}
+}
 
 document.addEventListener('DOMContentLoaded',function(){
   TOTAL_SC=9;

@@ -321,11 +321,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;fo
 <script>
 var SCORM=(function(){
   var a=null,ok=false;
-  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}}catch(e){}return w.API_1484_11||null;}
-  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}}catch(e){}})();
-  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}}
+  function find(w){var t=0;try{while(!w.API_1484_11&&w.parent&&w.parent!==w&&t<10){w=w.parent;t++;}catch(e){}return w.API_1484_11||null;}
+  (function(){try{a=find(window);if(!a&&window.opener)a=find(window.opener);if(a){var r=a.Initialize('');ok=(r==='true'||r===true);}catch(e){})();
+  function sv(k,v){try{if(a&&ok)a.SetValue(k,v);}catch(e){}
   function done(p){
-    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}}catch(e){}
+    try{sv('cmi.score.raw',p);sv('cmi.score.min',0);sv('cmi.score.max',100);sv('cmi.score.scaled',(p/100).toFixed(4));sv('cmi.completion_status','completed');sv('cmi.success_status',p>=75?'passed':'failed');sv('cmi.session_time','PT7M0S');if(a&&ok){a.Commit('');a.Terminate('');}catch(e){}
     var b=document.getElementById('resultBanner');
     if(b){b.style.cssText='display:block;border-radius:12px;padding:22px;margin:14px 0;text-align:center;font-size:14px;line-height:1.9;background:'+(p>=75?'linear-gradient(135deg,#F0FDF4,#DCFCE7)':'linear-gradient(135deg,#FFF5F5,#FEE2E2)')+';color:'+(p>=75?'#14532D':'#7F1D1D')+';border:2px solid '+(p>=75?'#86EFAC':'#FCA5A5');
     b.innerHTML='<div style="font-size:38px;margin-bottom:8px">'+(p>=75?'🎉':'⚠️')+'</div><strong style="font-size:18px">'+(p>=75?'¡Aprobado! '+p+'%':'No aprobado — '+p+'%')+'</strong><br><span style="font-size:13px">'+(p>=75?'Módulo completado correctamente. ¡Continúa con el siguiente día!':'Umbral mínimo 75%. Revisa el contenido y vuelve a intentarlo.')+'</span>';}
@@ -360,93 +360,93 @@ function updateDots(){UPD();}
 function updateUI(){UPD();}
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown')NAV(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')NAV(-1);});
 var _tx=0;document.addEventListener('touchstart',function(e){_tx=e.touches[0].clientX;},{passive:true});
-document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);}},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>40){if(dx<0)NAV(1);else NAV(-1);},{passive:true});
 
-var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+var state={cur:0,total:9,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null};
 
 var BLOOM=["Evaluar", "Evaluar", "Evaluar", "Evaluar", "Evaluar", "Evaluar", "Evaluar", "Evaluar", "Evaluar"];
 var CARDS=[{"name": "Repaso: tipos de llamada", "icon": "📞", "color": "blue", "desc": "Básica (consulta, estado), Intermedia (reclamo, NC, plazo), Avanzada (ED, PMGD, falla masiva). Cada nivel tiene su protocolo. ED siempre es prioridad máxima — escalar a Operaciones + Jefatura en simultáneo e inmediato."}, {"name": "Repaso: herramientas clave", "icon": "💻", "color": "teal", "desc": "C4C: tickets y observaciones. Genesys: estados de disponibilidad. ES32: estado del suministro y aviso GGCC. FPL9: historial de facturación. Centrality: tickets técnicos de campo. Cada herramienta tiene su propósito específico — no son intercambiables."}, {"name": "Repaso: facturación y NC", "icon": "🧾", "color": "purp", "desc": "NC neta = (cobrado neto − correcto neto). NC total = NC neta × 1,19. Verificar en FPL9 antes de emitir. Límites: $50k (ejecutivo), $200k (supervisor), $1M (jefatura). No comprometer compensaciones sin autorización del nivel correspondiente."}, {"name": "Repaso: Netbilling", "icon": "☀️", "color": "amber", "desc": "Prosumidor = produce y consume. Crédito = kWh inyectados × precio valorización (menor que precio consumo — por diseño). Excedentes aparecen en la SIGUIENTE boleta. Verificar medidor bidireccional en ES32. PMGD: escalar siempre a Técnica + Jefatura."}, {"name": "Repaso: Ley Karin y medidores", "icon": "⚖️", "color": "red", "desc": "Ley Karin: protege de acoso laboral y sexual. Protocolo ante cliente abusivo: advertir → finalizar si continúa → registrar en C4C → reportar a jefatura. Medidores: mono/bi/trifásico/bidireccional. MI-03: lectura anómala → suspender cobro → relectura."}, {"name": "Sistema de mentoría post-inducción", "icon": "🎓", "color": "green", "desc": "Las primeras 8 semanas en cargo: tutor asignado, LMS semanal de 15 min, rol play semanal, estado 'ayuda a compañero' en Genesys. Criterios de graduación: 3 turnos autónomos consecutivos + Nivel 3 en LMS + 2 escalamientos correctos verificados por el tutor."}];
-var DEC={1:{correct:'A',A:{ok:true,msg:"Correcto. Una ED siempre interrumpe cualquier otra gestión en curso — el riesgo vital es la prioridad máxima. La secuencia es: ED primero → registrar → comunicar al cliente qué está pasando → retomar el caso de la boleta. Nunca al revés."},B:{ok:false,msg:"La consulta de la boleta no es urgente. Una persona en riesgo vital SÍ es urgente. Terminar la consulta antes de activar el protocolo ED puede costar una vida — es la prioridad más alta del cargo."},C:{ok:false,msg:"El protocolo ED del contact center eléctrico existe precisamente para estos casos. El ejecutivo/a activa el escalamiento interno para restablecer el suministro — eso es independiente de la emergencia médica que el cliente puede también gestionar."}},2:{correct:'B',A:{ok:false,msg:"Prometer que \'mañana tiene los créditos de excedentes\' es incorrecto. Los excedentes del período actual aparecen en la SIGUIENTE boleta — es el proceso normal de Netbilling, no un atraso. Prometer algo que no se puede cumplir genera otro reclamo."},B:{ok:true,msg:"Correcto. Secuenciar: NC primero (error confirmado, dentro del límite, proceder), luego explicar los excedentes (el medidor está activo, los créditos aparecen en la SIGUIENTE boleta — no hay error). El cliente tiene 2 situaciones: una real (precio incorrecto) y una expectativa incorrecta (excedentes inmediatos). Resolver ambas con claridad."},C:{ok:false,msg:"El ejecutivo/a gestiona todos los asuntos del cliente en la misma llamada — no redirecciona para múltiples llamadas. La secuenciación es la habilidad clave, no la derivación."}},3:{correct:'C',A:{ok:false,msg:"La Ley Karin permite finalizar la llamada DESPUÉS de advertir al cliente — no automáticamente en el primer insulto. La advertencia previa es parte del protocolo y le da al cliente la oportunidad de corregir su conducta. Además, el cliente PMGD tiene un problema real y urgente que debe gestionarse."},B:{ok:false,msg:"Tener razón en el reclamo no le da derecho al cliente a insultar al ejecutivo/a. La Ley Karin protege la dignidad del trabajador/a independientemente de si el reclamo del cliente es válido o no."},C:{ok:true,msg:"Correcto. Secuencia perfecta: (1) validar la molestia del cliente (es legítima — 28 horas sin suministro es inaceptable), (2) advertir sobre los insultos según protocolo Ley Karin, (3) gestionar el caso PMGD urgente con el protocolo correcto, (4) documentar el incumplimiento de plazo para el proceso de compensación. Todo en paralelo."}},};
+var DEC={1:{correct:'A',A:{ok:true,msg:"Correcto. Una ED siempre interrumpe cualquier otra gestión en curso — el riesgo vital es la prioridad máxima. La secuencia es: ED primero → registrar → comunicar al cliente qué está pasando → retomar el caso de la boleta. Nunca al revés."},B:{ok:false,msg:"La consulta de la boleta no es urgente. Una persona en riesgo vital SÍ es urgente. Terminar la consulta antes de activar el protocolo ED puede costar una vida — es la prioridad más alta del cargo."},C:{ok:false,msg:"El protocolo ED del contact center eléctrico existe precisamente para estos casos. El ejecutivo/a activa el escalamiento interno para restablecer el suministro — eso es independiente de la emergencia médica que el cliente puede también gestionar."},2:{correct:'B',A:{ok:false,msg:"Prometer que \'mañana tiene los créditos de excedentes\' es incorrecto. Los excedentes del período actual aparecen en la SIGUIENTE boleta — es el proceso normal de Netbilling, no un atraso. Prometer algo que no se puede cumplir genera otro reclamo."},B:{ok:true,msg:"Correcto. Secuenciar: NC primero (error confirmado, dentro del límite, proceder), luego explicar los excedentes (el medidor está activo, los créditos aparecen en la SIGUIENTE boleta — no hay error). El cliente tiene 2 situaciones: una real (precio incorrecto) y una expectativa incorrecta (excedentes inmediatos). Resolver ambas con claridad."},C:{ok:false,msg:"El ejecutivo/a gestiona todos los asuntos del cliente en la misma llamada — no redirecciona para múltiples llamadas. La secuenciación es la habilidad clave, no la derivación."},3:{correct:'C',A:{ok:false,msg:"La Ley Karin permite finalizar la llamada DESPUÉS de advertir al cliente — no automáticamente en el primer insulto. La advertencia previa es parte del protocolo y le da al cliente la oportunidad de corregir su conducta. Además, el cliente PMGD tiene un problema real y urgente que debe gestionarse."},B:{ok:false,msg:"Tener razón en el reclamo no le da derecho al cliente a insultar al ejecutivo/a. La Ley Karin protege la dignidad del trabajador/a independientemente de si el reclamo del cliente es válido o no."},C:{ok:true,msg:"Correcto. Secuencia perfecta: (1) validar la molestia del cliente (es legítima — 28 horas sin suministro es inaceptable), (2) advertir sobre los insultos según protocolo Ley Karin, (3) gestionar el caso PMGD urgente con el protocolo correcto, (4) documentar el incumplimiento de plazo para el proceso de compensación. Todo en paralelo."},};
 var QUIZ=[{"q": "Una llamada comienza como consulta de facturación y el cliente menciona que tiene un familiar con bomba de insulina sin suministro. ¿Qué haces?", "opts": ["Terminar de revisar la facturación primero y luego atender lo del familiar", "Pausar la consulta de facturación inmediatamente y activar el protocolo ED — escalar a Operaciones + Jefatura en simultáneo", "Pedirle que llame al 131 (emergencias médicas)", "Registrar ambas situaciones y procesar en orden de llegada"], "ans": 1, "exp": "La ED interrumpe cualquier otra gestión en curso, siempre. El riesgo vital es la prioridad máxima del cargo. Secuencia: ED primero → registrar → comunicar al cliente → retomar la facturación después de resolver la urgencia."}, {"q": "Un prosumidor Netbilling llama porque 'no ve los créditos de sus excedentes de este mes en su boleta actual'. ¿Qué le explicas?", "opts": ["Que hay un error técnico y que lo van a revisar", "Que los excedentes del período actual aparecen en la SIGUIENTE boleta — es el proceso normal de Netbilling, no un error", "Que los créditos se procesan manualmente y pueden tardar 2 meses", "Que debe verificar en el portal de autogestión y no por teléfono"], "ans": 1, "exp": "Los excedentes del período actual se reflejan en la SIGUIENTE boleta — es el ciclo normal de Netbilling, no un atraso ni un error. Esta es la consulta más frecuente de prosumidores nuevos. Explicarlo con claridad evita un reclamo innecesario."}, {"q": "Un cliente con código PMGD lleva 28 horas sin suministro (plazo vencido) e insulta al ejecutivo/a. ¿Cuál es la acción correcta?", "opts": ["Colgar inmediatamente porque los insultos están protegidos por Ley Karin", "Aguantar los insultos porque el reclamo del cliente es válido", "Advertir al cliente que finalizará la llamada si continúan los insultos, gestionar el caso PMGD con protocolo urgente y documentar el incumplimiento de plazo para compensación", "Solo transferir a jefatura sin decir nada"], "ans": 2, "exp": "Tres cosas en paralelo: (1) advertencia Ley Karin ('si los insultos continúan terminaré la llamada'), (2) gestionar el caso PMGD urgente (escalar Técnica + Jefatura), (3) documentar el incumplimiento de plazo para el proceso de compensación. Tener razón en el reclamo no da derecho a insultar, pero el problema real sí debe gestionarse con urgencia."}, {"q": "¿Cuál es el criterio correcto para crear un ticket Dummy en Centrality?", "opts": ["Cuando el cliente no tiene número de RUT disponible", "Cuando la dirección del suministro NO existe en la base de datos de calles del sistema", "Cuando el problema ocurre cerca de la medianoche", "Cuando el monto involucrado supera los $200.000"], "ans": 1, "exp": "El criterio es único: Dummy solo cuando la dirección NO existe en el sistema. Si la dirección existe → asociar al servicio. No hay otros criterios válidos. Crear Dummy cuando la dirección existe es un error de proceso que puede llevar a la brigada al lugar equivocado."}];
 var SYNTH=["ED: prioridad máxima siempre — interrumpe cualquier gestión en curso. Escalar Operaciones + Jefatura simultáneo.", "Herramientas: ES32 (estado suministro), FPL9 (facturación), C4C (tickets y obs.), Centrality (campo), Genesys (disponibilidad).", "NC: verificar FPL9 → calcular neto × 1,19 → verificar límite de autorización → emitir o escalar.", "Netbilling: excedentes en SIGUIENTE boleta. Precio valorización < precio consumo — por diseño.", "Ley Karin: advertir → finalizar si continúa → registrar C4C → reportar jefatura. El registro es obligatorio."];
 var ERRORS=["Terminar la consulta en curso antes de activar el protocolo ED — el riesgo vital es siempre primero.", "Prometer a un prosumidor que los excedentes aparecerán inmediatamente en la boleta actual.", "Crear ticket Dummy cuando la dirección existe en el sistema.", "Continuar aguantando insultos sistemáticos sin advertir al cliente y registrar el incidente.", "Comprometer compensaciones directamente sin autorización del nivel correspondiente."];
 
-function buildCards(){{
+function buildCards(){
   var g=document.getElementById('cardGrid');if(!g)return;
-  CARDS.forEach(function(c){{
+  CARDS.forEach(function(c){
     var d=document.createElement('div');d.className='rev-card '+c.color;
     d.innerHTML='<h4><span class="card-icon">'+c.icon+'</span>'+c.name+'</h4><div class="rev-desc">'+c.desc+'</div><span class="rev-hint">👆 Toca para explorar</span>';
-    d.onclick=function(){{
+    d.onclick=function(){
       if(this.classList.contains('revealed'))return;
       this.classList.add('revealed');this.querySelector('.rev-hint').textContent='✓ Explorado';
       state.cardRevealed=(state.cardRevealed||0)+1;
       var cnt=document.getElementById('cardCnt');
       if(cnt)cnt.textContent=state.cardRevealed+' de '+CARDS.length+' conceptos explorados';
-    }};
+    };
     g.appendChild(d);
-  }});
-}}
-function buildSynth(){{
+  });
+}
+function buildSynth(){
   var b=document.getElementById('synthBody');if(!b)return;
-  b.innerHTML=SYNTH.map(function(s){{return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}}).join('');
-}}
-function buildErrors(){{
+  b.innerHTML=SYNTH.map(function(s){return '<div class="synth-item"><span class="si-icon">✓</span><p>'+s+'</p></div>';}).join('');
+}
+function buildErrors(){
   var b=document.getElementById('errorBody');if(!b)return;
-  b.innerHTML=ERRORS.map(function(e){{return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}}).join('');
-}}
-function decidir(n,opt){{
+  b.innerHTML=ERRORS.map(function(e){return '<div class="error-item"><span class="ei-icon">✗</span><p>'+e+'</p></div>';}).join('');
+}
+function decidir(n,opt){
   if(state.decisions[n])return;state.decisions[n]=opt;
   var dec=DEC[n];var btns=document.querySelectorAll('#d'+n+' .opt');var letters=['A','B','C'];
-  btns.forEach(function(b,i){{if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');}});
+  btns.forEach(function(b,i){if(letters[i]===dec.correct)b.classList.add('correct');else if(letters[i]===opt&&opt!==dec.correct)b.classList.add('wrong');else b.classList.add('disabled');});
   var res=dec[opt];var fb=document.getElementById('fb'+n);
   fb.className='feedback show '+(res.ok?'ok':'ko');
   fb.innerHTML=(res.ok?'<strong>✓ Correcto</strong> — ':'<strong>✗ Incorrecto</strong> — ')+res.msg;
-}}
-function showQuestion(){{
+}
+function showQuestion(){
   var q=QUIZ[state.quizCurrent];
   document.getElementById('qCounter').textContent='Pregunta '+(state.quizCurrent+1)+' de '+QUIZ.length;
   document.getElementById('qFb').className='feedback';document.getElementById('qNext').style.display='none';state.quizAnswered=false;
   document.getElementById('qText').innerHTML='<p style="font-size:13.5px;line-height:1.7;margin-bottom:14px;font-weight:600;color:#1E293B">'+q.q+'</p>';
   var opts=document.getElementById('qOpts');opts.innerHTML='';
-  q.opts.forEach(function(o,i){{var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){{return function(){{answerQ(idx);}};}})(i);opts.appendChild(b);}});
-}}
-function answerQ(idx){{
+  q.opts.forEach(function(o,i){var b=document.createElement('button');b.className='opt';b.innerHTML=o;b.onclick=(function(idx){return function(){answerQ(idx);};})(i);opts.appendChild(b);});
+}
+function answerQ(idx){
   if(state.quizAnswered)return;state.quizAnswered=true;
   var q=QUIZ[state.quizCurrent];
-  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){{if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');}});
+  document.querySelectorAll('#qOpts .opt').forEach(function(b,i){if(i===q.ans)b.classList.add('correct');else if(i===idx&&idx!==q.ans)b.classList.add('wrong');else b.classList.add('disabled');});
   var ok=idx===q.ans;if(ok)state.quizScore++;
   var fb=document.getElementById('qFb');fb.className='feedback show '+(ok?'ok':'ko');
   fb.innerHTML='<strong>'+(ok?'✓ Correcto':'✗ Incorrecto')+'</strong> — '+q.exp;
   document.getElementById('qNext').style.display='inline-block';
-  try{{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}}catch(e){{}}
-}}
-function nextQ(){{state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}}
-function showResults(){{
+  try{SCORM.set('cmi.interactions.'+state.quizCurrent+'.id','q'+state.quizCurrent);SCORM.set('cmi.interactions.'+state.quizCurrent+'.result',ok?'correct':'wrong');}catch(e){}
+}
+function nextQ(){state.quizCurrent++;if(state.quizCurrent<QUIZ.length)showQuestion();else NAV(1);}
+function showResults(){
   var pct=Math.round(state.quizScore/QUIZ.length*100);
   document.getElementById('resultScore').textContent=state.quizScore+'/'+QUIZ.length;
   document.getElementById('resultPct').textContent=pct+'% correcto';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: '+pct+'%';
-  setTimeout(function(){{document.getElementById('resultBar').style.width=pct+'%';}},300);
-  var badges={{100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'}};
+  setTimeout(function(){document.getElementById('resultBar').style.width=pct+'%';},300);
+  var badges={100:'🏆 Dominio total — ¡puntaje perfecto!',75:'👍 Buen desempeño — aprobado',0:'🔁 Bajo el umbral — revisa y reintenta'};
   var key=pct===100?100:pct>=75?75:0;
   document.getElementById('resultBadge').innerHTML=badges[key];
-  if(pct<100&&document.getElementById('reviewBox')){{
-    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){{return '<li>'+e+'</li>';}}).join('')+'</ul></div>';
-  }}
+  if(pct<100&&document.getElementById('reviewBox')){
+    document.getElementById('reviewBox').innerHTML='<div class="review-box"><div class="review-title">📌 Conceptos para repasar</div><ul class="review-list">'+ERRORS.map(function(e){return '<li>'+e+'</li>';}).join('')+'</ul></div>';
+  }
   SCORM.setComplete(pct);
-}}
-function restartQuiz(){{
-  state={{cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{{1:null,2:null,3:null}}}};
-  document.querySelectorAll('.scene').forEach(function(s){{s.classList.remove('active');}});
+}
+function restartQuiz(){
+  state={cur:0,total:TOTAL_SC,quizScore:0,quizCurrent:0,quizAnswered:false,qInitDone:false,decisions:{1:null,2:null,3:null}};
+  document.querySelectorAll('.scene').forEach(function(s){s.classList.remove('active');});
   document.getElementById('sc0').classList.add('active');CUR=0;
-  document.querySelectorAll('.opt').forEach(function(b){{b.className='opt';}});
-  document.querySelectorAll('.feedback').forEach(function(f){{f.className='feedback';f.innerHTML='';}});
-  document.querySelectorAll('.rev-card').forEach(function(c){{c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';}});
+  document.querySelectorAll('.opt').forEach(function(b){b.className='opt';});
+  document.querySelectorAll('.feedback').forEach(function(f){f.className='feedback';f.innerHTML='';});
+  document.querySelectorAll('.rev-card').forEach(function(c){c.classList.remove('revealed');var h=c.querySelector('.rev-hint');if(h)h.textContent='👆 Toca para explorar';});
   document.getElementById('reviewBox').innerHTML='';
   document.getElementById('resultBar').style.width='0%';
   var sd=document.getElementById('scoreDisplay');if(sd)sd.textContent='Puntuación: 0%';
   buildCards();buildSynth();buildErrors();UPD();
-}}
+}
 
 document.addEventListener('DOMContentLoaded',function(){
   TOTAL_SC=9;

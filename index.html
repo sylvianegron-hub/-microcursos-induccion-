@@ -13,7 +13,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;pa
 .hdr p{color:#BFDBFE;font-size:12px}
 .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .badge{background:rgba(255,255,255,.15);color:#E0F2FE;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
-.semana-title{font-size:13px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.08em;margin:16px 0 8px}
+.semana{font-size:12px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.08em;margin:16px 0 8px;padding-left:4px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .card{background:#fff;border-radius:12px;border:0.5px solid #E2E8F0;padding:16px;text-decoration:none;color:#1E293B;transition:all .2s;display:block;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 .card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.1)}
@@ -21,11 +21,9 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;pa
 .card .title{font-size:13px;font-weight:600;margin-bottom:4px}
 .card .sub{font-size:10.5px;color:#64748B}
 .tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;margin-top:6px;font-weight:600}
-.tag-teal{background:#CCFBF1;color:#0F766E}
-.tag-blue{background:#DBEAFE;color:#1D4ED8}
-.tag-amber{background:#FEF3C7;color:#92400E}
-.tag-purp{background:#EDE9FE;color:#6D28D9}
-.tag-red{background:#FEE2E2;color:#991B1B}
+.teal{background:#CCFBF1;color:#0F766E}.blue{background:#DBEAFE;color:#1D4ED8}
+.amber{background:#FEF3C7;color:#92400E}.purp{background:#EDE9FE;color:#6D28D9}
+.red{background:#FEE2E2;color:#991B1B}
 </style>
 </head>
 <body>
@@ -34,27 +32,28 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1E293B;pa
   <h1>⚡ Microcursos Inbound — Programa de Inducción</h1>
   <p>Contact Center · Atención de Clientes · Distribución Eléctrica · Mayo 2026</p>
   <div class="badges">
-    <span class="badge">9 microcursos · Días 2 al 10</span>
-    <span class="badge">6–8 min por módulo</span>
+    <span class="badge">9 microcursos · Días 2–10</span>
+    <span class="badge">6–8 min c/u</span>
     <span class="badge">Bloom + Gamificación</span>
-    <span class="badge">Modelo 3 Momentos</span>
+    <span class="badge">Feedback 360°</span>
   </div>
 </div>
-<div class="semana-title">Semana 1 — Eje Técnico y Protocolos</div>
+<div class="semana">Semana 1 — Eje Técnico y Protocolos</div>
 <div class="grid">
-  <a class="card" href="inbound-dia2.html"><div class="num">2</div><div class="title">Protocolos y llamadas básicas</div><div class="sub">Semana 1 · 7 min</div><span class="tag tag-teal">Comprender → Analizar</span></a>
-  <a class="card" href="inbound-dia3.html"><div class="num">3</div><div class="title">C4C y Genesys</div><div class="sub">Semana 1 · 7 min</div><span class="tag tag-blue">Aplicar</span></a>
-  <a class="card" href="inbound-dia4.html"><div class="num">4</div><div class="title">Tx ES32, FPL9 y Centrality</div><div class="sub">Semana 1 · 7 min</div><span class="tag tag-blue">Aplicar</span></a>
-  <a class="card" href="inbound-dia5.html"><div class="num">5</div><div class="title">Llamadas complejas y ED ⭐</div><div class="sub">Semana 1 · 7 min · Eval S1</div><span class="tag tag-red">Analizar → Evaluar</span></a>
+  <a class="card" href="inbound-dia2.html"><div class="num">2</div><div class="title">Protocolos y llamadas básicas</div><div class="sub">Semana 1 · 7 min</div><span class="tag teal">Comprender → Analizar</span></a>
+  <a class="card" href="inbound-dia3.html"><div class="num">3</div><div class="title">C4C y Genesys</div><div class="sub">Semana 1 · 7 min</div><span class="tag blue">Aplicar</span></a>
+  <a class="card" href="inbound-dia4.html"><div class="num">4</div><div class="title">Tx ES32, FPL9 y Centrality</div><div class="sub">Semana 1 · 7 min</div><span class="tag blue">Aplicar</span></a>
+  <a class="card" href="inbound-dia5.html"><div class="num">5</div><div class="title">Llamadas complejas y ED ⭐</div><div class="sub">Semana 1 · 7 min · Eval. S1</div><span class="tag red">Analizar → Evaluar</span></a>
 </div>
-<div class="semana-title">Semana 2 — Eje Comercial y Situaciones Especiales</div>
+<div class="semana">Semana 2 — Eje Comercial y Situaciones Especiales</div>
 <div class="grid">
-  <a class="card" href="inbound-dia6.html"><div class="num">6</div><div class="title">Facturación y NC manuales</div><div class="sub">Semana 2 · 7 min</div><span class="tag tag-amber">Aplicar → Analizar</span></a>
-  <a class="card" href="inbound-dia7.html"><div class="num">7</div><div class="title">Plazos comerciales</div><div class="sub">Semana 2 · 7 min</div><span class="tag tag-amber">Analizar</span></a>
-  <a class="card" href="inbound-dia8.html"><div class="num">8</div><div class="title">Netbilling, PMGD y especiales</div><div class="sub">Semana 2 · 7 min</div><span class="tag tag-purp">Analizar → Evaluar</span></a>
-  <a class="card" href="inbound-dia9.html"><div class="num">9</div><div class="title">Ley Karin, medidores y Dummy</div><div class="sub">Semana 2 · 7 min</div><span class="tag tag-red">Evaluar</span></a>
-  <a class="card" href="inbound-dia10.html" style="grid-column:1/-1;background:linear-gradient(135deg,#EFF6FF,#F0FDF4)"><div class="num">10</div><div class="title">Evaluación Final y cierre del programa 🏆</div><div class="sub">Semana 2 · 7 min · Evaluación Final · Ponderación 40%</div><span class="tag tag-red">Evaluar · Umbral 75%</span></a>
+  <a class="card" href="inbound-dia6.html"><div class="num">6</div><div class="title">Facturación y NC manuales</div><div class="sub">Semana 2 · 7 min</div><span class="tag amber">Aplicar → Analizar</span></a>
+  <a class="card" href="inbound-dia7.html"><div class="num">7</div><div class="title">Plazos comerciales</div><div class="sub">Semana 2 · 7 min</div><span class="tag amber">Analizar</span></a>
+  <a class="card" href="inbound-dia8.html"><div class="num">8</div><div class="title">Netbilling, PMGD y especiales</div><div class="sub">Semana 2 · 7 min</div><span class="tag purp">Analizar → Evaluar</span></a>
+  <a class="card" href="inbound-dia9.html"><div class="num">9</div><div class="title">Ley Karin, medidores y Dummy</div><div class="sub">Semana 2 · 7 min</div><span class="tag red">Evaluar</span></a>
+  <a class="card" href="inbound-dia10.html" style="grid-column:1/-1;background:linear-gradient(135deg,#EFF6FF,#F0FDF4)">
+    <div class="num">10</div><div class="title">Evaluación Final y cierre 🏆</div>
+    <div class="sub">Semana 2 · 7 min · 40% nota total · Umbral 75%</div>
+    <span class="tag red">Evaluar</span></a>
 </div>
-</div>
-</body>
-</html>
+</div></body></html>
